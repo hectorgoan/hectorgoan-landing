@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Héctor Go. An. - Software Architect + Vue.js Tech Lead. Personal landing page.">
+    <title>Héctor Go. An. | Software Architect</title>
+    
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome (for icons) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="overlay"></div> <!-- Background atmosphere -->
+
+    <div class="container">
+        <!-- Profile Header -->
+        <header class="profile-header">
+            <div class="avatar-container">
+                <!-- Using a placeholder initially, user can replace with their localized Memoji -->
+                <img src="https://ui-avatars.com/api/?name=Hector+Go+An&background=random&size=200" alt="Héctor Go. An." class="avatar">
+            </div>
+            <h1 class="name">Héctor Go. An.</h1>
+            <p class="bio">
+                Software Architect + Vue.js Tech Lead @ <a href="https://www.knowmadmood.com" target="_blank">knowmad mood</a><br>
+                (formerly known as AtSistemas)
+            </p>
+            <p class="bio-secondary">
+                Coffee-shop coding aficionado. Travel / hiking / running lover.<br>
+                🏠 - Spain 🇪🇸<br>
+                📍 - Guatemala 🇬🇹
+            </p>
+        </header>
+
+        <!-- Bento Grid -->
+        <main class="bento-grid">
+            
+            <!-- LinkedIn (Large) -->
+            <a href="https://linkedin.com/in/hectorgoan" target="_blank" class="card linkedin card-large">
+                <div class="card-content">
+                    <div class="card-icon"><i class="fab fa-linkedin"></i></div>
+                    <div class="card-text">
+                        <h3>LinkedIn</h3>
+                        <p>Héctor Gonzalo Andrés</p>
+                    </div>
+                    <div class="card-arrow"><i class="fas fa-arrow-right"></i></div>
+                </div>
+            </a>
+
+            <!-- GitHub (Medium with Chart) -->
+            <a href="https://github.com/hectorgoan" target="_blank" class="card github card-medium">
+                <div class="card-content">
+                    <div class="card-header">
+                        <div class="card-icon"><i class="fab fa-github"></i></div>
+                        <h3>GitHub</h3>
+                    </div>
+                    <!-- Dynamic GitHub Chart -->
+                    <div class="gh-chart">
+                        <img src="https://ghchart.rshah.org/hectorgoan" alt="Héctor's Github Chart" />
+                    </div>
+                </div>
+            </a>
+
+            <!-- Twitter Codes (Small) -->
+            <a href="https://twitter.com/hectorgoanCodes" target="_blank" class="card twitter-codes card-small">
+                <div class="card-content">
+                    <div class="card-icon"><i class="fab fa-twitter"></i></div>
+                    <h3>@hectorgoanCodes</h3>
+                    <p>Coding & Tech</p>
+                </div>
+            </a>
+
+            <!-- Twitter Personal (Small) -->
+            <a href="https://twitter.com/hectorgoan" target="_blank" class="card twitter-personal card-small">
+                <div class="card-content">
+                    <div class="card-icon"><i class="fas fa-lock"></i></div> <!-- Lock icon for private -->
+                    <h3>@hectorgoan</h3>
+                    <p>Personal</p>
+                </div>
+            </a>
+
+            <!-- Instagram (Small) -->
+            <a href="https://instagram.com/hectorgoan" target="_blank" class="card instagram card-small">
+                <div class="card-content">
+                    <div class="card-icon"><i class="fab fa-instagram"></i></div>
+                    <h3>Instagram</h3>
+                </div>
+            </a>
+
+            <!-- Reddit (Small) -->
+            <a href="https://reddit.com/user/hectorgoan" target="_blank" class="card reddit card-small">
+                <div class="card-content">
+                    <div class="card-icon"><i class="fab fa-reddit-alien"></i></div>
+                    <h3>Reddit</h3>
+                </div>
+            </a>
+
+            <!-- Daily.dev (Wide/Medium) -->
+            <a href="https://app.daily.dev/hectorgoan" target="_blank" class="card daily-dev card-wide">
+                <div class="card-content">
+                    <div class="card-icon"><i class="fas fa-fire"></i></div> <!-- Daily.dev logo approximation -->
+                    <h3>Daily.dev</h3>
+                    <p>Read what I read</p>
+                </div>
+            </a>
+
+            <!-- Location (Wide/Medium) -->
+            <a href="https://www.google.com/maps/@14.549296900000002,-90.73322329999999,13z" target="_blank" class="card location card-wide">
+                <div class="card-content">
+                    <div class="card-icon"><i class="fas fa-map-marker-alt"></i></div>
+                    <div>
+                        <h3>Now In</h3>
+                        <p>Antigua Guatemala</p>
+                    </div>
+                    <!-- Static Map Image could go here if available without API key, keeping text for now -->
+                </div>
+            </a>
+
+        </main>
+    </div>
+</body>
+</html>
