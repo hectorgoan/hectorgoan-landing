@@ -15,6 +15,26 @@
     --brand-reddit: #ff4500;
 }
 
+@media (prefers-color-scheme: dark) {
+    :root {
+        /* Dark Mode Colors */
+        --bg-color: #000000;
+        --text-primary: #f5f5f7;
+        --text-secondary: #a1a1a6;
+        --accent-blue: #0a84ff;
+        /* Lighter blue for dark mode */
+        --card-bg: rgba(28, 28, 30, 0.7);
+        --card-border: rgba(255, 255, 255, 0.15);
+        --card-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
+        --hover-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+
+        /* Adjust brand colors for visibility on dark if needed */
+        --brand-github: #f0f6fc;
+        /* GitHub Dark Mode Text Color */
+        /* Other brands usually work fine on dark, but can be tweaked if contrast is low */
+    }
+}
+
 * {
     box-sizing: border-box;
     margin: 0;
