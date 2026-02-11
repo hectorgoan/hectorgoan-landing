@@ -13,6 +13,10 @@
     --brand-twitter: #1da1f2;
     --brand-instagram: #e1306c;
     --brand-reddit: #ff4500;
+
+    --card-hover-bg: rgba(255, 255, 255, 0.9);
+    --card-hover-border: rgba(0, 0, 0, 0.1);
+    --card-icon-bg: rgba(255, 255, 255, 0.5);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -27,6 +31,10 @@
         --card-border: rgba(255, 255, 255, 0.15);
         --card-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
         --hover-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+
+        --card-hover-bg: rgba(44, 44, 46, 0.8);
+        --card-hover-border: rgba(255, 255, 255, 0.3);
+        --card-icon-bg: rgba(255, 255, 255, 0.1);
 
         /* Adjust brand colors for visibility on dark if needed */
         --brand-github: #f0f6fc;
@@ -141,7 +149,8 @@ body {
 .card:hover {
     transform: translateY(-4px) scale(1.01);
     box-shadow: var(--hover-shadow);
-    background: rgba(255, 255, 255, 0.85);
+    background: var(--card-hover-bg);
+    border-color: var(--card-hover-border);
 }
 
 .card:active {
@@ -163,7 +172,7 @@ body {
     align-items: center;
     justify-content: center;
     border-radius: 12px;
-    background: rgba(255, 255, 255, 0.5);
+    background: var(--card-icon-bg);
 }
 
 .card h3 {
