@@ -47,8 +47,11 @@
         /* Adjust brand colors for visibility on dark if needed */
         --brand-github: #f0f6fc;
         /* GitHub Dark Mode Text Color */
-        /* GitHub Dark Mode Text Color */
         /* Other brands usually work fine on dark, but can be tweaked if contrast is low */
+    }
+
+    .gh-chart img {
+        filter: invert(1) hue-rotate(180deg) brightness(1.6);
     }
 }
 
@@ -87,6 +90,14 @@ body.dark-mode {
     --switch-bg: rgba(255, 255, 255, 0.15);
     --switch-active-bg: #636366;
     --switch-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+body.dark-mode .gh-chart img {
+    filter: invert(1) hue-rotate(180deg) brightness(1.6);
+}
+
+body.light-mode .gh-chart img {
+    filter: none;
 }
 
 * {
