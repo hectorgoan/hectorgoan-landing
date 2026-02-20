@@ -58,6 +58,11 @@
     .card-bg-map iframe {
         filter: invert(1) hue-rotate(180deg) grayscale(0.8) opacity(0.35);
     }
+
+    .card-bg-map::after {
+        backdrop-filter: brightness(0);
+        -webkit-backdrop-filter: brightness(0);
+    }
 }
 
 /* Manual Theme Overrides */
@@ -105,12 +110,22 @@ body.dark-mode .card-bg-map iframe {
     filter: invert(1) hue-rotate(180deg) grayscale(0.8) opacity(0.35);
 }
 
+body.dark-mode .card-bg-map::after {
+    backdrop-filter: brightness(0);
+    -webkit-backdrop-filter: brightness(0);
+}
+
 body.light-mode .gh-chart img {
     filter: none;
 }
 
 body.light-mode .card-bg-map iframe {
     filter: grayscale(1) opacity(0.3);
+}
+
+body.light-mode .card-bg-map::after {
+    backdrop-filter: brightness(2);
+    -webkit-backdrop-filter: brightness(2);
 }
 
 * {
@@ -369,6 +384,21 @@ body {
     height: calc(100% + 100px);
     border: none !important;
     filter: grayscale(1) opacity(0.3);
+    pointer-events: none;
+}
+
+.card-bg-map::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 60%;
+    height: 100%;
+    backdrop-filter: brightness(2);
+    -webkit-backdrop-filter: brightness(2);
+    mask-image: linear-gradient(to right, black 0%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to right, black 0%, transparent 100%);
+    z-index: 1;
     pointer-events: none;
 }
 
