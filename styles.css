@@ -213,8 +213,6 @@ body {
     background-color: var(--switch-active-bg);
     color: var(--text-primary);
     box-shadow: var(--switch-shadow);
-    backdrop-filter: blur(10px) brightness(2);
-    -webkit-backdrop-filter: blur(10px) brightness(2);
 }
 
 .theme-switch {
@@ -274,7 +272,8 @@ body {
     transition: backdrop-filter 0.3s ease;
 }
 
-.avatar.hdr-active {
+.avatar.hdr-active,
+.card.hdr-active {
     backdrop-filter: brightness(2);
     -webkit-backdrop-filter: brightness(2);
 }

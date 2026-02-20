@@ -38,6 +38,9 @@ document.addEventListener('DOMContentLoaded', () => {
             if (profilePic) {
                 profilePic.classList.remove('hdr-active');
             }
+
+            const cards = document.querySelectorAll('.card');
+            cards.forEach(card => card.classList.remove('hdr-active'));
         }
     }
 
@@ -87,6 +90,11 @@ document.addEventListener('DOMContentLoaded', () => {
             if (profilePic) {
                 profilePic.classList.toggle('hdr-active', hdrToggle.classList.contains('active'));
             }
+
+            const cards = document.querySelectorAll('.card');
+            cards.forEach(card => {
+                card.classList.toggle('hdr-active', hdrToggle.classList.contains('active'));
+            });
         });
     }
 
