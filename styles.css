@@ -13,6 +13,7 @@
     --brand-twitter: #1da1f2;
     --brand-instagram: #e1306c;
     --brand-reddit: #ff4500;
+    --brand-email: #6d4aff;
 
     --card-hover-bg: rgba(255, 255, 255, 0.9);
     --card-hover-border: rgba(0, 0, 0, 0.1);
@@ -332,6 +333,10 @@ body {
     color: #EA4335;
 }
 
+.email .card-icon {
+    color: var(--brand-email);
+}
+
 /* Grid Layouts for Larger Screens */
 @media (min-width: 768px) {
     .bento-grid {
@@ -424,4 +429,20 @@ body {
 
 .card:nth-child(6) {
     animation-delay: 0.6s;
+}
+
+.card:nth-child(7) {
+    animation-delay: 0.7s;
+}
+
+.card:nth-child(8) {
+    animation-delay: 0.8s;
+}
+
+.card:nth-child(9) {
+    animation-delay: 0.9s;
+}
+
+.card:nth-child(10) {
+    animation-delay: 1.0s;
 }
