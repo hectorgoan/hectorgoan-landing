@@ -21,6 +21,24 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         updateSelector(theme);
+        updateHdrState();
+    }
+
+    function updateHdrState() {
+        const hdrToggle = document.getElementById('hdr-toggle');
+        if (!hdrToggle) return;
+
+        const isDark = document.body.classList.contains('dark-mode') ||
+            (document.body.classList.length === 0 && window.matchMedia('(prefers-color-scheme: dark)').matches);
+
+        if (isDark) {
+            hdrToggle.classList.remove('active');
+
+            const profilePic = document.getElementById('profilePic');
+            if (profilePic) {
+                profilePic.classList.remove('hdr-active');
+            }
+        }
     }
 
     function updateSelector(theme) {
@@ -54,5 +72,22 @@ document.addEventListener('DOMContentLoaded', () => {
             applyTheme(theme);
         });
     });
+
+    const hdrToggle = document.getElementById('hdr-toggle');
+    if (hdrToggle) {
+        hdrToggle.addEventListener('click', () => {
+            const isDark = document.body.classList.contains('dark-mode') ||
+                (document.body.classList.length === 0 && window.matchMedia('(prefers-color-scheme: dark)').matches);
+
+            if (isDark) return; // Do nothing if in dark mode
+
+            hdrToggle.classList.toggle('active');
+
+            const profilePic = document.getElementById('profilePic');
+            if (profilePic) {
+                profilePic.classList.toggle('hdr-active', hdrToggle.classList.contains('active'));
+            }
+        });
+    }
 
 });

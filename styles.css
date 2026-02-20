@@ -62,6 +62,11 @@
     .card-bg-map::after {
         background: linear-gradient(to right, rgba(28, 28, 30, 0.9) 0%, rgba(28, 28, 30, 0) 100%);
     }
+
+    .hdr-btn {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
 }
 
 /* Manual Theme Overrides */
@@ -111,6 +116,11 @@ body.dark-mode .card-bg-map iframe {
 
 body.dark-mode .card-bg-map::after {
     background: linear-gradient(to right, rgba(28, 28, 30, 0.9) 0%, rgba(28, 28, 30, 0) 100%);
+}
+
+body.dark-mode .hdr-btn {
+    opacity: 0.5;
+    cursor: not-allowed;
 }
 
 body.light-mode .gh-chart img {
@@ -173,7 +183,38 @@ body {
 .theme-switch-wrapper {
     display: flex;
     justify-content: flex-end;
+    align-items: center;
+    gap: 1rem;
     margin-bottom: 1rem;
+}
+
+.hdr-btn {
+    background-color: var(--switch-bg);
+    border: none;
+    cursor: pointer;
+    padding: 6px 12px;
+    border-radius: 999px;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    font-weight: 500;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.hdr-btn:hover {
+    color: var(--text-primary);
+}
+
+.hdr-btn.active {
+    background-color: var(--switch-active-bg);
+    color: var(--text-primary);
+    box-shadow: var(--switch-shadow);
+    backdrop-filter: blur(10px) brightness(2);
+    -webkit-backdrop-filter: blur(10px) brightness(2);
 }
 
 .theme-switch {
@@ -230,6 +271,12 @@ body {
     object-fit: cover;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
     margin-bottom: 1.5rem;
+    transition: backdrop-filter 0.3s ease;
+}
+
+.avatar.hdr-active {
+    backdrop-filter: brightness(2);
+    -webkit-backdrop-filter: brightness(2);
 }
 
 .name {
