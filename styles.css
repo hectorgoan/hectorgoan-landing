@@ -66,6 +66,19 @@
     .hdr-btn {
         opacity: 0.5;
         cursor: not-allowed;
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    .hdr-btn:hover,
+    .hdr-btn:active {
+        color: var(--text-secondary);
+        background-color: var(--switch-bg);
+    }
+
+    @media (hover: none) and (pointer: coarse) {
+        .hdr-btn {
+            pointer-events: none;
+        }
     }
 }
 
@@ -121,6 +134,19 @@ body.dark-mode .card-bg-map::after {
 body.dark-mode .hdr-btn {
     opacity: 0.5;
     cursor: not-allowed;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body.dark-mode .hdr-btn:hover,
+body.dark-mode .hdr-btn:active {
+    color: var(--text-secondary);
+    background-color: var(--switch-bg);
+}
+
+@media (hover: none) and (pointer: coarse) {
+    body.dark-mode .hdr-btn {
+        pointer-events: none;
+    }
 }
 
 body.light-mode .gh-chart img {
