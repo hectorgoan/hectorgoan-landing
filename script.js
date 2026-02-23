@@ -98,4 +98,16 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // Add animate-in class to cards for initial load animation
+    const cards = document.querySelectorAll('.card');
+    cards.forEach((card, index) => {
+        card.classList.add('animate-in');
+
+        // Remove the animate-in class after the animation finishes
+        // Animation is 0.6s max plus up to 1.0s delay = 1600ms
+        setTimeout(() => {
+            card.classList.remove('animate-in');
+        }, 1600);
+    });
+
 });

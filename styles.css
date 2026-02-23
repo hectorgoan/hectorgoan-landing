@@ -312,13 +312,14 @@ body {
     box-shadow: 0 8px 32px rgba(255, 255, 255, 0.3), inset 0 0 20px rgba(255, 255, 255, 0.5);
     transform: translateY(-2px);
     transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.3s ease, border-color 0.3s ease;
+    animation: hdrCardGlow 3s ease-in-out infinite alternate;
 }
 
 .card.hdr-active:hover {
     transform: translateY(-6px) scale(1.02);
-    box-shadow: 0 12px 48px rgba(255, 255, 255, 0.5), inset 0 0 30px rgba(255, 255, 255, 0.8);
     background: rgba(255, 255, 255, 1);
     border-color: rgba(255, 255, 255, 1);
+    animation: hdrCardGlowHover 3s ease-in-out infinite alternate;
 }
 
 .card.hdr-active .card-icon {
@@ -333,6 +334,26 @@ body {
 
     100% {
         box-shadow: 0 0 40px rgba(255, 255, 255, 1), 0 0 80px rgba(255, 255, 255, 0.6);
+    }
+}
+
+@keyframes hdrCardGlow {
+    0% {
+        box-shadow: 0 8px 32px rgba(255, 255, 255, 0.3), inset 0 0 20px rgba(255, 255, 255, 0.5), 0 0 20px rgba(255, 255, 255, 0.4);
+    }
+
+    100% {
+        box-shadow: 0 8px 32px rgba(255, 255, 255, 0.4), inset 0 0 20px rgba(255, 255, 255, 0.6), 0 0 40px rgba(255, 255, 255, 0.8);
+    }
+}
+
+@keyframes hdrCardGlowHover {
+    0% {
+        box-shadow: 0 12px 48px rgba(255, 255, 255, 0.5), inset 0 0 30px rgba(255, 255, 255, 0.8), 0 0 30px rgba(255, 255, 255, 0.6);
+    }
+
+    100% {
+        box-shadow: 0 12px 48px rgba(255, 255, 255, 0.6), inset 0 0 30px rgba(255, 255, 255, 0.9), 0 0 50px rgba(255, 255, 255, 1);
     }
 }
 
@@ -355,13 +376,13 @@ body {
     .card.hdr-active {
         background: color(display-p3 1 1 1 / 0.95);
         border-color: color(display-p3 1 1 1);
-        box-shadow: 0 8px 40px color(display-p3 1 1 1 / 0.4), inset 0 0 30px color(display-p3 1 1 1 / 0.6);
+        animation: hdrCardGlowP3 3s ease-in-out infinite alternate;
     }
 
     .card.hdr-active:hover {
         background: color(display-p3 1 1 1);
         border-color: color(display-p3 1 1 1);
-        box-shadow: 0 12px 60px color(display-p3 1 1 1 / 0.7), inset 0 0 40px color(display-p3 1 1 1 / 0.9);
+        animation: hdrCardGlowHoverP3 3s ease-in-out infinite alternate;
     }
 
     .card.hdr-active .card-icon {
@@ -376,6 +397,26 @@ body {
 
         100% {
             box-shadow: 0 0 60px color(display-p3 1 1 1), 0 0 120px color(display-p3 1 1 1 / 0.8);
+        }
+    }
+
+    @keyframes hdrCardGlowP3 {
+        0% {
+            box-shadow: 0 8px 40px color(display-p3 1 1 1 / 0.4), inset 0 0 30px color(display-p3 1 1 1 / 0.6), 0 0 30px color(display-p3 1 1 1 / 0.5);
+        }
+
+        100% {
+            box-shadow: 0 8px 40px color(display-p3 1 1 1 / 0.5), inset 0 0 30px color(display-p3 1 1 1 / 0.7), 0 0 60px color(display-p3 1 1 1 / 0.9);
+        }
+    }
+
+    @keyframes hdrCardGlowHoverP3 {
+        0% {
+            box-shadow: 0 12px 60px color(display-p3 1 1 1 / 0.7), inset 0 0 40px color(display-p3 1 1 1 / 0.9), 0 0 40px color(display-p3 1 1 1 / 0.7);
+        }
+
+        100% {
+            box-shadow: 0 12px 60px color(display-p3 1 1 1 / 0.8), inset 0 0 40px color(display-p3 1 1 1 / 1.0), 0 0 80px color(display-p3 1 1 1 / 1.0);
         }
     }
 }
@@ -611,8 +652,9 @@ body {
     }
 }
 
-.card {
-    animation: fadeIn 0.6s ease-out backwards;
+.card.animate-in {
+    opacity: 0;
+    animation: fadeIn 0.6s ease-out forwards;
 }
 
 .card:nth-child(1) {
