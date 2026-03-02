@@ -23,149 +23,168 @@
 </head>
 
 <body>
-    <div class="overlay"></div> <!-- Background atmosphere -->
+    <div id="app">
+        <div class="overlay"></div> <!-- Background atmosphere -->
 
-    <div class="container">
-        <!-- Theme Selector -->
-        <div class="theme-switch-wrapper">
-            <button id="hdr-toggle" class="hdr-btn" aria-label="Toggle HDR">
-                <span>HDR</span>
-            </button>
-            <div class="theme-switch">
-                <div class="switch-bg"></div>
-                <button id="theme-auto" class="switch-btn active" aria-label="Auto Theme">
-                    <span>Auto</span>
+        <div class="container" v-cloak>
+            <!-- Theme Selector -->
+            <div class="theme-switch-wrapper">
+                <button id="hdr-toggle" class="hdr-btn" :class="{ 'active': isHdrActive }" aria-label="Toggle HDR"
+                    @click="toggleHdr">
+                    <span>HDR</span>
                 </button>
-                <button id="theme-light" class="switch-btn" aria-label="Light Theme">
-                    <i class="fas fa-sun"></i>
-                </button>
-                <button id="theme-dark" class="switch-btn" aria-label="Dark Theme">
-                    <i class="fas fa-moon"></i>
-                </button>
+                <div class="theme-switch">
+                    <div class="switch-bg" :style="switchBgStyle"></div>
+                    <button id="theme-auto" class="switch-btn" :class="{ 'active': theme === 'auto' }"
+                        aria-label="Auto Theme" @click="setTheme('auto')" ref="btnAuto">
+                        <span>Auto</span>
+                    </button>
+                    <button id="theme-light" class="switch-btn" :class="{ 'active': theme === 'light' }"
+                        aria-label="Light Theme" @click="setTheme('light')" ref="btnLight">
+                        <i class="fas fa-sun"></i>
+                    </button>
+                    <button id="theme-dark" class="switch-btn" :class="{ 'active': theme === 'dark' }"
+                        aria-label="Dark Theme" @click="setTheme('dark')" ref="btnDark">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                </div>
             </div>
+
+            <!-- Profile Header -->
+            <header class="profile-header">
+                <div class="avatar-container">
+                    <!-- Using a placeholder initially, user can replace with their localized Memoji -->
+                    <img src="resources/profile.png" id="profilePic" alt="Héctor Go. An." class="avatar"
+                        :class="{ 'hdr-active': isHdrActive }">
+                </div>
+                <h1 class="name">Héctor Go. An.</h1>
+                <p class="bio">
+                    Software Architect + Vue.js Tech Lead @ <a href="https://www.knowmadmood.com"
+                        target="_blank">knowmad
+                        mood</a><br>
+                    (formerly known as AtSistemas)
+                </p>
+                <p class="bio-secondary">
+                    Coffee-shop coding aficionado. Travel / hiking / running lover.<br>
+                    🏠 - Spain 🇪🇸<br>
+                    📍 - Guatemala 🇬🇹
+                </p>
+            </header>
+
+            <!-- Bento Grid -->
+            <main class="bento-grid">
+
+                <!-- LinkedIn (Large) -->
+                <a href="https://linkedin.com/in/hectorgoan" target="_blank" class="card linkedin card-medium"
+                    :class="{ 'hdr-active': isHdrActive, 'animate-in': isAnimating }">
+                    <div class="card-content">
+                        <div class="card-icon"><i class="fab fa-linkedin"></i></div>
+                        <div class="card-text">
+                            <h3>LinkedIn</h3>
+                            <p>Héctor Gonzalo Andrés</p>
+                        </div>
+                        <div class="card-arrow"><i class="fas fa-arrow-right"></i></div>
+                    </div>
+                </a>
+
+                <!-- GitHub (Medium with Chart) -->
+                <a href="https://github.com/hectorgoan" target="_blank" class="card github card-medium"
+                    :class="{ 'hdr-active': isHdrActive, 'animate-in': isAnimating }">
+                    <div class="card-content">
+                        <div class="card-header">
+                            <div class="card-icon"><i class="fab fa-github"></i></div>
+                            <h3>GitHub</h3>
+                        </div>
+                        <!-- Dynamic GitHub Chart -->
+                        <div class="gh-chart">
+                            <img src="https://ghchart.rshah.org/hectorgoan" alt="Héctor's Github Chart" />
+                        </div>
+                    </div>
+                </a>
+
+                <!-- Twitter Codes (Small) -->
+                <a href="https://twitter.com/hectorgoanCodes" target="_blank" class="card twitter-codes card-small"
+                    :class="{ 'hdr-active': isHdrActive, 'animate-in': isAnimating }">
+                    <div class="card-content">
+                        <div class="card-icon"><i class="fab fa-twitter"></i></div>
+                        <h3>@hectorgoanCodes</h3>
+                        <p>Coding & Tech</p>
+                    </div>
+                </a>
+
+                <!-- Twitter Personal (Small) -->
+                <a href="https://twitter.com/hectorgoan" target="_blank" class="card twitter-personal card-small"
+                    :class="{ 'hdr-active': isHdrActive, 'animate-in': isAnimating }">
+                    <div class="card-content">
+                        <div class="card-icon"><i class="fas fa-lock"></i></div> <!-- Lock icon for private -->
+                        <h3>@hectorgoan</h3>
+                        <p>Personal</p>
+                    </div>
+                </a>
+
+                <!-- Instagram (Small) -->
+                <a href="https://instagram.com/hectorgoan" target="_blank" class="card instagram card-small"
+                    :class="{ 'hdr-active': isHdrActive, 'animate-in': isAnimating }">
+                    <div class="card-content">
+                        <div class="card-icon"><i class="fab fa-instagram"></i></div>
+                        <h3>Instagram</h3>
+                    </div>
+                </a>
+
+                <!-- Reddit (Small) -->
+                <a href="https://reddit.com/user/hectorgoan" target="_blank" class="card reddit card-small"
+                    :class="{ 'hdr-active': isHdrActive, 'animate-in': isAnimating }">
+                    <div class="card-content">
+                        <div class="card-icon"><i class="fab fa-reddit-alien"></i></div>
+                        <h3>Reddit</h3>
+                    </div>
+                </a>
+
+                <!-- Email (Wide) -->
+                <a href="mailto:hectorgoancodes@protonmail.com" class="card email card-wide"
+                    :class="{ 'hdr-active': isHdrActive, 'animate-in': isAnimating }">
+                    <div class="card-content">
+                        <div class="card-icon"><i class="fas fa-envelope"></i></div>
+                        <div>
+                            <h3>Send me an email</h3>
+                            <p>hectorgoancodes@protonmail.com</p>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- Location (Wide/Medium) -->
+                <a href="https://www.google.com/maps/@14.549296900000002,-90.73322329999999,13z" target="_blank"
+                    class="card location card-wide" :class="{ 'hdr-active': isHdrActive, 'animate-in': isAnimating }">
+                    <div class="card-bg-map">
+                        <iframe
+                            src="https://www.openstreetmap.org/export/embed.html?bbox=-90.755223%2C14.529297%2C-90.711223%2C14.569297&amp;layer=mapnik&amp;marker=14.549297%2C-90.733223"
+                            style="border: 1px solid black"></iframe>
+                    </div>
+                    <div class="card-content" style="position: relative; z-index: 1;">
+                        <div class="card-icon"><i class="fas fa-map-marker-alt"></i></div>
+                        <div>
+                            <h3>Now In</h3>
+                            <p>Antigua Guatemala</p>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- Daily.dev (Wide/Medium) -->
+                <a href="https://app.daily.dev/hectorgoan" target="_blank" class="card daily-dev card-wide"
+                    :class="{ 'hdr-active': isHdrActive, 'animate-in': isAnimating }">
+                    <div class="card-content">
+                        <div class="card-icon"><i class="fas fa-fire"></i></div> <!-- Daily.dev logo approximation -->
+                        <h3>Daily.dev</h3>
+                        <p>Read what I read</p>
+                    </div>
+                </a>
+
+            </main>
         </div>
-
-        <!-- Profile Header -->
-        <header class="profile-header">
-            <div class="avatar-container">
-                <!-- Using a placeholder initially, user can replace with their localized Memoji -->
-                <img src="resources/profile.png" id="profilePic" alt="Héctor Go. An." class="avatar">
-            </div>
-            <h1 class="name">Héctor Go. An.</h1>
-            <p class="bio">
-                Software Architect + Vue.js Tech Lead @ <a href="https://www.knowmadmood.com" target="_blank">knowmad
-                    mood</a><br>
-                (formerly known as AtSistemas)
-            </p>
-            <p class="bio-secondary">
-                Coffee-shop coding aficionado. Travel / hiking / running lover.<br>
-                🏠 - Spain 🇪🇸<br>
-                📍 - Guatemala 🇬🇹
-            </p>
-        </header>
-
-        <!-- Bento Grid -->
-        <main class="bento-grid">
-
-            <!-- LinkedIn (Large) -->
-            <a href="https://linkedin.com/in/hectorgoan" target="_blank" class="card linkedin card-medium">
-                <div class="card-content">
-                    <div class="card-icon"><i class="fab fa-linkedin"></i></div>
-                    <div class="card-text">
-                        <h3>LinkedIn</h3>
-                        <p>Héctor Gonzalo Andrés</p>
-                    </div>
-                    <div class="card-arrow"><i class="fas fa-arrow-right"></i></div>
-                </div>
-            </a>
-
-            <!-- GitHub (Medium with Chart) -->
-            <a href="https://github.com/hectorgoan" target="_blank" class="card github card-medium">
-                <div class="card-content">
-                    <div class="card-header">
-                        <div class="card-icon"><i class="fab fa-github"></i></div>
-                        <h3>GitHub</h3>
-                    </div>
-                    <!-- Dynamic GitHub Chart -->
-                    <div class="gh-chart">
-                        <img src="https://ghchart.rshah.org/hectorgoan" alt="Héctor's Github Chart" />
-                    </div>
-                </div>
-            </a>
-
-            <!-- Twitter Codes (Small) -->
-            <a href="https://twitter.com/hectorgoanCodes" target="_blank" class="card twitter-codes card-small">
-                <div class="card-content">
-                    <div class="card-icon"><i class="fab fa-twitter"></i></div>
-                    <h3>@hectorgoanCodes</h3>
-                    <p>Coding & Tech</p>
-                </div>
-            </a>
-
-            <!-- Twitter Personal (Small) -->
-            <a href="https://twitter.com/hectorgoan" target="_blank" class="card twitter-personal card-small">
-                <div class="card-content">
-                    <div class="card-icon"><i class="fas fa-lock"></i></div> <!-- Lock icon for private -->
-                    <h3>@hectorgoan</h3>
-                    <p>Personal</p>
-                </div>
-            </a>
-
-            <!-- Instagram (Small) -->
-            <a href="https://instagram.com/hectorgoan" target="_blank" class="card instagram card-small">
-                <div class="card-content">
-                    <div class="card-icon"><i class="fab fa-instagram"></i></div>
-                    <h3>Instagram</h3>
-                </div>
-            </a>
-
-            <!-- Reddit (Small) -->
-            <a href="https://reddit.com/user/hectorgoan" target="_blank" class="card reddit card-small">
-                <div class="card-content">
-                    <div class="card-icon"><i class="fab fa-reddit-alien"></i></div>
-                    <h3>Reddit</h3>
-                </div>
-            </a>
-
-            <!-- Email (Wide) -->
-            <a href="mailto:hectorgoancodes@protonmail.com" class="card email card-wide">
-                <div class="card-content">
-                    <div class="card-icon"><i class="fas fa-envelope"></i></div>
-                    <div>
-                        <h3>Send me an email</h3>
-                        <p>hectorgoancodes@protonmail.com</p>
-                    </div>
-                </div>
-            </a>
-
-            <!-- Location (Wide/Medium) -->
-            <a href="https://www.google.com/maps/@14.549296900000002,-90.73322329999999,13z" target="_blank"
-                class="card location card-wide">
-                <div class="card-bg-map">
-                    <iframe
-                        src="https://www.openstreetmap.org/export/embed.html?bbox=-90.755223%2C14.529297%2C-90.711223%2C14.569297&amp;layer=mapnik&amp;marker=14.549297%2C-90.733223"
-                        style="border: 1px solid black"></iframe>
-                </div>
-                <div class="card-content" style="position: relative; z-index: 1;">
-                    <div class="card-icon"><i class="fas fa-map-marker-alt"></i></div>
-                    <div>
-                        <h3>Now In</h3>
-                        <p>Antigua Guatemala</p>
-                    </div>
-                </div>
-            </a>
-
-            <!-- Daily.dev (Wide/Medium) -->
-            <a href="https://app.daily.dev/hectorgoan" target="_blank" class="card daily-dev card-wide">
-                <div class="card-content">
-                    <div class="card-icon"><i class="fas fa-fire"></i></div> <!-- Daily.dev logo approximation -->
-                    <h3>Daily.dev</h3>
-                    <p>Read what I read</p>
-                </div>
-            </a>
-
-        </main>
     </div>
+
+    <!-- Add Vue via CDN -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <script src="script.js?v=1.1"></script>
 </body>
 
