@@ -32,11 +32,8 @@ const App = {
 
         // --- Methods ---
         const applyThemeToBody = () => {
-            document.body.classList.remove('light-mode', 'dark-mode');
-
-            if (theme.value !== 'auto') {
-                document.body.classList.add(theme.value + '-mode');
-            }
+            document.documentElement.classList.remove('light-mode', 'dark-mode');
+            document.documentElement.classList.add(isDarkMode.value ? 'dark-mode' : 'light-mode');
         };
 
         const updateSelectorPosition = () => {
