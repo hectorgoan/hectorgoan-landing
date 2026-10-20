@@ -1,0 +1,190 @@
+#!/usr/bin/env python3
+"""Sync the Lumina page with the marketing material in github.com/hectorgoan/lumina.
+
+Reads the feature table between <!-- features:start --> and <!-- features:end --> in
+Lumina's README, downloads each feature image, cuts the feature's app icon and color out
+of it for its chip, and rewrites the highlights carousel and its chips in
+lumina/index.html. Features that left the README are removed.
+
+    python3 scripts/sync_lumina.py           # features only
+    python3 scripts/sync_lumina.py --hero    # also refresh the icon and panel screenshots
+
+Needs Pillow (python3 -m pip install Pillow) to resize images.
+"""
+import argparse
+import html
+import io
+import re
+import sys
+import urllib.request
+from pathlib import Path
+
+try:
+    from PIL import Image, ImageDraw
+except ImportError:
+    sys.exit("Pillow is required: python3 -m pip install Pillow")
+
+RAW = "https://raw.githubusercontent.com/hectorgoan/lumina/HEAD/"
+ROOT = Path(__file__).resolve().parent.parent
+PAGE = ROOT / "lumina" / "index.html"
+FEATURES_DIR = ROOT / "lumina" / "features"
+ICONS_DIR = ROOT / "lumina" / "icons"
+FEATURE_WIDTH = 1280  # cards show at up to 640px, so this stays sharp on 2x screens
+ICON_SIZE = 60        # chips show icons at 20px
+
+# Crops of docs/marketing/hero-{light,dark}.png (2880x1800), tuned to its current layout:
+# the panel sits under the menu bar on the right. Re-check them when that layout changes.
+HERO_CROPS = {
+    ROOT / "lumina" / "hero-panel-{mode}.jpg": (2000, 0, 2880, 1240),          # Lumina page hero
+    ROOT / "resources" / "lumina-panel-{mode}.jpg": (2326, 48, 2750, 720),     # homepage tile peek
+}
+
+
+def fetch(path):
+    with urllib.request.urlopen(RAW + path, timeout=30) as res:
+        return res.read()
+
+
+def save_jpeg(image, path, width=None):
+    image = image.convert("RGB")
+    if width and image.width > width:
+        image = image.resize((width, round(image.height * width / image.width)), Image.LANCZOS)
+    image.save(path, "JPEG", quality=84, optimize=True, progressive=True)
+    return image
+
+
+def hex_color(rgb):
+    return "#%02x%02x%02x" % tuple(rgb)
+
+
+def contrast_with_white(rgb):
+    def channel(v):
+        v /= 255
+        return v / 12.92 if v <= 0.03928 else ((v + 0.055) / 1.055) ** 2.4
+    lum = 0.2126 * channel(rgb[0]) + 0.7152 * channel(rgb[1]) + 0.0722 * channel(rgb[2])
+    return 1.05 / (lum + 0.05)
+
+
+def extract_icon(card, path):
+    """Cut the app icon from the top-left of a 1280px marketing card and return its color.
+
+    The icon is the first bright block in the left column; its height moves with the copy
+    below it, so it is found rather than cropped at fixed coordinates.
+    """
+    px = card.load()
+    bright = lambda x, y: max(px[x, y]) > 170
+    rows = [y for y in range(30, 420) if sum(bright(x, y) for x in range(70, 180)) > 40]
+    if not rows:
+        return None
+    top = bottom = rows[0]
+    for y in rows[1:]:
+        if y != bottom + 1:
+            break
+        bottom = y
+    cols = [x for x in range(40, 220) if sum(bright(x, y) for y in range(top, bottom + 1)) > (bottom - top) // 3]
+    if not cols or not 60 < bottom - top < 110:
+        return None
+    icon = card.crop((cols[0] - 2, top - 2, cols[-1] + 3, bottom + 3)).resize((ICON_SIZE, ICON_SIZE), Image.LANCZOS)
+
+    # The icon's own color: the median of its saturated, non-white pixels
+    raw = icon.convert("RGB").tobytes()
+    pixels = (tuple(raw[i:i + 3]) for i in range(0, len(raw), 3))
+    colored = sorted((p for p in pixels if max(p) - min(p) > 40 and sum(p) < 600), key=sum)
+    color = colored[len(colored) // 2] if colored else (88, 86, 214)
+
+    # Round the corners so the dark card background doesn't show around the icon
+    scale = 4
+    mask = Image.new("L", (ICON_SIZE * scale, ICON_SIZE * scale), 0)
+    ImageDraw.Draw(mask).rounded_rectangle((5, 5, ICON_SIZE * scale - 6, ICON_SIZE * scale - 6),
+                                           radius=round(ICON_SIZE * scale * 0.22), fill=255)
+    icon = icon.convert("RGBA")
+    icon.putalpha(mask.resize((ICON_SIZE, ICON_SIZE), Image.LANCZOS))
+    icon.save(path, optimize=True)
+
+    # Darken it until white chip text on it reads at 4.5:1
+    fill, t = color, 0.0
+    while contrast_with_white(fill) < 4.5:
+        t += 0.02
+        fill = tuple(round(c * (1 - t)) for c in color)
+    return hex_color(color), hex_color(fill)
+
+
+def read_features():
+    readme = fetch("README.md").decode("utf-8")
+    block = re.search(r"<!-- features:start -->(.*?)<!-- features:end -->", readme, re.S)
+    if not block:
+        sys.exit("Lumina's README has no <!-- features:start --> block")
+    features = []
+    for slug, alt in re.findall(r'href="docs/marketing/features/([\w-]+)\.png"><img [^>]*alt="([^"]+)"', block.group(1)):
+        alt = html.unescape(alt)
+        features.append({"slug": slug, "name": alt.split(":")[0].strip(), "alt": alt})
+    if not features:
+        sys.exit("Found no features in Lumina's README")
+    return features
+
+
+def replace_block(page, name, body):
+    pattern = re.compile(rf"(<!-- {name}:start -->).*?\n([ \t]*)(<!-- {name}:end -->)", re.S)
+    if not pattern.search(page):
+        sys.exit(f"lumina/index.html has no <!-- {name}:start --> block")
+    return pattern.sub(lambda m: f"{m.group(1)}\n{body}\n{m.group(2)}{m.group(3)}", page)
+
+
+def sync_features():
+    features = read_features()
+    FEATURES_DIR.mkdir(parents=True, exist_ok=True)
+    ICONS_DIR.mkdir(parents=True, exist_ok=True)
+    for f in features:
+        card = save_jpeg(Image.open(io.BytesIO(fetch(f"docs/marketing/features/{f['slug']}.png"))),
+                         FEATURES_DIR / f"{f['slug']}.jpg", FEATURE_WIDTH)
+        f["colors"] = extract_icon(card, ICONS_DIR / f"{f['slug']}.png")
+        if not f["colors"]:
+            print(f"Warning: no icon found on the {f['name']} card; its chip has no icon or color")
+    removed = []
+    for folder, ext in ((FEATURES_DIR, "jpg"), (ICONS_DIR, "png")):
+        keep = {f"{f['slug']}.{ext}" for f in features}
+        for p in folder.glob(f"*.{ext}"):
+            if p.name not in keep:
+                p.unlink()
+                removed.append(f"{folder.name}/{p.name}")
+
+    indent = " " * 24
+    cards = "\n".join(
+        f'{indent}<figure class="lp-card" id="f-{f["slug"]}"><img src="features/{f["slug"]}.jpg" '
+        f'alt="{html.escape(f["alt"])}" width="{FEATURE_WIDTH}" height="{FEATURE_WIDTH * 9 // 16}" '
+        f'loading="lazy" decoding="async"></figure>'
+        for f in features)
+    def chip(f):
+        if not f["colors"]:
+            return f'{indent}<a class="lp-chip" href="#f-{f["slug"]}">{html.escape(f["name"])}</a>'
+        color, fill = f["colors"]
+        return (f'{indent}<a class="lp-chip" href="#f-{f["slug"]}" style="--chip: {fill}; --chip-glow: {color}">'
+                f'<img src="icons/{f["slug"]}.png" alt="" width="{ICON_SIZE}" height="{ICON_SIZE}">'
+                f'{html.escape(f["name"])}</a>')
+    chips = "\n".join(chip(f) for f in features)
+    page = PAGE.read_text(encoding="utf-8")
+    page = replace_block(page, "lumina-features", cards)
+    page = replace_block(page, "lumina-chips", chips)
+    PAGE.write_text(page, encoding="utf-8")
+    print(f"{len(features)} features: {', '.join(f['name'] for f in features)}")
+    if removed:
+        print(f"Removed: {', '.join(removed)}")
+
+
+def sync_hero():
+    icon = Image.open(io.BytesIO(fetch("docs/icon.png")))
+    icon.resize((160, 160), Image.LANCZOS).save(ROOT / "resources" / "lumina-icon.png", optimize=True)
+    for mode in ("light", "dark"):
+        hero = Image.open(io.BytesIO(fetch(f"docs/marketing/hero-{mode}.png")))
+        for target, box in HERO_CROPS.items():
+            save_jpeg(hero.crop(box), Path(str(target).format(mode=mode)))
+    print("Refreshed the icon and panel screenshots")
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
+    parser.add_argument("--hero", action="store_true", help="also refresh the icon and panel screenshots")
+    args = parser.parse_args()
+    sync_features()
+    if args.hero:
+        sync_hero()

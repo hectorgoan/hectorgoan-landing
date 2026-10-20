@@ -1,0 +1,528 @@
+/* Lumina page. Builds on the homepage tokens in ../styles.css */
+:root {
+    --lp-cta: #5856d6;
+    --lp-line: rgba(0, 0, 0, 0.08);
+    --lp-nav: rgba(245, 245, 247, 0.8);
+    --lp-ring: inset 0 0 0 1px rgba(88, 86, 214, 0.36), 0 18px 40px -16px rgba(88, 86, 214, 0.38);
+    --lp-frame: inset 0 0 0 1px rgba(88, 86, 214, 0.28), 0 30px 60px -30px rgba(40, 40, 110, 0.45);
+    --lp-fill: #e8e8ed;
+}
+
+:root.dark-mode {
+    --lp-cta: #5e5ce6;
+    --lp-line: rgba(255, 255, 255, 0.1);
+    --lp-nav: rgba(0, 0, 0, 0.72);
+    --lp-ring: inset 0 0 0 1px rgba(125, 122, 255, 0.5), 0 0 44px -14px rgba(125, 122, 255, 0.42);
+    --lp-frame: inset 0 0 0 1px rgba(125, 122, 255, 0.4), 0 0 60px -20px rgba(125, 122, 255, 0.35);
+    --lp-fill: #2c2c2e;
+}
+
+.lp-wrap {
+    max-width: 1128px;
+    margin: 0 auto;
+    padding-left: max(24px, env(safe-area-inset-left));
+    padding-right: max(24px, env(safe-area-inset-right));
+}
+
+/* Navigation */
+.lp-nav {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    padding-top: env(safe-area-inset-top);
+    background: var(--lp-nav);
+    backdrop-filter: saturate(180%) blur(20px);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    border-bottom: 1px solid var(--lp-line);
+}
+
+.lp-nav-in {
+    height: 52px;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 16px;
+}
+
+.lp-back {
+    justify-self: start;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    min-height: 44px;
+    font-size: 14px;
+    color: var(--text-secondary);
+    text-decoration: none;
+}
+
+.lp-back:hover {
+    color: var(--text-primary);
+}
+
+.lp-back svg {
+    width: 16px;
+    height: 16px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2.2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.lp-nav-name {
+    font-size: 17px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+}
+
+.lp-nav .lp-btn {
+    justify-self: end;
+}
+
+/* Buttons */
+.lp-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    height: 48px;
+    padding: 0 24px;
+    border-radius: 999px;
+    font-size: 17px;
+    font-weight: 600;
+    letter-spacing: -0.015em;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: transform 0.4s var(--ease-spring), filter 0.3s ease;
+}
+
+.lp-btn:hover {
+    filter: brightness(1.08);
+}
+
+.lp-btn:active {
+    transform: scale(0.97);
+}
+
+.lp-btn svg {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+}
+
+.lp-btn-primary {
+    background: var(--lp-cta);
+    color: #fff;
+}
+
+.lp-btn-secondary {
+    background: var(--lp-fill);
+    color: var(--text-primary);
+}
+
+.lp-btn-sm {
+    height: 32px;
+    padding: 0 14px;
+    font-size: 13px;
+}
+
+a:focus-visible,
+.lp-track:focus-visible {
+    outline: 3px solid var(--accent);
+    outline-offset: 3px;
+}
+
+/* Hero */
+.lp-hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+    gap: 56px;
+    align-items: center;
+    padding-top: 72px;
+    padding-bottom: 88px;
+}
+
+.lp-app-icon {
+    display: block;
+    width: 112px;
+    height: 112px;
+    margin: -12px 0 4px -12px;
+}
+
+.lp-eyebrow {
+    font-size: 17px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: var(--text-secondary);
+}
+
+.lp-h1 {
+    margin-top: 4px;
+    font-size: 64px;
+    line-height: 1.03;
+    font-weight: 700;
+    letter-spacing: -0.045em;
+    text-wrap: balance;
+}
+
+.lp-lede {
+    margin-top: 20px;
+    max-width: 30em;
+    font-size: 21px;
+    line-height: 1.4;
+    letter-spacing: -0.02em;
+    color: var(--text-secondary);
+}
+
+.lp-ctas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 32px;
+}
+
+.lp-fine {
+    margin-top: 16px;
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
+.lp-shot {
+    height: 580px;
+    border-radius: 32px;
+    overflow: hidden;
+    background: var(--tile-bg);
+    box-shadow: var(--lp-frame);
+}
+
+.lp-shot img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 62% top;
+}
+
+.lp-shot-dark,
+:root.dark-mode .lp-shot-light {
+    display: none;
+}
+
+:root.dark-mode .lp-shot-dark {
+    display: block;
+}
+
+/* Sections */
+.lp-section {
+    padding: 72px 0;
+    border-top: 1px solid var(--lp-line);
+}
+
+.lp-sec-head {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 28px;
+}
+
+.lp-h2 {
+    font-size: 40px;
+    line-height: 1.1;
+    font-weight: 700;
+    letter-spacing: -0.035em;
+    text-wrap: balance;
+}
+
+.lp-sec-lede {
+    margin-top: 10px;
+    font-size: 19px;
+    line-height: 1.4;
+    letter-spacing: -0.015em;
+    color: var(--text-secondary);
+}
+
+/* Highlights carousel */
+.lp-track {
+    display: flex;
+    gap: 20px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    padding-bottom: 12px;
+    scrollbar-width: none;
+    border-radius: 28px;
+}
+
+.lp-track::-webkit-scrollbar {
+    display: none;
+}
+
+.lp-card {
+    flex: 0 0 640px;
+    max-width: 100%;
+    margin: 0;
+    scroll-snap-align: start;
+    border-radius: 28px;
+    overflow: hidden;
+    background: var(--tile-bg);
+    box-shadow: var(--tile-shadow);
+}
+
+.lp-card img {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;
+}
+
+.lp-arrows {
+    display: flex;
+    gap: 10px;
+}
+
+.lp-arrow {
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border: none;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: opacity 0.3s ease;
+}
+
+.lp-arrow:disabled {
+    opacity: 0.35;
+    cursor: default;
+}
+
+.lp-arrow svg {
+    position: relative;
+    z-index: 1;
+    width: 18px;
+    height: 18px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2.4;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.lp-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 24px;
+}
+
+/* Each chip carries its feature's icon color as --chip (darkened for white text) and --chip-glow */
+.lp-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    height: 34px;
+    padding: 0 14px 0 7px;
+    border-radius: 999px;
+    background: var(--tile-bg);
+    box-shadow: var(--tile-shadow);
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    text-decoration: none;
+    transition: background-color 0.35s ease, color 0.35s ease, box-shadow 0.35s ease;
+}
+
+.lp-chip img {
+    display: block;
+    width: 20px;
+    height: 20px;
+}
+
+.lp-chip:hover {
+    color: var(--chip, var(--indigo));
+}
+
+:root.dark-mode .lp-chip:hover {
+    color: var(--chip-glow, var(--indigo));
+}
+
+.lp-chip[aria-current="true"],
+:root.dark-mode .lp-chip[aria-current="true"] {
+    background: var(--chip, var(--lp-cta));
+    color: #fff;
+    box-shadow: 0 8px 20px -8px var(--chip-glow, var(--lp-cta));
+}
+
+/* Install steps */
+.lp-steps {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 20px;
+}
+
+.lp-step {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 28px;
+    border-radius: 28px;
+    background: var(--tile-bg);
+    box-shadow: var(--tile-shadow);
+}
+
+.lp-step-n {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--indigo-soft);
+    color: var(--indigo);
+    font-size: 15px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-variant-numeric: tabular-nums;
+}
+
+.lp-step-t {
+    font-size: 21px;
+    line-height: 1.25;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+}
+
+.lp-step-d {
+    font-size: 15px;
+    line-height: 1.45;
+    color: var(--text-secondary);
+}
+
+.lp-path {
+    align-self: flex-start;
+    margin-top: 2px;
+    padding: 6px 10px;
+    border-radius: 10px;
+    background: var(--lp-fill);
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.lp-note {
+    margin-top: 20px;
+    font-size: 15px;
+    color: var(--text-secondary);
+}
+
+/* Closing call to action */
+.lp-final {
+    padding-bottom: 24px;
+}
+
+.lp-cta-tile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 56px 32px;
+    border-radius: 32px;
+    background: var(--tile-bg);
+    box-shadow: var(--lp-ring);
+}
+
+.lp-cta-icon {
+    display: block;
+    width: 96px;
+    height: 96px;
+    margin: -10px 0 4px;
+}
+
+.lp-cta-tile .lp-ctas {
+    justify-content: center;
+    margin-top: 28px;
+}
+
+.lp-foot {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 12px;
+    padding-top: 28px;
+    padding-bottom: calc(48px + env(safe-area-inset-bottom));
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
+.lp-foot a {
+    color: var(--text-primary);
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.lp-foot a:hover {
+    text-decoration: underline;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    .lp-track {
+        scroll-behavior: smooth;
+    }
+}
+
+@media (max-width: 767px) {
+    .lp-wrap {
+        padding-left: max(20px, env(safe-area-inset-left));
+        padding-right: max(20px, env(safe-area-inset-right));
+    }
+
+    .lp-back-label {
+        display: none;
+    }
+
+    .lp-hero {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 36px;
+        padding-top: 40px;
+        padding-bottom: 56px;
+    }
+
+    .lp-h1 {
+        font-size: 44px;
+    }
+
+    .lp-lede {
+        font-size: 19px;
+    }
+
+    .lp-hero .lp-btn {
+        flex: 1 1 auto;
+    }
+
+    .lp-shot {
+        height: 440px;
+        border-radius: 26px;
+    }
+
+    .lp-section {
+        padding: 56px 0;
+    }
+
+    .lp-h2 {
+        font-size: 30px;
+    }
+
+    .lp-card {
+        flex-basis: 86%;
+        border-radius: 22px;
+    }
+
+    .lp-arrows {
+        display: none;
+    }
+
+    .lp-steps {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
