@@ -343,11 +343,11 @@ button:focus-visible {
 }
 
 /* Brand-tinted glyphs */
-.glyph-linkedin { color: #0a66c2; }
+.glyph-linkedin { color: #0077b5; }
 .glyph-instagram { color: #8a3ab9; }
 .glyph-reddit { color: #ff4500; }
 
-:root.dark-mode .glyph-linkedin { color: #3b8eea; }
+:root.dark-mode .glyph-linkedin { color: #4aa3e8; }
 :root.dark-mode .glyph-instagram { color: #b46ef0; }
 
 .tile-header .glyph {
