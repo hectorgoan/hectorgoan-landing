@@ -4,7 +4,7 @@
 Reads the feature table between <!-- features:start --> and <!-- features:end --> in
 Lumina's README, downloads each feature image, cuts the feature's app icon and color out
 of it for its chip, and rewrites the highlights carousel and its chips in
-lumina/index.html, plus the hero's tray of tool icons. Features that left the README are removed.
+lumina/index.html. Features that left the README are removed.
 
     python3 scripts/sync_lumina.py           # features only
     python3 scripts/sync_lumina.py --hero    # also refresh the icon and panel screenshots
@@ -30,8 +30,7 @@ PAGE = ROOT / "lumina" / "index.html"
 FEATURES_DIR = ROOT / "lumina" / "features"
 ICONS_DIR = ROOT / "lumina" / "icons"
 FEATURE_WIDTH = 1280  # cards show at up to 640px, so this stays sharp on 2x screens
-ICON_SIZE = 60        # chips show icons at 20px, the hero tray at 30px
-NOT_TOOLS = {"more-section", "customize"}  # README features that are panel settings, not tools
+ICON_SIZE = 60        # chips show icons at 20px
 
 # Crops of docs/marketing/hero-{light,dark}.png (2880x1800), tuned to its current layout:
 # the panel sits under the menu bar on the right. Re-check them when that layout changes.
@@ -163,14 +162,9 @@ def sync_features():
                 f'<img src="icons/{f["slug"]}.png" alt="" width="{ICON_SIZE}" height="{ICON_SIZE}">'
                 f'{html.escape(f["name"])}</a>')
     chips = "\n".join(chip(f) for f in features)
-    tray = "\n".join(
-        f'{indent[4:]}<img src="icons/{f["slug"]}.png" alt="{html.escape(f["name"])}" title="{html.escape(f["name"])}" '
-        f'width="{ICON_SIZE}" height="{ICON_SIZE}" role="listitem">'
-        for f in features if f["colors"] and f["slug"] not in NOT_TOOLS)
     page = PAGE.read_text(encoding="utf-8")
     page = replace_block(page, "lumina-features", cards)
     page = replace_block(page, "lumina-chips", chips)
-    page = replace_block(page, "lumina-tray", tray)
     PAGE.write_text(page, encoding="utf-8")
     print(f"{len(features)} features: {', '.join(f['name'] for f in features)}")
     if removed:

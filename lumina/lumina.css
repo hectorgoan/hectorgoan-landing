@@ -187,28 +187,6 @@ a:focus-visible,
     color: var(--text-secondary);
 }
 
-/* The tools folded into Lumina, like the blades of a pocket knife */
-.lp-tray {
-    display: grid;
-    grid-auto-flow: column;
-    grid-auto-columns: minmax(0, 30px);
-    gap: 6px;
-    margin-top: 28px;
-}
-
-.lp-tray img {
-    display: block;
-    width: 100%;
-    height: auto;
-}
-
-/* Hidden on tablet widths, where it no longer fits beside the panel screenshot */
-@media (min-width: 768px) and (max-width: 1019px) {
-    .lp-tray {
-        display: none;
-    }
-}
-
 .lp-shot {
     height: 580px;
     border-radius: 32px;
@@ -364,8 +342,7 @@ a:focus-visible,
 
 /* The icons are cut from the feature cards with a dark fringe at their edges:
    a circle just inside the edge hides it */
-.lp-chip img,
-.lp-tray img {
+.lp-chip img {
     clip-path: circle(44%);
 }
 
@@ -527,18 +504,6 @@ a:focus-visible,
 
     .lp-hero .lp-btn {
         flex: 1 1 auto;
-    }
-
-    /* Full width and centred on phones, wrapping into a second row when needed */
-    .lp-tray {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 10px;
-    }
-
-    .lp-tray img {
-        width: 34px;
     }
 
     .lp-shot {
