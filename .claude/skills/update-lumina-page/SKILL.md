@@ -18,6 +18,8 @@ truth is the feature table in Lumina's README (between `<!-- features:start -->`
 3. Run `python3 scripts/sync_lumina.py`. It downloads every feature image to
    `lumina/features/`, rewrites the highlights carousel and its chips between the
    `lumina-features` and `lumina-chips` markers, and removes features that left the README.
+   Each chip gets the feature's icon, cut from its card into `lumina/icons/`, and its colour.
+   If it warns that it couldn't find an icon on a card, that chip falls back to indigo; check it.
    It prints the feature list; compare it with `git diff --stat` to name what's new.
 4. When the app's look changed (new icon, redesigned panel), run it with `--hero` too. That
    refreshes `resources/lumina-icon.png` and the panel crops used by the page hero

@@ -317,11 +317,13 @@ a:focus-visible,
     margin-top: 24px;
 }
 
+/* Each chip carries its feature's icon color as --chip (darkened for white text) and --chip-glow */
 .lp-chip {
     display: inline-flex;
     align-items: center;
+    gap: 7px;
     height: 34px;
-    padding: 0 14px;
+    padding: 0 14px 0 7px;
     border-radius: 999px;
     background: var(--tile-bg);
     box-shadow: var(--tile-shadow);
@@ -329,10 +331,28 @@ a:focus-visible,
     font-weight: 600;
     letter-spacing: -0.01em;
     text-decoration: none;
+    transition: background-color 0.35s ease, color 0.35s ease, box-shadow 0.35s ease;
+}
+
+.lp-chip img {
+    display: block;
+    width: 20px;
+    height: 20px;
 }
 
 .lp-chip:hover {
-    color: var(--indigo);
+    color: var(--chip, var(--indigo));
+}
+
+:root.dark-mode .lp-chip:hover {
+    color: var(--chip-glow, var(--indigo));
+}
+
+.lp-chip[aria-current="true"],
+:root.dark-mode .lp-chip[aria-current="true"] {
+    background: var(--chip, var(--lp-cta));
+    color: #fff;
+    box-shadow: 0 8px 20px -8px var(--chip-glow, var(--lp-cta));
 }
 
 /* Install steps */
