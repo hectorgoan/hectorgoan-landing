@@ -18,7 +18,10 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" href="styles.css?v=2.0">
+    <!-- Leaflet for the live location map -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+
+    <link rel="stylesheet" href="styles.css?v=2.1">
     <script>
         // Prevent FOUC by applying theme before body renders
         const t = localStorage.getItem('theme') || 'auto';
@@ -65,9 +68,9 @@
                 </a>
 
                 <!-- Location map -->
-                <a href="https://www.google.com/maps/@14.5566,-90.7337,15z" target="_blank" rel="noopener"
-                    class="tile tile-map span-2 rows-2" aria-label="Now in Antigua Guatemala, open in Maps">
-                    <svg class="map" viewBox="0 0 520 388" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+                <section class="tile tile-map span-2 rows-2" :class="{ satellite: mapType === 'satellite' }">
+                    <!-- Drawn fallback, covered by the live map once it loads -->
+                    <svg class="map map-fallback" viewBox="0 0 520 388" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
                         <path class="map-park" d="M-20 300C60 286 120 318 200 312S330 280 420 296S520 320 560 316V420H-20Z" />
                         <path class="map-water" d="M360 -10C372 40 352 70 380 110S430 150 420 210 450 300 470 400" />
                         <path class="map-road" d="M-10 40H530M-10 92H530M-10 144H530M-10 196H530M-10 248H530M60 -10V300M124 -10V300M188 -10V300M252 -10V300M316 -10V300M380 -10V300M444 -10V300" />
@@ -75,12 +78,21 @@
                         <path class="map-major" d="M-10 18C120 30 300 6 530 22" />
                         <rect class="map-park" x="190" y="146" width="60" height="48" rx="4" />
                     </svg>
+                    <div class="map map-live" ref="mapEl" aria-hidden="true"></div>
+                    <a href="https://www.google.com/maps/@14.5566,-90.7337,15z" target="_blank" rel="noopener"
+                        class="tile-map-link" aria-label="Now in Antigua Guatemala, open in Maps"></a>
                     <span class="map-pin" aria-hidden="true"></span>
-                    <div class="glass map-label">
+                    <div class="glass map-label" aria-hidden="true">
                         <div class="eyebrow">Now in</div>
                         <div class="map-place">Antigua Guatemala</div>
                     </div>
-                </a>
+                    <div v-if="mapReady" class="glass map-switch" role="group" aria-label="Map type">
+                        <button type="button" :class="{ active: mapType === 'street' }" :aria-pressed="mapType === 'street'"
+                            @click="setMapType('street')">Map</button>
+                        <button type="button" :class="{ active: mapType === 'satellite' }" :aria-pressed="mapType === 'satellite'"
+                            @click="setMapType('satellite')">Satellite</button>
+                    </div>
+                </section>
 
                 <!-- GitHub -->
                 <a href="https://github.com/hectorgoan" target="_blank" rel="noopener" class="tile tile-github span-2">
@@ -95,9 +107,11 @@
                         <span v-for="day in contributions" :key="day.date" :class="'lvl-' + day.level"
                             :title="day.count + ' contributions on ' + day.date"></span>
                     </div>
-                    <div v-else-if="contributionsFailed" class="contrib-fallback">
-                        <img src="https://ghchart.rshah.org/34c759/hectorgoan" alt="Héctor's GitHub contributions chart">
+                    <div v-else-if="contributionsFailed && !chartImageFailed" class="contrib-fallback">
+                        <img src="https://ghchart.rshah.org/34c759/hectorgoan" alt="Héctor's GitHub contributions chart"
+                            @error="chartImageFailed = true">
                     </div>
+                    <div v-else-if="contributionsFailed" class="contrib-fallback sub">See my contributions on GitHub</div>
                     <div v-else class="contrib contrib-loading" aria-hidden="true">
                         <span v-for="n in 182" :key="n"></span>
                     </div>
@@ -195,8 +209,9 @@
     </div>
 
     <!-- Add Vue via CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-    <script src="script.js?v=2.0"></script>
+    <script src="script.js?v=2.1"></script>
 </body>
 
 </html>

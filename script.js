@@ -2,6 +2,24 @@ const { createApp, ref, onMounted, onUnmounted, watch, computed, nextTick } = Vu
 
 const GITHUB_USER = 'hectorgoan';
 const CONTRIBUTION_WEEKS = 26;
+const CONTRIBUTIONS_TIMEOUT_MS = 8000;
+
+const MAP_CENTER = [14.5566, -90.7337]; // Antigua Guatemala
+const MAP_ZOOM = 15;
+const MAP_LAYERS = {
+    streetLight: {
+        url: 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',
+        attribution: '&copy; OpenStreetMap &copy; CARTO'
+    },
+    streetDark: {
+        url: 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',
+        attribution: '&copy; OpenStreetMap &copy; CARTO'
+    },
+    satellite: {
+        url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+        attribution: 'Imagery &copy; Esri'
+    }
+};
 
 
 const App = {
@@ -19,6 +37,12 @@ const App = {
 
         const contributions = ref([]);
         const contributionsFailed = ref(false);
+        const chartImageFailed = ref(false);
+        const mapType = ref(localStorage.getItem('mapType') === 'satellite' ? 'satellite' : 'street');
+        const mapReady = ref(false);
+        const mapEl = ref(null);
+        let map = null;
+        let mapLayer = null;
 
         const switchBgStyle = ref({
             width: '0px',
@@ -67,7 +91,10 @@ const App = {
 
         const loadContributions = async () => {
             try {
-                const res = await fetch(`https://github-contributions-api.jogruber.de/v4/${GITHUB_USER}?y=last`);
+                const controller = new AbortController();
+                const timeout = setTimeout(() => controller.abort(), CONTRIBUTIONS_TIMEOUT_MS);
+                const res = await fetch(`https://github-contributions-api.jogruber.de/v4/${GITHUB_USER}?y=last`, { signal: controller.signal });
+                clearTimeout(timeout);
                 if (!res.ok) throw new Error(`HTTP ${res.status}`);
                 const { contributions: days } = await res.json();
                 if (!Array.isArray(days) || !days.length) throw new Error('No data');
@@ -79,6 +106,40 @@ const App = {
             } catch (e) {
                 contributionsFailed.value = true;
             }
+        };
+
+        const applyMapLayer = () => {
+            if (!map) return;
+            const key = mapType.value === 'satellite' ? 'satellite' : (isDarkMode.value ? 'streetDark' : 'streetLight');
+            const { url, attribution } = MAP_LAYERS[key];
+            if (mapLayer) map.removeLayer(mapLayer);
+            mapLayer = window.L.tileLayer(url, { attribution, maxZoom: 19, subdomains: 'abcd', detectRetina: true }).addTo(map);
+        };
+
+        const initMap = () => {
+            // Leaflet comes from a CDN; without it the drawn fallback map stays visible
+            if (!window.L || !mapEl.value) return;
+            map = window.L.map(mapEl.value, {
+                center: MAP_CENTER,
+                zoom: MAP_ZOOM,
+                zoomControl: false,
+                dragging: false,
+                scrollWheelZoom: false,
+                doubleClickZoom: false,
+                touchZoom: false,
+                boxZoom: false,
+                keyboard: false
+            });
+            map.attributionControl.setPrefix(false);
+            applyMapLayer();
+            mapReady.value = true;
+            window.addEventListener('resize', () => map.invalidateSize());
+        };
+
+        const setMapType = (type) => {
+            mapType.value = type;
+            localStorage.setItem('mapType', type);
+            applyMapLayer();
         };
 
         const setTheme = (newTheme) => {
@@ -103,6 +164,8 @@ const App = {
         };
 
         // --- Watchers ---
+        watch(isDarkMode, applyMapLayer);
+
         watch(theme, () => {
             applyThemeToBody();
             updateSelectorPosition();
@@ -124,6 +187,7 @@ const App = {
 
             // Initial setup
             loadContributions();
+            nextTick(initMap);
             window.addEventListener('resize', updateSelectorPosition);
             applyThemeToBody();
             updateSelectorPosition();
@@ -152,7 +216,12 @@ const App = {
             toggleHdr,
             contributions,
             contributionsFailed,
-            contributionsLabel
+            chartImageFailed,
+            contributionsLabel,
+            mapType,
+            mapReady,
+            mapEl,
+            setMapType
         };
     }
 };
