@@ -34,17 +34,19 @@ FEATURE_WIDTH = 1280  # cards show at up to 640px, so this stays sharp on 2x scr
 ICON_SIZE = 60        # chips show icons at 20px, the theme lists at 36px
 
 # The tools, grouped into themes so the count reads as a plan. Each tool is a README feature
-# slug, or (name, icon) for a quick action, which has no card of its own; its icon is a
-# hand-drawn SVG in lumina/icons/. Every README feature must have a theme, or be in NO_THEME.
+# slug, or (name, icon, card) for a quick action, which has no card of its own: its icon is a
+# hand-drawn SVG in lumina/icons/ and it links to the card it shares. Each tool links to its
+# card in the highlights. Every README feature must have a theme, or be in NO_THEME.
 THEMES = [
-    ("Focus", "Stay in the zone, and look available while you do.",
-     ["caffeine", "stay-green", "pomodoro", "keyboard-lock"]),
+    ("Focus", "Stay in the zone, and appear available while you do.",
+     ["caffeine", "stay-green", "pomodoro", "quit-all"]),
     ("Monitor", "Know what your Mac is doing, at a glance.",
      ["system", "top-processes", "storage", "batteries"]),
     ("Clean", "Get your space, and a fresh start, back.",
-     ["cleanup", "uninstaller", ("Empty Trash", "empty-trash.svg"), "quit-all"]),
+     ["cleanup", "uninstaller", ("Empty Trash", "empty-trash.svg", "quick-actions"), "keyboard-lock"]),
     ("Everyday", "The small switches you reach for all day.",
-     ["media", "world-clocks", "appearance", ("Sleep", "sleep.svg"), ("Silence", "silence.svg")]),
+     ["media", "world-clocks", "appearance", ("Sleep", "sleep.svg", "quick-actions"),
+      ("Silence", "silence.svg", "quick-actions")]),
 ]
 NO_THEME = {"quick-actions", "more-section", "customize"}  # split into its tools above, or settings
 NUMBERS = "zero one two three four five six seven eight nine ten eleven twelve thirteen fourteen " \
@@ -194,7 +196,7 @@ def sync_features():
 def themes_html(features):
     """The tools grouped by theme, with the total in the heading."""
     names = {f["slug"]: f["name"] for f in features}
-    themed = {t for _, _, tools in THEMES for t in tools if isinstance(t, str)}
+    themed = {t if isinstance(t, str) else t[2] for _, _, tools in THEMES for t in tools}
     missing = [f["name"] for f in features if f["slug"] not in themed | NO_THEME]
     if missing:
         sys.exit(f"Add {', '.join(missing)} to a theme in THEMES (scripts/sync_lumina.py)")
@@ -219,9 +221,10 @@ def themes_html(features):
         out.append(f'{pad}        <p class="lp-theme-blurb">{html.escape(blurb)}</p>')
         out.append(f'{pad}        <ul class="lp-theme-tools">')
         for t in tools:
-            label, icon = (names[t], f"{t}.png") if isinstance(t, str) else t
-            out.append(f'{pad}            <li><img src="icons/{icon}" alt="" width="{ICON_SIZE}" height="{ICON_SIZE}">'
-                       f'{html.escape(label)}</li>')
+            label, icon, card = (names[t], f"{t}.png", t) if isinstance(t, str) else t
+            out.append(f'{pad}            <li><a class="lp-tool" href="#f-{card}">'
+                       f'<img src="icons/{icon}" alt="" width="{ICON_SIZE}" height="{ICON_SIZE}">'
+                       f'{html.escape(label)}</a></li>')
         out.append(f'{pad}        </ul>')
         out.append(f'{pad}    </article>')
     out.append(f'{pad}</div>')

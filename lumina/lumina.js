@@ -56,19 +56,36 @@ const updateCurrentChip = () => {
     });
 };
 
+// Scroll the carousel to a card and keep its chip current
+const showCard = (card) => {
+    pinned = card.id;
+    // Ignore the pin check until the smooth scroll lands on the card
+    track.dataset.scrolling = 'true';
+    clearTimeout(scrollTimer);
+    scrollTimer = setTimeout(() => { delete track.dataset.scrolling; updateCurrentChip(); }, 800);
+    const left = card.getBoundingClientRect().left - track.getBoundingClientRect().left + track.scrollLeft;
+    track.scrollTo({ left });
+};
+
 // Chips scroll the carousel to their card without moving the page
 chips.forEach((chip) => {
     chip.addEventListener('click', (e) => {
         const card = document.getElementById(chip.getAttribute('href').slice(1));
         if (!card) return;
         e.preventDefault();
-        pinned = card.id;
-        // Ignore the pin check until the smooth scroll lands on the card
-        track.dataset.scrolling = 'true';
-        clearTimeout(scrollTimer);
-        scrollTimer = setTimeout(() => { delete track.dataset.scrolling; updateCurrentChip(); }, 800);
-        const left = card.getBoundingClientRect().left - track.getBoundingClientRect().left + track.scrollLeft;
-        track.scrollTo({ left });
+        showCard(card);
+    });
+});
+
+// Tools in the theme cards bring up the highlights, opened on their card
+document.querySelectorAll('.lp-tool').forEach((tool) => {
+    tool.addEventListener('click', (e) => {
+        const card = document.getElementById(tool.getAttribute('href').slice(1));
+        if (!card) return;
+        e.preventDefault();
+        const still = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        document.getElementById('highlights').scrollIntoView({ behavior: still ? 'auto' : 'smooth' });
+        showCard(card);
     });
 });
 

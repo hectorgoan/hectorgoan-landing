@@ -21,7 +21,8 @@ truth is the feature table in Lumina's README (between `<!-- features:start -->`
    cards between the `lumina-themes` markers from `THEMES`, and removes features that left
    the README. Every tool needs a theme: when the README gains a feature, the script stops and
    names it; add its slug to the right theme in `THEMES` (or to `NO_THEME` if it is a panel
-   setting, like More and Customize) and run it again. The heading's count follows `THEMES`.
+   setting, like More and Customize) and run it again. The heading's count follows `THEMES`, and
+   each tool links to its highlight card (quick actions to the Quick Actions card).
    Quick actions have no card of their own, so `THEMES` lists them as `(name, icon)` with a
    hand-drawn SVG in `lumina/icons/` (white glyph on the Quick Actions indigo gradient).
    Each chip gets the feature's icon, cut from its card into `lumina/icons/`, and its colour.

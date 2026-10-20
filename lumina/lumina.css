@@ -312,13 +312,19 @@ a:focus-visible,
     border-top: 1px solid var(--lp-line);
 }
 
-.lp-theme-tools li {
+.lp-tool {
     display: flex;
     align-items: center;
     gap: 12px;
     font-size: 16px;
     font-weight: 600;
     letter-spacing: -0.015em;
+    color: inherit;
+    text-decoration: none;
+}
+
+.lp-tool:hover {
+    color: var(--indigo);
 }
 
 .lp-theme-tools img {
@@ -327,6 +333,11 @@ a:focus-visible,
     width: 36px;
     height: 36px;
     clip-path: inset(4% round 24%);
+}
+
+/* Clear of the sticky nav when a tool scrolls the page here */
+#highlights {
+    scroll-margin-top: 76px;
 }
 
 /* Highlights carousel */

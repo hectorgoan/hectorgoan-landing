@@ -15,7 +15,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="../styles.css?v=2.2">
-    <link rel="stylesheet" href="lumina.css?v=1.6">
+    <link rel="stylesheet" href="lumina.css?v=1.7">
     <script>
         // Same theme choice as the homepage, applied before the body renders
         const t = localStorage.getItem('theme') || 'auto';
@@ -78,12 +78,12 @@
                                 <h3 class="lp-theme-name">Focus</h3>
                                 <span class="lp-theme-count">4 tools</span>
                             </div>
-                            <p class="lp-theme-blurb">Stay in the zone, and look available while you do.</p>
+                            <p class="lp-theme-blurb">Stay in the zone, and appear available while you do.</p>
                             <ul class="lp-theme-tools">
-                                <li><img src="icons/caffeine.png" alt="" width="60" height="60">Caffeine</li>
-                                <li><img src="icons/stay-green.png" alt="" width="60" height="60">Stay Green</li>
-                                <li><img src="icons/pomodoro.png" alt="" width="60" height="60">Pomodoro</li>
-                                <li><img src="icons/keyboard-lock.png" alt="" width="60" height="60">Keyboard Lock</li>
+                                <li><a class="lp-tool" href="#f-caffeine"><img src="icons/caffeine.png" alt="" width="60" height="60">Caffeine</a></li>
+                                <li><a class="lp-tool" href="#f-stay-green"><img src="icons/stay-green.png" alt="" width="60" height="60">Stay Green</a></li>
+                                <li><a class="lp-tool" href="#f-pomodoro"><img src="icons/pomodoro.png" alt="" width="60" height="60">Pomodoro</a></li>
+                                <li><a class="lp-tool" href="#f-quit-all"><img src="icons/quit-all.png" alt="" width="60" height="60">Quit All</a></li>
                             </ul>
                         </article>
                         <article class="lp-theme">
@@ -93,10 +93,10 @@
                             </div>
                             <p class="lp-theme-blurb">Know what your Mac is doing, at a glance.</p>
                             <ul class="lp-theme-tools">
-                                <li><img src="icons/system.png" alt="" width="60" height="60">System</li>
-                                <li><img src="icons/top-processes.png" alt="" width="60" height="60">Top Processes</li>
-                                <li><img src="icons/storage.png" alt="" width="60" height="60">Storage</li>
-                                <li><img src="icons/batteries.png" alt="" width="60" height="60">Batteries</li>
+                                <li><a class="lp-tool" href="#f-system"><img src="icons/system.png" alt="" width="60" height="60">System</a></li>
+                                <li><a class="lp-tool" href="#f-top-processes"><img src="icons/top-processes.png" alt="" width="60" height="60">Top Processes</a></li>
+                                <li><a class="lp-tool" href="#f-storage"><img src="icons/storage.png" alt="" width="60" height="60">Storage</a></li>
+                                <li><a class="lp-tool" href="#f-batteries"><img src="icons/batteries.png" alt="" width="60" height="60">Batteries</a></li>
                             </ul>
                         </article>
                         <article class="lp-theme">
@@ -106,10 +106,10 @@
                             </div>
                             <p class="lp-theme-blurb">Get your space, and a fresh start, back.</p>
                             <ul class="lp-theme-tools">
-                                <li><img src="icons/cleanup.png" alt="" width="60" height="60">Cleanup</li>
-                                <li><img src="icons/uninstaller.png" alt="" width="60" height="60">Uninstaller</li>
-                                <li><img src="icons/empty-trash.svg" alt="" width="60" height="60">Empty Trash</li>
-                                <li><img src="icons/quit-all.png" alt="" width="60" height="60">Quit All</li>
+                                <li><a class="lp-tool" href="#f-cleanup"><img src="icons/cleanup.png" alt="" width="60" height="60">Cleanup</a></li>
+                                <li><a class="lp-tool" href="#f-uninstaller"><img src="icons/uninstaller.png" alt="" width="60" height="60">Uninstaller</a></li>
+                                <li><a class="lp-tool" href="#f-quick-actions"><img src="icons/empty-trash.svg" alt="" width="60" height="60">Empty Trash</a></li>
+                                <li><a class="lp-tool" href="#f-keyboard-lock"><img src="icons/keyboard-lock.png" alt="" width="60" height="60">Keyboard Lock</a></li>
                             </ul>
                         </article>
                         <article class="lp-theme">
@@ -119,11 +119,11 @@
                             </div>
                             <p class="lp-theme-blurb">The small switches you reach for all day.</p>
                             <ul class="lp-theme-tools">
-                                <li><img src="icons/media.png" alt="" width="60" height="60">Media</li>
-                                <li><img src="icons/world-clocks.png" alt="" width="60" height="60">World Clocks</li>
-                                <li><img src="icons/appearance.png" alt="" width="60" height="60">Appearance</li>
-                                <li><img src="icons/sleep.svg" alt="" width="60" height="60">Sleep</li>
-                                <li><img src="icons/silence.svg" alt="" width="60" height="60">Silence</li>
+                                <li><a class="lp-tool" href="#f-media"><img src="icons/media.png" alt="" width="60" height="60">Media</a></li>
+                                <li><a class="lp-tool" href="#f-world-clocks"><img src="icons/world-clocks.png" alt="" width="60" height="60">World Clocks</a></li>
+                                <li><a class="lp-tool" href="#f-appearance"><img src="icons/appearance.png" alt="" width="60" height="60">Appearance</a></li>
+                                <li><a class="lp-tool" href="#f-quick-actions"><img src="icons/sleep.svg" alt="" width="60" height="60">Sleep</a></li>
+                                <li><a class="lp-tool" href="#f-quick-actions"><img src="icons/silence.svg" alt="" width="60" height="60">Silence</a></li>
                             </ul>
                         </article>
                     </div>
@@ -241,7 +241,7 @@
         <span>Source and releases on <a href="https://github.com/hectorgoan/lumina" target="_blank" rel="noopener">GitHub</a></span>
     </footer>
 
-    <script src="lumina.js?v=1.1"></script>
+    <script src="lumina.js?v=1.2"></script>
 </body>
 
 </html>
