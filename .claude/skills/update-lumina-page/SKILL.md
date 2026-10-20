@@ -18,7 +18,7 @@ truth is the feature table in Lumina's README (between `<!-- features:start -->`
 3. Run `python3 scripts/sync_lumina.py`. It downloads every feature image to
    `lumina/features/`, rewrites the highlights carousel and its chips between the
    `lumina-features` and `lumina-chips` markers, fills the "Seventeen tools. Four jobs."
-   bento between the `lumina-themes` markers from `THEMES`, and removes features that left
+   cards between the `lumina-themes` markers from `THEMES`, and removes features that left
    the README. Every tool needs a theme: when the README gains a feature, the script stops and
    names it; add its slug to the right theme in `THEMES` (or to `NO_THEME` if it is a panel
    setting, like More and Customize) and run it again. The heading's count follows `THEMES`.

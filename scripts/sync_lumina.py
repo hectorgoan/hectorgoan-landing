@@ -31,7 +31,7 @@ PAGE = ROOT / "lumina" / "index.html"
 FEATURES_DIR = ROOT / "lumina" / "features"
 ICONS_DIR = ROOT / "lumina" / "icons"
 FEATURE_WIDTH = 1280  # cards show at up to 640px, so this stays sharp on 2x screens
-ICON_SIZE = 60        # chips show icons at 20px, the theme tiles at 52px
+ICON_SIZE = 60        # chips show icons at 20px, the theme lists at 36px
 
 # The tools, grouped into themes so the count reads as a plan. Each tool is a README feature
 # slug, or (name, icon) for a quick action, which has no card of its own; its icon is a
@@ -206,17 +206,17 @@ def themes_html(features):
     jobs = NUMBERS[len(THEMES)].capitalize()
 
     pad = " " * 20
-    out = [f'{pad}<h2 class="lp-h2" id="tools">{count} tools. <span class="lp-ink">{jobs} jobs.</span></h2>']
-    out.append(f'{pad}<div class="lp-themes">')
+    out = [f'{pad}<h2 class="lp-h2" id="tools">{count} tools. <span class="lp-ink">{jobs} jobs.</span></h2>',
+           f'{pad}<p class="lp-sec-lede">Everything in Lumina helps you focus, keep an eye on your Mac, '
+           f'clean it up, or get through the day.</p>',
+           f'{pad}<div class="lp-themes">']
     for name, blurb, tools in THEMES:
         out.append(f'{pad}    <article class="lp-theme">')
         out.append(f'{pad}        <div class="lp-theme-top">')
-        out.append(f'{pad}            <div>')
-        out.append(f'{pad}                <h3 class="lp-theme-name">{html.escape(name)}</h3>')
-        out.append(f'{pad}                <p class="lp-theme-blurb">{html.escape(blurb)}</p>')
-        out.append(f'{pad}            </div>')
-        out.append(f'{pad}            <span class="lp-theme-count" aria-label="{len(tools)} tools">{len(tools)}</span>')
+        out.append(f'{pad}            <h3 class="lp-theme-name">{html.escape(name)}</h3>')
+        out.append(f'{pad}            <span class="lp-theme-count">{len(tools)} tools</span>')
         out.append(f'{pad}        </div>')
+        out.append(f'{pad}        <p class="lp-theme-blurb">{html.escape(blurb)}</p>')
         out.append(f'{pad}        <ul class="lp-theme-tools">')
         for t in tools:
             label, icon = (names[t], f"{t}.png") if isinstance(t, str) else t
