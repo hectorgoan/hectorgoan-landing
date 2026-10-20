@@ -202,6 +202,13 @@ a:focus-visible,
     height: auto;
 }
 
+/* Only on wide screens, where the row fits beside the panel screenshot */
+@media (max-width: 1019px) {
+    .lp-tray {
+        display: none;
+    }
+}
+
 .lp-shot {
     height: 580px;
     border-radius: 32px;
@@ -520,13 +527,6 @@ a:focus-visible,
 
     .lp-hero .lp-btn {
         flex: 1 1 auto;
-    }
-
-    /* Two even rows instead of one row of tiny icons */
-    .lp-tray {
-        grid-auto-flow: row;
-        grid-template-columns: repeat(8, 32px);
-        gap: 8px;
     }
 
     .lp-shot {
