@@ -9,9 +9,10 @@ const MAP_ZOOM = 15;
 // Both sources are keyless. Dark mode tints the street tiles with a CSS filter.
 const MAP_LAYERS = {
     street: {
-        url: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-        attribution: '&copy; OpenStreetMap contributors',
-        options: { maxZoom: 19 }
+        // Humanitarian (HOT) style, hosted by OpenStreetMap France
+        url: 'https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png',
+        attribution: '&copy; OpenStreetMap contributors, tiles by HOT hosted by OSM France',
+        options: { maxZoom: 19, subdomains: 'abc' }
     },
     satellite: {
         url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
