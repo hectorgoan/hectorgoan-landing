@@ -6,18 +6,17 @@ const CONTRIBUTIONS_TIMEOUT_MS = 8000;
 
 const MAP_CENTER = [14.5566, -90.7337]; // Antigua Guatemala
 const MAP_ZOOM = 15;
+// Both sources are keyless. Dark mode tints the street tiles with a CSS filter.
 const MAP_LAYERS = {
-    streetLight: {
-        url: 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',
-        attribution: '&copy; OpenStreetMap &copy; CARTO'
-    },
-    streetDark: {
-        url: 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',
-        attribution: '&copy; OpenStreetMap &copy; CARTO'
+    street: {
+        url: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+        attribution: '&copy; OpenStreetMap contributors',
+        options: { maxZoom: 19 }
     },
     satellite: {
         url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
-        attribution: 'Imagery &copy; Esri'
+        attribution: 'Imagery &copy; Esri',
+        options: { maxZoom: 19, detectRetina: true }
     }
 };
 
@@ -110,10 +109,9 @@ const App = {
 
         const applyMapLayer = () => {
             if (!map) return;
-            const key = mapType.value === 'satellite' ? 'satellite' : (isDarkMode.value ? 'streetDark' : 'streetLight');
-            const { url, attribution } = MAP_LAYERS[key];
+            const { url, attribution, options } = MAP_LAYERS[mapType.value === 'satellite' ? 'satellite' : 'street'];
             if (mapLayer) map.removeLayer(mapLayer);
-            mapLayer = window.L.tileLayer(url, { attribution, maxZoom: 19, subdomains: 'abcd', detectRetina: true }).addTo(map);
+            mapLayer = window.L.tileLayer(url, { attribution, ...options }).addTo(map);
         };
 
         const initMap = () => {
@@ -164,8 +162,6 @@ const App = {
         };
 
         // --- Watchers ---
-        watch(isDarkMode, applyMapLayer);
-
         watch(theme, () => {
             applyThemeToBody();
             updateSelectorPosition();
