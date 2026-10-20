@@ -355,6 +355,13 @@ a:focus-visible,
     height: 20px;
 }
 
+/* The icons are cut from the feature cards with a dark fringe at their edges:
+   a circle just inside the edge hides it */
+.lp-chip img,
+.lp-tray img {
+    clip-path: circle(44%);
+}
+
 .lp-chip:hover {
     color: var(--chip, var(--indigo));
 }
