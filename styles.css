@@ -28,6 +28,7 @@
 
     /* Contribution levels */
     --contrib-0: #ececf0;
+    --contrib-wave: #dcdce2;
     --contrib-1: rgba(52, 199, 89, 0.28);
     --contrib-2: rgba(52, 199, 89, 0.5);
     --contrib-3: rgba(52, 199, 89, 0.74);
@@ -67,6 +68,7 @@
     --map-water: #1d3a57;
 
     --contrib-0: #2c2c2e;
+    --contrib-wave: #3e3e42;
     --chart-filter: invert(1) hue-rotate(180deg) brightness(1.2);
 
     --hdr-btn-opacity: 0.4;
@@ -593,13 +595,24 @@ button:focus-visible {
 .contrib .lvl-3 { background: var(--contrib-3); }
 .contrib .lvl-4 { background: var(--contrib-4); }
 
+/* Skeleton: a soft highlight sweeps diagonally across the empty grid, like a loading row in iOS */
 .contrib-loading span {
-    animation: shimmer 1.4s ease-in-out infinite alternate;
+    animation: contribWave 1.8s ease-in-out infinite;
+    animation-delay: calc(var(--wave, 0) * 40ms);
 }
 
-@keyframes shimmer {
-    from { opacity: 0.5; }
-    to { opacity: 1; }
+@keyframes contribWave {
+    0%, 55%, 100% { background: var(--contrib-0); }
+    25% { background: var(--contrib-wave); }
+}
+
+/* The real squares fade in where the skeleton was */
+.contrib:not(.contrib-loading) span {
+    animation: contribIn 0.5s ease-out both;
+}
+
+@keyframes contribIn {
+    from { opacity: 0; }
 }
 
 .contrib-fallback {

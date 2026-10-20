@@ -17,9 +17,14 @@ truth is the feature table in Lumina's README (between `<!-- features:start -->`
 2. Make sure Pillow is installed: `python3 -m pip install Pillow`.
 3. Run `python3 scripts/sync_lumina.py`. It downloads every feature image to
    `lumina/features/`, rewrites the highlights carousel and its chips between the
-   `lumina-features` and `lumina-chips` markers, fills the hero's tray of tool icons between
-   the `lumina-tray` markers (every feature except More and Customize, see `NOT_TOOLS`),
-   and removes features that left the README.
+   `lumina-features` and `lumina-chips` markers, fills the "Seventeen tools. Four jobs."
+   cards between the `lumina-themes` markers from `THEMES`, and removes features that left
+   the README. Every tool needs a theme: when the README gains a feature, the script stops and
+   names it; add its slug to the right theme in `THEMES` (or to `NO_THEME` if it is a panel
+   setting, like More and Customize) and run it again. The heading's count follows `THEMES`, and
+   each tool links to its highlight card (quick actions to the Quick Actions card).
+   Quick actions have no card of their own, so `THEMES` lists them as `(name, icon)` with a
+   hand-drawn SVG in `lumina/icons/` (white glyph on the Quick Actions indigo gradient).
    Each chip gets the feature's icon, cut from its card into `lumina/icons/`, and its colour.
    If it warns that it couldn't find an icon on a card, that chip falls back to indigo; check it.
    It prints the feature list; compare it with `git diff --stat` to name what's new.

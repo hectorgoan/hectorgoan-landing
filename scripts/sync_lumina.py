@@ -4,7 +4,8 @@
 Reads the feature table between <!-- features:start --> and <!-- features:end --> in
 Lumina's README, downloads each feature image, cuts the feature's app icon and color out
 of it for its chip, and rewrites the highlights carousel and its chips in
-lumina/index.html, plus the hero's tray of tool icons. Features that left the README are removed.
+lumina/index.html, plus the tools grouped by theme (see THEMES). Features that left the
+README are removed.
 
     python3 scripts/sync_lumina.py           # features only
     python3 scripts/sync_lumina.py --hero    # also refresh the icon and panel screenshots
@@ -30,8 +31,27 @@ PAGE = ROOT / "lumina" / "index.html"
 FEATURES_DIR = ROOT / "lumina" / "features"
 ICONS_DIR = ROOT / "lumina" / "icons"
 FEATURE_WIDTH = 1280  # cards show at up to 640px, so this stays sharp on 2x screens
-ICON_SIZE = 60        # chips show icons at 20px, the hero tray at 30px
-NOT_TOOLS = {"more-section", "customize"}  # README features that are panel settings, not tools
+ICON_SIZE = 60        # chips show icons at 20px, the theme lists at 36px
+
+# The tools, grouped into themes so the count reads as a plan. Each tool is a README feature
+# slug, or (name, icon, card) for a quick action, which has no card of its own: its icon is a
+# hand-drawn SVG in lumina/icons/ and it links to the card it shares. Each tool links to its
+# card in the highlights. Every README feature must have a theme, or be in NO_THEME.
+THEMES = [
+    ("Focus", "Stay in the zone, and appear available while you do.",
+     ["caffeine", "stay-green", "pomodoro", "quit-all"]),
+    ("Monitor", "Know what your Mac is doing, at a glance.",
+     ["system", "top-processes", "storage", "batteries"]),
+    ("Clean", "Get your space, and a fresh start, back.",
+     ["cleanup", "uninstaller", ("Empty Trash", "empty-trash.svg", "quick-actions"), "keyboard-lock"]),
+    ("Everyday", "The small switches you reach for all day.",
+     ["media", "world-clocks", "appearance", ("Sleep", "sleep.svg", "quick-actions"),
+      ("Silence", "silence.svg", "quick-actions")]),
+]
+NO_THEME = {"quick-actions", "more-section", "customize"}  # split into its tools above, or settings
+NUMBERS = "zero one two three four five six seven eight nine ten eleven twelve thirteen fourteen " \
+          "fifteen sixteen seventeen eighteen nineteen twenty twenty-one twenty-two twenty-three " \
+          "twenty-four twenty-five".split()
 
 # Crops of docs/marketing/hero-{light,dark}.png (2880x1800), tuned to its current layout:
 # the panel sits under the menu bar on the right. Re-check them when that layout changes.
@@ -163,18 +183,52 @@ def sync_features():
                 f'<img src="icons/{f["slug"]}.png" alt="" width="{ICON_SIZE}" height="{ICON_SIZE}">'
                 f'{html.escape(f["name"])}</a>')
     chips = "\n".join(chip(f) for f in features)
-    tray = "\n".join(
-        f'{indent[4:]}<img src="icons/{f["slug"]}.png" alt="{html.escape(f["name"])}" title="{html.escape(f["name"])}" '
-        f'width="{ICON_SIZE}" height="{ICON_SIZE}" role="listitem">'
-        for f in features if f["colors"] and f["slug"] not in NOT_TOOLS)
     page = PAGE.read_text(encoding="utf-8")
+    page = replace_block(page, "lumina-themes", themes_html(features))
     page = replace_block(page, "lumina-features", cards)
     page = replace_block(page, "lumina-chips", chips)
-    page = replace_block(page, "lumina-tray", tray)
     PAGE.write_text(page, encoding="utf-8")
     print(f"{len(features)} features: {', '.join(f['name'] for f in features)}")
     if removed:
         print(f"Removed: {', '.join(removed)}")
+
+
+def themes_html(features):
+    """The tools grouped by theme, with the total in the heading."""
+    names = {f["slug"]: f["name"] for f in features}
+    themed = {t if isinstance(t, str) else t[2] for _, _, tools in THEMES for t in tools}
+    missing = [f["name"] for f in features if f["slug"] not in themed | NO_THEME]
+    if missing:
+        sys.exit(f"Add {', '.join(missing)} to a theme in THEMES (scripts/sync_lumina.py)")
+    gone = [t for t in themed if t not in names]
+    if gone:
+        sys.exit(f"{', '.join(gone)} left Lumina's README: remove them from THEMES")
+    total = sum(len(tools) for _, _, tools in THEMES)
+    count = NUMBERS[total].capitalize() if total < len(NUMBERS) else str(total)
+    jobs = NUMBERS[len(THEMES)].capitalize()
+
+    pad = " " * 20
+    out = [f'{pad}<h2 class="lp-h2" id="tools">{count} tools. <span class="lp-ink">{jobs} jobs.</span></h2>',
+           f'{pad}<p class="lp-sec-lede">Everything in Lumina helps you focus, keep an eye on your Mac, '
+           f'clean it up, or get through the day.</p>',
+           f'{pad}<div class="lp-themes">']
+    for name, blurb, tools in THEMES:
+        out.append(f'{pad}    <article class="lp-theme">')
+        out.append(f'{pad}        <div class="lp-theme-top">')
+        out.append(f'{pad}            <h3 class="lp-theme-name">{html.escape(name)}</h3>')
+        out.append(f'{pad}            <span class="lp-theme-count">{len(tools)} tools</span>')
+        out.append(f'{pad}        </div>')
+        out.append(f'{pad}        <p class="lp-theme-blurb">{html.escape(blurb)}</p>')
+        out.append(f'{pad}        <ul class="lp-theme-tools">')
+        for t in tools:
+            label, icon, card = (names[t], f"{t}.png", t) if isinstance(t, str) else t
+            out.append(f'{pad}            <li><a class="lp-tool" href="#f-{card}">'
+                       f'<img src="icons/{icon}" alt="" width="{ICON_SIZE}" height="{ICON_SIZE}">'
+                       f'{html.escape(label)}</a></li>')
+        out.append(f'{pad}        </ul>')
+        out.append(f'{pad}    </article>')
+    out.append(f'{pad}</div>')
+    return "\n".join(out)
 
 
 def sync_hero():
