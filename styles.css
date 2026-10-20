@@ -342,44 +342,17 @@ button:focus-visible {
     }
 }
 
-/* App icons */
-.app-icon {
-    width: 44px;
-    height: 44px;
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    color: #fff;
-    box-shadow: inset 0 0 0 0.5px rgba(0, 0, 0, 0.08), 0 4px 12px -4px rgba(0, 0, 0, 0.25);
-}
+/* Brand-tinted glyphs */
+.glyph-linkedin { color: #0a66c2; }
+.glyph-instagram { color: #8a3ab9; }
+.glyph-reddit { color: #ff4500; }
 
-.app-icon .glyph {
-    width: 24px;
-    height: 24px;
-}
+:root.dark-mode .glyph-linkedin { color: #3b8eea; }
+:root.dark-mode .glyph-instagram { color: #b46ef0; }
 
-.app-linkedin { background: #0a66c2; }
-.app-github { background: #24292f; }
-.app-x { background: #000; }
-.app-instagram { background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285aeb 90%); }
-.app-reddit { background: #ff4500; }
-
-:root.dark-mode .app-github,
-:root.dark-mode .app-x {
-    box-shadow: inset 0 0 0 0.5px rgba(255, 255, 255, 0.22);
-}
-
-.tile-header .app-icon {
-    width: 36px;
-    height: 36px;
-    border-radius: 10px;
-}
-
-.tile-header .app-icon .glyph {
-    width: 20px;
-    height: 20px;
+.tile-header .glyph {
+    width: 26px;
+    height: 26px;
 }
 
 /* Map */
