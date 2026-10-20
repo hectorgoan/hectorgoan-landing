@@ -202,6 +202,13 @@ a:focus-visible,
     height: auto;
 }
 
+/* Hidden on tablet widths, where it no longer fits beside the panel screenshot */
+@media (min-width: 768px) and (max-width: 1019px) {
+    .lp-tray {
+        display: none;
+    }
+}
+
 .lp-shot {
     height: 580px;
     border-radius: 32px;
@@ -522,11 +529,16 @@ a:focus-visible,
         flex: 1 1 auto;
     }
 
-    /* Two even rows instead of one row of tiny icons */
+    /* Full width and centred on phones, wrapping into a second row when needed */
     .lp-tray {
-        grid-auto-flow: row;
-        grid-template-columns: repeat(8, 32px);
-        gap: 8px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .lp-tray img {
+        width: 34px;
     }
 
     .lp-shot {
