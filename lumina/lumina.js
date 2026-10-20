@@ -25,6 +25,17 @@ arrows.forEach((btn) => {
     });
 });
 
+// Chips scroll the carousel to their card without moving the page
+document.querySelectorAll('.lp-chip').forEach((chip) => {
+    chip.addEventListener('click', (e) => {
+        const card = document.getElementById(chip.getAttribute('href').slice(1));
+        if (!card) return;
+        e.preventDefault();
+        const left = card.getBoundingClientRect().left - track.getBoundingClientRect().left + track.scrollLeft;
+        track.scrollTo({ left });
+    });
+});
+
 track.addEventListener('scroll', updateArrows, { passive: true });
 window.addEventListener('resize', updateArrows);
 updateArrows();
