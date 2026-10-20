@@ -6,6 +6,8 @@
     --text-secondary: #6e6e73;
     --fill: #f2f2f5;
     --accent: #0071e3;
+    --indigo: #5856d6;
+    --indigo-soft: rgba(88, 86, 214, 0.12);
     --tile-shadow: 0 1px 1px rgba(0, 0, 0, 0.02), 0 14px 34px -14px rgba(0, 0, 0, 0.12);
     --tile-hover-shadow: 0 1px 1px rgba(0, 0, 0, 0.02), 0 22px 44px -16px rgba(0, 0, 0, 0.18);
 
@@ -46,6 +48,8 @@
     --text-secondary: #98989d;
     --fill: #2c2c2e;
     --accent: #0a84ff;
+    --indigo: #7d7aff;
+    --indigo-soft: rgba(125, 122, 255, 0.18);
     --tile-shadow: inset 0 0 0 0.5px rgba(255, 255, 255, 0.06);
     --tile-hover-shadow: inset 0 0 0 0.5px rgba(255, 255, 255, 0.12);
 
@@ -630,6 +634,121 @@ button:focus-visible {
     padding: 26px 28px;
 }
 
+/* Latest side project */
+.tile-project {
+    box-shadow: inset 0 0 0 1px rgba(88, 86, 214, 0.36), 0 1px 1px rgba(0, 0, 0, 0.02), 0 18px 40px -16px rgba(88, 86, 214, 0.38);
+}
+
+a.tile-project:hover {
+    box-shadow: inset 0 0 0 1px rgba(88, 86, 214, 0.5), 0 1px 1px rgba(0, 0, 0, 0.02), 0 24px 48px -16px rgba(88, 86, 214, 0.46);
+}
+
+:root.dark-mode .tile-project {
+    box-shadow: inset 0 0 0 1px rgba(125, 122, 255, 0.5), 0 0 44px -14px rgba(125, 122, 255, 0.42);
+}
+
+:root.dark-mode a.tile-project:hover {
+    box-shadow: inset 0 0 0 1px rgba(125, 122, 255, 0.64), 0 0 52px -12px rgba(125, 122, 255, 0.5);
+}
+
+.tile-project .go {
+    background: var(--indigo-soft);
+    color: var(--indigo);
+}
+
+.project-icon {
+    display: block;
+    width: 48px;
+    height: 48px;
+    margin: -5px 0 0 -5px;
+}
+
+.project-shot {
+    position: absolute;
+    top: 30px;
+    right: 66px;
+    width: 168px;
+    height: auto;
+    border-radius: 16px;
+    box-shadow: 0 0 0 0.5px rgba(0, 0, 0, 0.08), 0 14px 30px -10px rgba(40, 40, 90, 0.35);
+}
+
+.project-shot-dark,
+:root.dark-mode .project-shot-light {
+    display: none;
+}
+
+:root.dark-mode .project-shot-dark {
+    display: block;
+    box-shadow: 0 0 0 0.5px rgba(255, 255, 255, 0.14), 0 14px 30px -10px rgba(0, 0, 0, 0.7);
+}
+
+.project-text {
+    position: relative;
+    max-width: 230px;
+}
+
+.project-new {
+    color: var(--indigo);
+}
+
+.project-name {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 4px 8px;
+}
+
+.pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    height: 22px;
+    padding: 0 9px 0 7px;
+    border-radius: 999px;
+    background: var(--fill);
+    color: var(--text-secondary);
+    font-size: 12px;
+    line-height: 1;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    white-space: nowrap;
+}
+
+.pill svg {
+    width: 14px;
+    height: 14px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+@media (max-width: 767px) {
+    .project-shot {
+        top: 60px;
+        right: 18px;
+        width: 112px;
+        border-radius: 12px;
+    }
+
+    .project-text {
+        max-width: calc(100% - 136px);
+    }
+
+    .tile-project .sub {
+        display: none;
+    }
+}
+
+/* Twelve tiles leave the last desktop row half empty: let the final tile fill it */
+@media (min-width: 768px) {
+    .span-row-lg {
+        grid-column: 1 / -1;
+    }
+}
+
 /* Liquid Glass material */
 .glass {
     position: relative;
@@ -859,6 +978,7 @@ button:focus-visible {
 .bento-grid.animate-in .tile:nth-child(9) { animation-delay: 0.45s; }
 .bento-grid.animate-in .tile:nth-child(10) { animation-delay: 0.5s; }
 .bento-grid.animate-in .tile:nth-child(11) { animation-delay: 0.55s; }
+.bento-grid.animate-in .tile:nth-child(12) { animation-delay: 0.6s; }
 
 @media (prefers-reduced-motion: reduce) {
     *,

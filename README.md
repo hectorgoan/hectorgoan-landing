@@ -14,6 +14,7 @@ A minimal, highly interactive, and responsive personal landing page. This projec
 - **Dynamic Integrations**:
   - **GitHub Contributions**: Live contribution history for the last 26 weeks, fetched from the public [github-contributions-api](https://github.com/grubersjoe/github-contributions-api) and drawn natively (falls back to a ghchart image if the request fails).
   - **Location Map**: A live Leaflet map of Antigua Guatemala with a Satellite/Street switch (Satellite by default) (keyless OpenStreetMap Humanitarian tiles, tinted dark in Dark Mode; Esri imagery). The choice is remembered, and an inline SVG drawing shows if Leaflet can't load.
+- **Latest Side Project**: A featured tile for [Lumina](https://github.com/hectorgoan/lumina), my macOS menu bar app, with a peek at its panel (light and dark screenshots follow the theme), a thin indigo outline and a macOS pill.
 - **Zero-Build Setup**: Built without heavy bundlers or Node.js dependencies. It uses **Vue 3** via CDN for reactive state management, allowing for immediate execution and deployment anywhere.
 - **Fluid Micro-interactions**: Enter animations, hover effects, and a smooth slider for the theme switcher, all heavily optimized with modern CSS transitions.
 
