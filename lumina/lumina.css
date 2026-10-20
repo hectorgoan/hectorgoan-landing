@@ -202,8 +202,8 @@ a:focus-visible,
     height: auto;
 }
 
-/* Only on wide screens, where the row fits beside the panel screenshot */
-@media (max-width: 1019px) {
+/* Hidden on tablet widths, where it no longer fits beside the panel screenshot */
+@media (min-width: 768px) and (max-width: 1019px) {
     .lp-tray {
         display: none;
     }
@@ -527,6 +527,18 @@ a:focus-visible,
 
     .lp-hero .lp-btn {
         flex: 1 1 auto;
+    }
+
+    /* Full width and centred on phones, wrapping into a second row when needed */
+    .lp-tray {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .lp-tray img {
+        width: 34px;
     }
 
     .lp-shot {
