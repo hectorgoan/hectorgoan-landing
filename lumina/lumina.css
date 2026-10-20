@@ -242,6 +242,86 @@ a:focus-visible,
     color: var(--text-secondary);
 }
 
+/* The tools, grouped by theme in a bento like the homepage's */
+.lp-ink {
+    color: var(--indigo);
+}
+
+.lp-themes {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+    margin-top: 36px;
+}
+
+.lp-theme {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+    padding: 32px;
+    border-radius: 32px;
+    background: var(--tile-bg);
+    box-shadow: var(--tile-shadow);
+}
+
+.lp-theme-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.lp-theme-name {
+    font-size: 28px;
+    line-height: 1.1;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+}
+
+.lp-theme-blurb {
+    margin-top: 6px;
+    font-size: 17px;
+    line-height: 1.4;
+    letter-spacing: -0.01em;
+    color: var(--text-secondary);
+}
+
+.lp-theme-count {
+    font-size: 52px;
+    line-height: 1;
+    font-weight: 700;
+    letter-spacing: -0.05em;
+    font-variant-numeric: tabular-nums;
+    color: var(--indigo);
+}
+
+.lp-theme-tools {
+    list-style: none;
+    margin-top: auto;
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 18px 8px;
+}
+
+.lp-theme-tools li {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    text-align: center;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+}
+
+.lp-theme-tools img {
+    display: block;
+    width: 52px;
+    height: 52px;
+    clip-path: inset(4% round 24%);
+}
+
 /* Highlights carousel */
 .lp-track {
     display: flex;
@@ -477,6 +557,12 @@ a:focus-visible,
     }
 }
 
+@media (max-width: 899px) {
+    .lp-themes {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+
 @media (max-width: 767px) {
     .lp-wrap {
         padding-left: max(20px, env(safe-area-inset-left));
@@ -517,6 +603,33 @@ a:focus-visible,
 
     .lp-h2 {
         font-size: 30px;
+    }
+
+    .lp-theme {
+        padding: 28px 20px;
+        border-radius: 28px;
+    }
+
+    .lp-theme-count {
+        font-size: 44px;
+    }
+
+    /* Two columns of icon and name, so no theme leaves a lone tool on its last row */
+    .lp-theme-tools {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 14px 12px;
+    }
+
+    .lp-theme-tools li {
+        flex-direction: row;
+        gap: 10px;
+        text-align: left;
+        font-size: 14px;
+    }
+
+    .lp-theme-tools img {
+        width: 40px;
+        height: 40px;
     }
 
     .lp-card {
