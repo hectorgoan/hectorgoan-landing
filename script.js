@@ -38,7 +38,7 @@ const App = {
         const contributions = ref([]);
         const contributionsFailed = ref(false);
         const chartImageFailed = ref(false);
-        const mapType = ref(localStorage.getItem('mapType') === 'satellite' ? 'satellite' : 'street');
+        const mapType = ref(localStorage.getItem('mapType') === 'street' ? 'street' : 'satellite');
         const mapReady = ref(false);
         const mapEl = ref(null);
         let map = null;
