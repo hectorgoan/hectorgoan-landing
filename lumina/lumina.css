@@ -187,6 +187,21 @@ a:focus-visible,
     color: var(--text-secondary);
 }
 
+/* The tools folded into Lumina, like the blades of a pocket knife */
+.lp-tray {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(0, 30px);
+    gap: 6px;
+    margin-top: 28px;
+}
+
+.lp-tray img {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
 .lp-shot {
     height: 580px;
     border-radius: 32px;
@@ -338,6 +353,13 @@ a:focus-visible,
     display: block;
     width: 20px;
     height: 20px;
+}
+
+/* The icons are cut from the feature cards with a dark fringe at their edges:
+   a circle just inside the edge hides it */
+.lp-chip img,
+.lp-tray img {
+    clip-path: circle(44%);
 }
 
 .lp-chip:hover {
@@ -498,6 +520,13 @@ a:focus-visible,
 
     .lp-hero .lp-btn {
         flex: 1 1 auto;
+    }
+
+    /* Two even rows instead of one row of tiny icons */
+    .lp-tray {
+        grid-auto-flow: row;
+        grid-template-columns: repeat(8, 32px);
+        gap: 8px;
     }
 
     .lp-shot {
