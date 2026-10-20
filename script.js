@@ -1,4 +1,18 @@
-const { createApp, ref, onMounted, watch, computed, nextTick } = Vue;
+const { createApp, ref, onMounted, onUnmounted, watch, computed, nextTick } = Vue;
+
+const GITHUB_USER = 'hectorgoan';
+const LOCAL_TZ = 'America/Guatemala';
+const HOME_TZ = 'Europe/Madrid';
+const CONTRIBUTION_WEEKS = 26;
+
+// Hours-since-epoch-ish value of the wall clock in a time zone, used to diff two zones
+const wallClockHours = (date, timeZone) => {
+    const parts = new Intl.DateTimeFormat('en-GB', {
+        timeZone, year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric', hourCycle: 'h23'
+    }).formatToParts(date);
+    const get = (type) => Number(parts.find((p) => p.type === type).value);
+    return Date.UTC(get('year'), get('month') - 1, get('day'), get('hour'), get('minute')) / 3600000;
+};
 
 const App = {
     setup() {
@@ -13,6 +27,12 @@ const App = {
         const btnLight = ref(null);
         const btnDark = ref(null);
 
+        const localTime = ref('');
+        const timeDifference = ref('');
+        const contributions = ref([]);
+        const contributionsFailed = ref(false);
+        let clockTimer = null;
+
         const switchBgStyle = ref({
             width: '0px',
             transform: 'translateX(0px)'
@@ -23,11 +43,9 @@ const App = {
             return theme.value === 'dark' || (theme.value === 'auto' && systemDark.value);
         });
 
-        const cardClasses = computed(() => {
-            return {
-                'hdr-active': isHdrActive.value,
-                'animate-in': isAnimating.value
-            };
+        const contributionsLabel = computed(() => {
+            const total = contributions.value.reduce((sum, day) => sum + day.count, 0);
+            return `${total} GitHub contributions in the last ${CONTRIBUTION_WEEKS} weeks`;
         });
 
         // --- Methods ---
@@ -58,6 +76,29 @@ const App = {
                     transform: `translateX(${offsetLeft - 4}px)` // -4px accounts for padding in theme-switch
                 };
             });
+        };
+
+        const updateClock = () => {
+            const now = new Date();
+            localTime.value = now.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', timeZone: LOCAL_TZ });
+            const diff = Math.round(wallClockHours(now, HOME_TZ) - wallClockHours(now, LOCAL_TZ));
+            timeDifference.value = diff === 0 ? 'Same time as Spain' : `${Math.abs(diff)} hours ${diff > 0 ? 'behind' : 'ahead of'} Spain`;
+        };
+
+        const loadContributions = async () => {
+            try {
+                const res = await fetch(`https://github-contributions-api.jogruber.de/v4/${GITHUB_USER}?y=last`);
+                if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                const { contributions: days } = await res.json();
+                if (!Array.isArray(days) || !days.length) throw new Error('No data');
+
+                // Show whole weeks (Sunday first, like GitHub), ending with today
+                const lastDay = new Date(`${days[days.length - 1].date}T00:00:00Z`).getUTCDay();
+                const count = (CONTRIBUTION_WEEKS - 1) * 7 + lastDay + 1;
+                contributions.value = days.slice(-count);
+            } catch (e) {
+                contributionsFailed.value = true;
+            }
         };
 
         const setTheme = (newTheme) => {
@@ -102,6 +143,10 @@ const App = {
             });
 
             // Initial setup
+            updateClock();
+            clockTimer = setInterval(updateClock, 30000);
+            loadContributions();
+            window.addEventListener('resize', updateSelectorPosition);
             applyThemeToBody();
             updateSelectorPosition();
             checkHdrStateWhenThemeChanges();
@@ -110,7 +155,12 @@ const App = {
             isAnimating.value = true;
             setTimeout(() => {
                 isAnimating.value = false;
-            }, 1600); // Animation is 0.6s max plus up to 1.0s delay = 1600ms
+            }, 1600); // Animation is 0.7s plus up to 0.55s delay
+        });
+
+        onUnmounted(() => {
+            clearInterval(clockTimer);
+            window.removeEventListener('resize', updateSelectorPosition);
         });
 
         return {
@@ -123,7 +173,11 @@ const App = {
             btnDark,
             setTheme,
             toggleHdr,
-            cardClasses
+            localTime,
+            timeDifference,
+            contributions,
+            contributionsFailed,
+            contributionsLabel
         };
     }
 };
