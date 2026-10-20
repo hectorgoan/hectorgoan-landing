@@ -87,10 +87,10 @@
                         <div class="map-place">Antigua Guatemala</div>
                     </div>
                     <div v-if="mapReady" class="glass map-switch" role="group" aria-label="Map type">
-                        <button type="button" :class="{ active: mapType === 'street' }" :aria-pressed="mapType === 'street'"
-                            @click="setMapType('street')">Map</button>
                         <button type="button" :class="{ active: mapType === 'satellite' }" :aria-pressed="mapType === 'satellite'"
                             @click="setMapType('satellite')">Satellite</button>
+                        <button type="button" :class="{ active: mapType === 'street' }" :aria-pressed="mapType === 'street'"
+                            @click="setMapType('street')">Street</button>
                     </div>
                 </section>
 
