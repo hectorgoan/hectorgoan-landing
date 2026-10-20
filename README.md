@@ -13,7 +13,6 @@ A minimal, highly interactive, and responsive personal landing page. This projec
 - **HDR Enhancement Mode**: An experimental visual "easter egg" that applies a striking high-dynamic-range style glow to UI elements (like the avatar and cards) when active. For optimal UX, this feature is intelligently disabled when Dark Mode is active.
 - **Dynamic Integrations**:
   - **GitHub Contributions**: Live contribution history for the last 26 weeks, fetched from the public [github-contributions-api](https://github.com/grubersjoe/github-contributions-api) and drawn natively (falls back to a ghchart image if the request fails).
-  - **Local Time**: A live clock for the current location, with the time difference to Spain.
   - **Location Map**: A lightweight inline SVG map of Antigua Guatemala that links to Google Maps.
 - **Zero-Build Setup**: Built without heavy bundlers or Node.js dependencies. It uses **Vue 3** via CDN for reactive state management, allowing for immediate execution and deployment anywhere.
 - **Fluid Micro-interactions**: Enter animations, hover effects, and a smooth slider for the theme switcher, all heavily optimized with modern CSS transitions.

@@ -1,18 +1,8 @@
 const { createApp, ref, onMounted, onUnmounted, watch, computed, nextTick } = Vue;
 
 const GITHUB_USER = 'hectorgoan';
-const LOCAL_TZ = 'America/Guatemala';
-const HOME_TZ = 'Europe/Madrid';
 const CONTRIBUTION_WEEKS = 26;
 
-// Hours-since-epoch-ish value of the wall clock in a time zone, used to diff two zones
-const wallClockHours = (date, timeZone) => {
-    const parts = new Intl.DateTimeFormat('en-GB', {
-        timeZone, year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric', hourCycle: 'h23'
-    }).formatToParts(date);
-    const get = (type) => Number(parts.find((p) => p.type === type).value);
-    return Date.UTC(get('year'), get('month') - 1, get('day'), get('hour'), get('minute')) / 3600000;
-};
 
 const App = {
     setup() {
@@ -27,11 +17,8 @@ const App = {
         const btnLight = ref(null);
         const btnDark = ref(null);
 
-        const localTime = ref('');
-        const timeDifference = ref('');
         const contributions = ref([]);
         const contributionsFailed = ref(false);
-        let clockTimer = null;
 
         const switchBgStyle = ref({
             width: '0px',
@@ -76,13 +63,6 @@ const App = {
                     transform: `translateX(${offsetLeft - 4}px)` // -4px accounts for padding in theme-switch
                 };
             });
-        };
-
-        const updateClock = () => {
-            const now = new Date();
-            localTime.value = now.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', timeZone: LOCAL_TZ });
-            const diff = Math.round(wallClockHours(now, HOME_TZ) - wallClockHours(now, LOCAL_TZ));
-            timeDifference.value = diff === 0 ? 'Same time as Spain' : `${Math.abs(diff)} hours ${diff > 0 ? 'behind' : 'ahead of'} Spain`;
         };
 
         const loadContributions = async () => {
@@ -143,8 +123,6 @@ const App = {
             });
 
             // Initial setup
-            updateClock();
-            clockTimer = setInterval(updateClock, 30000);
             loadContributions();
             window.addEventListener('resize', updateSelectorPosition);
             applyThemeToBody();
@@ -159,7 +137,6 @@ const App = {
         });
 
         onUnmounted(() => {
-            clearInterval(clockTimer);
             window.removeEventListener('resize', updateSelectorPosition);
         });
 
@@ -173,8 +150,6 @@ const App = {
             btnDark,
             setTheme,
             toggleHdr,
-            localTime,
-            timeDifference,
             contributions,
             contributionsFailed,
             contributionsLabel

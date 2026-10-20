@@ -186,6 +186,13 @@ button:focus-visible {
     overflow-wrap: anywhere;
 }
 
+@media (min-width: 768px) {
+    .tile-link:not(.span-2) .title {
+        font-size: 19px;
+        line-height: 24px;
+    }
+}
+
 @media (max-width: 767px) {
     .tile-link .title {
         font-size: 17px;
@@ -318,9 +325,9 @@ button:focus-visible {
     color: var(--text-secondary);
 }
 
-.place svg {
-    width: 17px;
-    height: 17px;
+.emoji {
+    font-size: 17px;
+    line-height: 1;
 }
 
 @media (min-width: 768px) {
@@ -335,21 +342,44 @@ button:focus-visible {
     }
 }
 
-/* Clock */
-.clock {
-    font-size: 52px;
-    line-height: 1;
-    font-weight: 600;
-    letter-spacing: -0.04em;
-    font-variant-numeric: tabular-nums;
-    color: var(--accent);
-    margin-bottom: 8px;
+/* App icons */
+.app-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    color: #fff;
+    box-shadow: inset 0 0 0 0.5px rgba(0, 0, 0, 0.08), 0 4px 12px -4px rgba(0, 0, 0, 0.25);
 }
 
-@media (min-width: 768px) {
-    .clock {
-        font-size: 58px;
-    }
+.app-icon .glyph {
+    width: 24px;
+    height: 24px;
+}
+
+.app-linkedin { background: #0a66c2; }
+.app-github { background: #24292f; }
+.app-x { background: #000; }
+.app-instagram { background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285aeb 90%); }
+.app-reddit { background: #ff4500; }
+
+:root.dark-mode .app-github,
+:root.dark-mode .app-x {
+    box-shadow: inset 0 0 0 0.5px rgba(255, 255, 255, 0.22);
+}
+
+.tile-header .app-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+}
+
+.tile-header .app-icon .glyph {
+    width: 20px;
+    height: 20px;
 }
 
 /* Map */
@@ -457,11 +487,6 @@ button:focus-visible {
     align-items: center;
     gap: 12px;
     padding-right: 40px;
-}
-
-.tile-header .glyph {
-    width: 26px;
-    height: 26px;
 }
 
 .tile-header .title {
