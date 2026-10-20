@@ -17,7 +17,9 @@ truth is the feature table in Lumina's README (between `<!-- features:start -->`
 2. Make sure Pillow is installed: `python3 -m pip install Pillow`.
 3. Run `python3 scripts/sync_lumina.py`. It downloads every feature image to
    `lumina/features/`, rewrites the highlights carousel and its chips between the
-   `lumina-features` and `lumina-chips` markers, and removes features that left the README.
+   `lumina-features` and `lumina-chips` markers, fills the hero's tray of tool icons between
+   the `lumina-tray` markers (every feature except More and Customize, see `NOT_TOOLS`),
+   and removes features that left the README.
    Each chip gets the feature's icon, cut from its card into `lumina/icons/`, and its colour.
    If it warns that it couldn't find an icon on a card, that chip falls back to indigo; check it.
    It prints the feature list; compare it with `git diff --stat` to name what's new.
@@ -27,7 +29,8 @@ truth is the feature table in Lumina's README (between `<!-- features:start -->`
    crop boxes in `HERO_CROPS` match the current marketing hero; look at the new crops and
    adjust the boxes if the panel moved.
 5. Check the hand-written copy in `lumina/index.html` against Lumina's README: the hero
-   tagline and description, "Requires macOS …", and the install steps. Update them if the
+   description (the headline "Your desktop’s Swiss Army knife." is Héctor's marketing line,
+   shared with the homepage tile, so keep it even if the README tagline differs), "Requires macOS …", and the install steps. Update them if the
    README changed (for example a new minimum macOS or notarization removing step 3).
 6. Look at the page at desktop and phone widths, in light and dark (serve the repo with
    `python3 -m http.server` and open `/lumina/`). The CDNs may be blocked in a sandbox;
