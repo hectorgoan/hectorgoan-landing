@@ -1,13 +1,15 @@
 ---
 name: update-lumina-page
-description: Update the Lumina page (lumina/) and the homepage Lumina tile with the latest features and screenshots from github.com/hectorgoan/lumina. Use when asked to "update the Lumina page", sync Lumina features, or after a new Lumina release.
+description: Update the Lumina page (lumina/) and the homepage Lumina tile with the latest features and screenshots from github.com/hectorgoan/lumina-releases. Use when asked to "update the Lumina page", sync Lumina features, or after a new Lumina release.
 ---
 
 # Update the Lumina page
 
 The Lumina page (`lumina/index.html`) shows Lumina's marketing material. Its source of
-truth is the feature table in Lumina's README (between `<!-- features:start -->` and
-`<!-- features:end -->`) and the images under `docs/marketing/` in that repo.
+truth is the feature table in the README of Lumina's public releases repo,
+github.com/hectorgoan/lumina-releases (between `<!-- features:start -->` and
+`<!-- features:end -->`), and the images under `marketing/` there. Lumina's source repo,
+hectorgoan/lumina, is private, so the page never links to it.
 `scripts/sync_lumina.py` copies them over, so never hand-edit the generated blocks.
 
 ## Steps
@@ -19,7 +21,9 @@ truth is the feature table in Lumina's README (between `<!-- features:start -->`
    `lumina/features/`, rewrites the highlights carousel and its chips between the
    `lumina-features` and `lumina-chips` markers, fills the "Seventeen tools. Four jobs."
    cards between the `lumina-themes` markers from `THEMES`, and removes features that left
-   the README. Every tool needs a theme: when the README gains a feature, the script stops and
+   the README. It also sets the hero's version (`<!-- lumina-version -->`) from the README's
+   "Download Lumina <version>" link, and rebuilds the "A handful of toggles" comparison between the
+   `lumina-sandbox` markers, dimming the tools in `SANDBOXED`. Every tool needs a theme: when the README gains a feature, the script stops and
    names it; add its slug to the right theme in `THEMES` (or to `NO_THEME` if it is a panel
    setting, like More and Customize) and run it again. The heading's count follows `THEMES`, and
    each tool links to its highlight card (quick actions to the Quick Actions card).
@@ -27,6 +31,8 @@ truth is the feature table in Lumina's README (between `<!-- features:start -->`
    hand-drawn SVG in `lumina/icons/` (white glyph on the Quick Actions indigo gradient).
    Each chip gets the feature's icon, cut from its card into `lumina/icons/`, and its colour.
    If it warns that it couldn't find an icon on a card, that chip falls back to indigo; check it.
+   The releases repo's cards are 800px wide (the page's committed ones are 1280px from the old
+   repo), so a sync downsizes them; the script scales each card to 1280px to find its icon.
    It prints the feature list; compare it with `git diff --stat` to name what's new.
 4. When the app's look changed (new icon, redesigned panel), run it with `--hero` too. That
    refreshes `resources/lumina-icon.png` and the panel crops used by the page hero
@@ -36,7 +42,10 @@ truth is the feature table in Lumina's README (between `<!-- features:start -->`
 5. Check the hand-written copy in `lumina/index.html` against Lumina's README: the hero
    description (the headline "Your desktop’s Swiss Army knife." is Héctor's marketing line,
    shared with the homepage tile, so keep it even if the README tagline differs), "Requires macOS …", and the install steps. Update them if the
-   README changed (for example a new minimum macOS or notarization removing step 3).
+   README changed (for example a new minimum macOS or notarization removing step 3), and the
+   licence tiles and price line ("To be announced soon" until Héctor sets a price) against its
+   "Free trial and licence" section. "Why Lumina isn’t on the Mac App Store" is Héctor's text:
+   keep it word for word, and keep `SANDBOXED` in step with the tools its reasons name.
 6. Look at the page at desktop and phone widths, in light and dark (serve the repo with
    `python3 -m http.server` and open `/lumina/`). The CDNs may be blocked in a sandbox;
    the page itself needs none.
@@ -46,7 +55,7 @@ truth is the feature table in Lumina's README (between `<!-- features:start -->`
 
 ## Notes
 
-- The download button links to `releases/latest/download/Lumina.zip`, which always serves
-  the newest release, so releases alone never need a page update.
+- The download button links to lumina-releases' `releases/latest/download/Lumina.zip`, which always serves
+  the newest release, so releases alone never need a page update beyond the version line.
 - Lumina's indigo (`--indigo`, `--lp-cta`) is the only accent on the page. Keep new
   elements in the homepage's white and graphite style.

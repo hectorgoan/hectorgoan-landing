@@ -1,11 +1,13 @@
 #!/usr/bin/env python3
-"""Sync the Lumina page with the marketing material in github.com/hectorgoan/lumina.
+"""Sync the Lumina page with the marketing material in github.com/hectorgoan/lumina-releases.
 
-Reads the feature table between <!-- features:start --> and <!-- features:end --> in
+Lumina's source repo is private; its public releases repo carries the README, the marketing
+images and the downloads. Reads the feature table between <!-- features:start --> and <!-- features:end --> in
 Lumina's README, downloads each feature image, cuts the feature's app icon and color out
 of it for its chip, and rewrites the highlights carousel and its chips in
-lumina/index.html, plus the tools grouped by theme (see THEMES). Features that left the
-README are removed.
+lumina/index.html, plus the tools grouped by theme (see THEMES), the App Store sandbox
+comparison (see SANDBOXED) and the version shown in the hero. Features that left the README
+are removed.
 
     python3 scripts/sync_lumina.py           # features only
     python3 scripts/sync_lumina.py --hero    # also refresh the icon and panel screenshots
@@ -25,12 +27,13 @@ try:
 except ImportError:
     sys.exit("Pillow is required: python3 -m pip install Pillow")
 
-RAW = "https://raw.githubusercontent.com/hectorgoan/lumina/HEAD/"
+RAW = "https://raw.githubusercontent.com/hectorgoan/lumina-releases/HEAD/"
 ROOT = Path(__file__).resolve().parent.parent
 PAGE = ROOT / "lumina" / "index.html"
 FEATURES_DIR = ROOT / "lumina" / "features"
 ICONS_DIR = ROOT / "lumina" / "icons"
 FEATURE_WIDTH = 1280  # cards show at up to 640px, so this stays sharp on 2x screens
+CARD_WIDTH = 1280     # extract_icon's coordinates are tuned to cards this wide
 ICON_SIZE = 60        # chips show icons at 20px, the theme lists at 36px
 
 # The tools, grouped into themes so the count reads as a plan. Each tool is a README feature
@@ -49,15 +52,19 @@ THEMES = [
       ("Silence", "silence.svg", "quick-actions")]),
 ]
 NO_THEME = {"quick-actions", "more-section", "customize"}  # split into its tools above, or settings
+# The tools "Why Lumina isn’t on the Mac App Store" says couldn’t work in the App Sandbox: the
+# comparison dims them. Keep it in step with the reasons written out under it in index.html.
+SANDBOXED = {"uninstaller", "cleanup", "quit-all", "empty-trash", "appearance", "stay-green",
+             "keyboard-lock", "system", "media", "batteries"}
 NUMBERS = "zero one two three four five six seven eight nine ten eleven twelve thirteen fourteen " \
           "fifteen sixteen seventeen eighteen nineteen twenty twenty-one twenty-two twenty-three " \
           "twenty-four twenty-five".split()
 
-# Crops of docs/marketing/hero-{light,dark}.png (2880x1800), tuned to its current layout:
+# Crops of marketing/hero-{light,dark}.jpg (1440x900), tuned to its current layout:
 # the panel sits under the menu bar on the right. Re-check them when that layout changes.
 HERO_CROPS = {
-    ROOT / "lumina" / "hero-panel-{mode}.jpg": (2000, 0, 2880, 1240),          # Lumina page hero
-    ROOT / "resources" / "lumina-panel-{mode}.jpg": (2326, 48, 2750, 720),     # homepage tile peek
+    ROOT / "lumina" / "hero-panel-{mode}.jpg": (1000, 0, 1440, 620),           # Lumina page hero
+    ROOT / "resources" / "lumina-panel-{mode}.jpg": (1163, 24, 1375, 360),     # homepage tile peek
 }
 
 
@@ -136,12 +143,13 @@ def read_features():
     if not block:
         sys.exit("Lumina's README has no <!-- features:start --> block")
     features = []
-    for slug, alt in re.findall(r'href="docs/marketing/features/([\w-]+)\.png"><img [^>]*alt="([^"]+)"', block.group(1)):
+    for slug, alt in re.findall(r'href="marketing/features/([\w-]+)\.jpg"><img [^>]*alt="([^"]+)"', block.group(1)):
         alt = html.unescape(alt)
         features.append({"slug": slug, "name": alt.split(":")[0].strip(), "alt": alt})
     if not features:
         sys.exit("Found no features in Lumina's README")
-    return features
+    version = re.search(r"Download Lumina (\d[\w.]*)", readme)
+    return features, version.group(1) if version else None
 
 
 def replace_block(page, name, body):
@@ -152,12 +160,15 @@ def replace_block(page, name, body):
 
 
 def sync_features():
-    features = read_features()
+    features, version = read_features()
     FEATURES_DIR.mkdir(parents=True, exist_ok=True)
     ICONS_DIR.mkdir(parents=True, exist_ok=True)
     for f in features:
-        card = save_jpeg(Image.open(io.BytesIO(fetch(f"docs/marketing/features/{f['slug']}.png"))),
+        card = save_jpeg(Image.open(io.BytesIO(fetch(f"marketing/features/{f['slug']}.jpg"))),
                          FEATURES_DIR / f"{f['slug']}.jpg", FEATURE_WIDTH)
+        f["size"] = card.size
+        if card.width != CARD_WIDTH:
+            card = card.resize((CARD_WIDTH, round(card.height * CARD_WIDTH / card.width)), Image.LANCZOS)
         f["colors"] = extract_icon(card, ICONS_DIR / f"{f['slug']}.png")
         if not f["colors"]:
             print(f"Warning: no icon found on the {f['name']} card; its chip has no icon or color")
@@ -172,7 +183,7 @@ def sync_features():
     indent = " " * 24
     cards = "\n".join(
         f'{indent}<figure class="lp-card" id="f-{f["slug"]}"><img src="features/{f["slug"]}.jpg" '
-        f'alt="{html.escape(f["alt"])}" width="{FEATURE_WIDTH}" height="{FEATURE_WIDTH * 9 // 16}" '
+        f'alt="{html.escape(f["alt"])}" width="{f["size"][0]}" height="{f["size"][1]}" '
         f'loading="lazy" decoding="async"></figure>'
         for f in features)
     def chip(f):
@@ -185,10 +196,15 @@ def sync_features():
     chips = "\n".join(chip(f) for f in features)
     page = PAGE.read_text(encoding="utf-8")
     page = replace_block(page, "lumina-themes", themes_html(features))
+    page = replace_block(page, "lumina-sandbox", sandbox_html(features))
     page = replace_block(page, "lumina-features", cards)
+    if version:
+        page = re.sub(r"(<!-- lumina-version -->)\d[\w.]*", rf"\g<1>{version}", page)
+    else:
+        print("Warning: no version found in Lumina's README; the hero keeps its old one")
     page = replace_block(page, "lumina-chips", chips)
     PAGE.write_text(page, encoding="utf-8")
-    print(f"{len(features)} features: {', '.join(f['name'] for f in features)}")
+    print(f"Lumina {version}, {len(features)} features: {', '.join(f['name'] for f in features)}")
     if removed:
         print(f"Removed: {', '.join(removed)}")
 
@@ -231,11 +247,61 @@ def themes_html(features):
     return "\n".join(out)
 
 
+def sandbox_html(features):
+    """Every tool twice: as it would be in the App Sandbox (SANDBOXED dimmed), and as sold."""
+    names = {f["slug"]: f["name"] for f in features}
+    tools = [(names[t], f"{t}.png", t) if isinstance(t, str) else t for _, _, ts in THEMES for t in ts]
+    unknown = SANDBOXED - {tool_slug(t) for t in tools}
+    if unknown:
+        sys.exit(f"{', '.join(sorted(unknown))} in SANDBOXED is not a tool in THEMES")
+    total, works = len(tools), sum(1 for t in tools if tool_slug(t) not in SANDBOXED)
+    pad = " " * 20
+
+    def grid(dim):
+        cells = []
+        for t in tools:
+            off = dim and tool_slug(t) in SANDBOXED
+            cells.append(f'{pad}            <li class="lp-sb-tool{" is-off" if off else ""}">'
+                         f'<img src="icons/{t[1]}" alt="" width="{ICON_SIZE}" height="{ICON_SIZE}">'
+                         f'<span>{html.escape(t[0])}</span></li>')
+        return "\n".join(cells)
+
+    return "\n".join([
+        f'{pad}<div class="lp-sb">',
+        f'{pad}    <div class="lp-sb-card">',
+        f'{pad}        <div class="lp-sb-top"><div><p class="lp-sb-label">In the App Sandbox</p>'
+        f'<h3 class="lp-sb-name">A handful of toggles</h3></div>'
+        f'<span class="lp-sb-count">{works} of {total}</span></div>',
+        f'{pad}        <ul class="lp-sb-grid" aria-label="Tools that would still work: '
+        f'{html.escape(", ".join(t[0] for t in tools if tool_slug(t) not in SANDBOXED))}">',
+        grid(True),
+        f'{pad}        </ul>',
+        f'{pad}        <p class="lp-sb-foot">The {NUMBERS[total - works]} dimmed tools can’t do their job from inside the sandbox.</p>',
+        f'{pad}    </div>',
+        f'{pad}    <div class="lp-sb-card is-on">',
+        f'{pad}        <div class="lp-sb-top"><div><p class="lp-sb-label">Sold directly</p>'
+        f'<h3 class="lp-sb-name">All of Lumina</h3></div>'
+        f'<span class="lp-sb-count">{total} of {total}</span></div>',
+        f'{pad}        <ul class="lp-sb-grid" aria-label="Every tool works">',
+        grid(False),
+        f'{pad}        </ul>',
+        f'{pad}        <p class="lp-sb-foot">Download it here, pay once, and it updates itself in place.</p>',
+        f'{pad}    </div>',
+        f'{pad}</div>',
+    ])
+
+
+def tool_slug(tool):
+    """A tool's own slug: its feature's, or for a quick action its icon's name."""
+    label, icon, card = tool
+    return icon[:-4] if icon.endswith(".svg") else card
+
+
 def sync_hero():
-    icon = Image.open(io.BytesIO(fetch("docs/icon.png")))
+    icon = Image.open(io.BytesIO(fetch("marketing/icon.png")))
     icon.resize((160, 160), Image.LANCZOS).save(ROOT / "resources" / "lumina-icon.png", optimize=True)
     for mode in ("light", "dark"):
-        hero = Image.open(io.BytesIO(fetch(f"docs/marketing/hero-{mode}.png")))
+        hero = Image.open(io.BytesIO(fetch(f"marketing/hero-{mode}.jpg")))
         for target, box in HERO_CROPS.items():
             save_jpeg(hero.crop(box), Path(str(target).format(mode=mode)))
     print("Refreshed the icon and panel screenshots")
