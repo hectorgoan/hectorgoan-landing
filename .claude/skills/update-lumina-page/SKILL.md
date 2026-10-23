@@ -31,13 +31,16 @@ hectorgoan/lumina, is private, so the page never links to it.
    hand-drawn SVG in `lumina/icons/` (white glyph on the Quick Actions indigo gradient).
    Each chip gets the feature's icon, cut from its card into `lumina/icons/`, and its colour.
    If it warns that it couldn't find an icon on a card, that chip falls back to indigo; check it.
-   The releases repo's cards are 800px wide (the page's committed ones are 1280px from the old
-   repo), so a sync downsizes them; the script scales each card to 1280px to find its icon.
+   The script reads the 2x images in `marketing/2x/` (1600px cards, 2880px heroes) and saves
+   cards at 1280px, so they stay sharp on Retina screens. `marketing/` itself only has the
+   README's 1x copies (800px cards, 1440px heroes); don't sync from those.
+   Right after a release, raw.githubusercontent.com can serve the old README for a few minutes;
+   if the printed version is behind, wait or point `RAW` at the release commit for that run.
    It prints the feature list; compare it with `git diff --stat` to name what's new.
 4. When the app's look changed (new icon, redesigned panel), run it with `--hero` too. That
    refreshes `resources/lumina-icon.png` and the panel crops used by the page hero
    (`lumina/hero-panel-*.jpg`) and the homepage tile (`resources/lumina-panel-*.jpg`). The
-   crop boxes in `HERO_CROPS` match the current marketing hero; look at the new crops and
+   crop boxes in `HERO_CROPS` are in the 1x hero's 1440x900 coordinates and match its current layout; look at the new crops and
    adjust the boxes if the panel moved.
 5. Check the hand-written copy in `lumina/index.html` against Lumina's README: the hero
    description (the headline "Your desktop’s Swiss Army knife." is Héctor's marketing line,
