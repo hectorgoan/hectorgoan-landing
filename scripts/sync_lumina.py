@@ -63,13 +63,14 @@ NUMBERS = "zero one two three four five six seven eight nine ten eleven twelve t
           "fifteen sixteen seventeen eighteen nineteen twenty twenty-one twenty-two twenty-three " \
           "twenty-four twenty-five".split()
 
-# Crops of marketing/hero-{light,dark}.jpg in its 1440x900 coordinates, tuned to its current
-# layout: the panel sits under the menu bar on the right. Re-check them when that layout changes.
-# sync_hero scales them to the 2x hero it crops from.
-HERO_CROPS = {
-    ROOT / "lumina" / "hero-panel-{mode}.jpg": (1000, 0, 1440, 620),           # Lumina page hero
-    ROOT / "resources" / "lumina-panel-{mode}.jpg": (1183, 22, 1381, 336),     # homepage tile peek
-}
+# The Lumina page hero shows the right of marketing/hero-{light,dark}.jpg, in its 1440x900
+# coordinates (sync_hero scales it to the 2x hero it crops from).
+HERO_CROP = (1000, 0, 1440, 620)
+HERO_PANEL = ROOT / "lumina" / "hero-panel-{mode}.jpg"
+# The homepage tile peeks at the top of the panel itself. sync_hero finds the panel in each
+# hero (see panel_box), so the crop follows it when a release moves it by a few pixels.
+TILE_PANEL = ROOT / "resources" / "lumina-panel-{mode}.jpg"
+TILE_ASPECT = 672 / 424  # height / width of the tile's <img>
 
 
 def fetch(path):
@@ -301,14 +302,50 @@ def tool_slug(tool):
     return icon[:-4] if icon.endswith(".svg") else card
 
 
+def rgb_distance(a, b):
+    return sum(abs(p - q) for p, q in zip(a, b))
+
+
+def panel_box(hero):
+    """The panel's box in the hero, found from its edges rather than measured by hand.
+
+    The panel's left and right edges are the only vertical lines on the right half of the
+    screenshot that run through its whole middle band. Its top is where, going up from that
+    band, the panel's grey gives way to the saturated wallpaper.
+    """
+    hero = hero.convert("RGB")
+    px, (w, h) = hero.load(), hero.size
+    rows = range(h // 4, h // 2, 2)
+    edges = [x for x in range(w // 2, w - 2)
+             if sum(rgb_distance(px[x, y], px[x - 2, y]) > 40 for y in rows) > 0.9 * len(rows)]
+    if len(edges) < 2:
+        sys.exit("Couldn't find the panel's edges in the hero; crop it by hand")
+    left, right = edges[0], edges[-1] - 1
+    middle = range(left + (right - left) // 4, right - (right - left) // 4, 2)
+
+    def grey(y):
+        sats = sorted(max(px[x, y]) - min(px[x, y]) for x in middle)
+        return sats[len(sats) // 2] < 30
+
+    top = h // 4
+    while top > 0 and grey(top - 1):
+        top -= 1
+    return left, top, right
+
+
 def sync_hero():
     icon = Image.open(io.BytesIO(fetch("marketing/icon.png")))
     icon.resize((160, 160), Image.LANCZOS).save(ROOT / "resources" / "lumina-icon.png", optimize=True)
     for mode in ("light", "dark"):
         hero = Image.open(io.BytesIO(fetch(f"marketing/2x/hero-{mode}.jpg")))
         scale = hero.width / 1440
-        for target, box in HERO_CROPS.items():
-            save_jpeg(hero.crop(tuple(round(v * scale) for v in box)), Path(str(target).format(mode=mode)))
+        save_jpeg(hero.crop(tuple(round(v * scale) for v in HERO_CROP)), Path(str(HERO_PANEL).format(mode=mode)))
+        left, top, right = panel_box(hero)
+        inset = round(scale)  # skip the edge's anti-aliased pixel
+        left, right = left + inset, right - inset
+        box = (left, top, right, top + round((right - left) * TILE_ASPECT))
+        save_jpeg(hero.crop(box), Path(str(TILE_PANEL).format(mode=mode)))
+        print(f"Panel in the {mode} hero at x {left / scale:g}–{right / scale:g}, top {top / scale:g} (1x)")
     print("Refreshed the icon and panel screenshots")
 
 
