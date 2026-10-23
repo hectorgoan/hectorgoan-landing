@@ -68,7 +68,7 @@ NUMBERS = "zero one two three four five six seven eight nine ten eleven twelve t
 # sync_hero scales them to the 2x hero it crops from.
 HERO_CROPS = {
     ROOT / "lumina" / "hero-panel-{mode}.jpg": (1000, 0, 1440, 620),           # Lumina page hero
-    ROOT / "resources" / "lumina-panel-{mode}.jpg": (1163, 24, 1375, 360),     # homepage tile peek
+    ROOT / "resources" / "lumina-panel-{mode}.jpg": (1183, 22, 1381, 336),     # homepage tile peek
 }
 
 
