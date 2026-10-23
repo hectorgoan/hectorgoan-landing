@@ -12,6 +12,9 @@ are removed.
     python3 scripts/sync_lumina.py           # features only
     python3 scripts/sync_lumina.py --hero    # also refresh the icon and panel screenshots
 
+Images come from marketing/2x/ (1600px cards, 2880px heroes), which stay sharp on 2x screens;
+marketing/ itself holds the README's 1x copies.
+
 Needs Pillow (python3 -m pip install Pillow) to resize images.
 """
 import argparse
@@ -60,8 +63,9 @@ NUMBERS = "zero one two three four five six seven eight nine ten eleven twelve t
           "fifteen sixteen seventeen eighteen nineteen twenty twenty-one twenty-two twenty-three " \
           "twenty-four twenty-five".split()
 
-# Crops of marketing/hero-{light,dark}.jpg (1440x900), tuned to its current layout:
-# the panel sits under the menu bar on the right. Re-check them when that layout changes.
+# Crops of marketing/hero-{light,dark}.jpg in its 1440x900 coordinates, tuned to its current
+# layout: the panel sits under the menu bar on the right. Re-check them when that layout changes.
+# sync_hero scales them to the 2x hero it crops from.
 HERO_CROPS = {
     ROOT / "lumina" / "hero-panel-{mode}.jpg": (1000, 0, 1440, 620),           # Lumina page hero
     ROOT / "resources" / "lumina-panel-{mode}.jpg": (1163, 24, 1375, 360),     # homepage tile peek
@@ -164,7 +168,7 @@ def sync_features():
     FEATURES_DIR.mkdir(parents=True, exist_ok=True)
     ICONS_DIR.mkdir(parents=True, exist_ok=True)
     for f in features:
-        card = save_jpeg(Image.open(io.BytesIO(fetch(f"marketing/features/{f['slug']}.jpg"))),
+        card = save_jpeg(Image.open(io.BytesIO(fetch(f"marketing/2x/features/{f['slug']}.jpg"))),
                          FEATURES_DIR / f"{f['slug']}.jpg", FEATURE_WIDTH)
         f["size"] = card.size
         if card.width != CARD_WIDTH:
@@ -301,9 +305,10 @@ def sync_hero():
     icon = Image.open(io.BytesIO(fetch("marketing/icon.png")))
     icon.resize((160, 160), Image.LANCZOS).save(ROOT / "resources" / "lumina-icon.png", optimize=True)
     for mode in ("light", "dark"):
-        hero = Image.open(io.BytesIO(fetch(f"marketing/hero-{mode}.jpg")))
+        hero = Image.open(io.BytesIO(fetch(f"marketing/2x/hero-{mode}.jpg")))
+        scale = hero.width / 1440
         for target, box in HERO_CROPS.items():
-            save_jpeg(hero.crop(box), Path(str(target).format(mode=mode)))
+            save_jpeg(hero.crop(tuple(round(v * scale) for v in box)), Path(str(target).format(mode=mode)))
     print("Refreshed the icon and panel screenshots")
 
 
