@@ -40,8 +40,11 @@ hectorgoan/lumina, is private, so the page never links to it.
 4. When the app's look changed (new icon, redesigned panel), run it with `--hero` too. That
    refreshes `resources/lumina-icon.png` and the panel crops used by the page hero
    (`lumina/hero-panel-*.jpg`) and the homepage tile (`resources/lumina-panel-*.jpg`). The
-   crop boxes in `HERO_CROPS` are in the 1x hero's 1440x900 coordinates and match its current layout; look at the new crops and
-   adjust the boxes if the panel moved.
+   page hero's box, `HERO_CROP`, is in the 1x hero's 1440x900 coordinates. The homepage tile's
+   crop is not a fixed box: `panel_box` finds the panel's edges and top in each hero, so it stays
+   centred when a release nudges the panel. It prints where it found the panel; look at the tile
+   in light and dark anyway, and if it exits saying it couldn't find the edges, the screenshot's
+   layout changed and `panel_box` needs a look.
 5. Check the hand-written copy in `lumina/index.html` against Lumina's README: the hero
    description (the headline "Your desktop’s Swiss Army knife." is Héctor's marketing line,
    shared with the homepage tile, so keep it even if the README tagline differs), "Requires macOS …", and the install steps. Update them if the
