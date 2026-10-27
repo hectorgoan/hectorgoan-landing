@@ -26,12 +26,10 @@
         radial-gradient(45% 60% at 78% 22%, #8cc4f0, rgba(140, 196, 240, 0) 72%),
         radial-gradient(40% 40% at 50% 50%, #0a84ff, rgba(10, 132, 255, 0) 75%), #efe6d6;
 
-    /* Card glass (liquid or frosted, picked in the floating controls) */
+    /* Frosted glass cards */
     --card-fill: rgba(0, 0, 0, 0.045);
-    --card-liquid-bg: rgba(255, 255, 255, 0.44);
-    --card-liquid-shadow: inset 0 0 0 0.5px var(--glass-edge), inset 1.5px 1.5px 1px -1px var(--glass-spec), inset -1px -1px 1px -1px var(--glass-spec-2), 0 14px 34px -14px rgba(0, 0, 0, 0.14);
-    --card-frosted-bg: rgba(255, 255, 255, 0.62);
-    --card-frosted-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.8), 0 0 0 0.5px rgba(0, 0, 0, 0.04), 0 12px 32px -16px rgba(0, 0, 0, 0.12);
+    --card-bg: rgba(255, 255, 255, 0.62);
+    --card-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.8), 0 0 0 0.5px rgba(0, 0, 0, 0.04), 0 12px 32px -16px rgba(0, 0, 0, 0.12);
     --project-ring: inset 0 0 0 1px rgba(88, 86, 214, 0.36);
     --project-glow: 0 18px 40px -16px rgba(88, 86, 214, 0.38);
 
@@ -84,10 +82,8 @@
         radial-gradient(42% 42% at 50% 50%, #0a84ff, rgba(10, 132, 255, 0) 75%), #2a2a2e;
 
     --card-fill: rgba(255, 255, 255, 0.08);
-    --card-liquid-bg: rgba(44, 44, 48, 0.42);
-    --card-liquid-shadow: inset 0 0 0 0.5px var(--glass-edge), inset 1.5px 1.5px 1px -1px var(--glass-spec), inset -1px -1px 1px -1px var(--glass-spec-2);
-    --card-frosted-bg: rgba(32, 32, 35, 0.58);
-    --card-frosted-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.07), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    --card-bg: rgba(32, 32, 35, 0.58);
+    --card-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.07), inset 0 1px 0 rgba(255, 255, 255, 0.06);
     --project-ring: inset 0 0 0 1px rgba(125, 122, 255, 0.5);
     --project-glow: 0 0 44px -14px rgba(125, 122, 255, 0.42);
 
@@ -986,33 +982,18 @@ a.tile-project:hover {
     animation: fadeIn 0.35s ease-in reverse forwards;
 }
 
-/* Card glass: every card except the photos and the map */
-:root.glass-liquid .tile:not(.tile-image, .tile-map),
-:root.glass-frosted .tile:not(.tile-image, .tile-map) {
+/* Frosted glass: every card except the photos and the map */
+:root .tile:not(.tile-image, .tile-map) {
     --fill: var(--card-fill);
     --contrib-0: var(--card-fill);
-}
-
-:root.glass-liquid .tile:not(.tile-image, .tile-map) {
-    background: radial-gradient(90% 120% at 30% 0%, var(--glass-sheen), rgba(255, 255, 255, 0) 60%), var(--card-liquid-bg);
-    backdrop-filter: blur(12px) saturate(190%) brightness(1.05);
-    -webkit-backdrop-filter: blur(12px) saturate(190%) brightness(1.05);
-    box-shadow: var(--card-liquid-shadow);
-}
-
-:root.glass-frosted .tile:not(.tile-image, .tile-map) {
-    background: var(--card-frosted-bg);
+    background: var(--card-bg);
     backdrop-filter: blur(40px) saturate(150%);
     -webkit-backdrop-filter: blur(40px) saturate(150%);
-    box-shadow: var(--card-frosted-shadow);
+    box-shadow: var(--card-shadow);
 }
 
-/* Lumina keeps its indigo ring and glow on either glass */
-:root.glass-liquid .tile-project {
-    box-shadow: var(--project-ring), inset 1.5px 1.5px 1px -1px var(--glass-spec), var(--project-glow);
-}
-
-:root.glass-frosted .tile-project {
+/* Lumina keeps its indigo ring and glow */
+:root .tile.tile-project {
     box-shadow: var(--project-ring), var(--project-glow);
 }
 
@@ -1108,15 +1089,6 @@ a.tile-project:hover {
     color: var(--text-primary);
 }
 
-.switch-divider {
-    position: relative;
-    z-index: 1;
-    width: 1px;
-    margin: 9px 4px;
-    background: var(--separator);
-    flex-shrink: 0;
-}
-
 .switch-bg {
     position: absolute;
     top: 4px;
@@ -1148,24 +1120,6 @@ a.tile-project:hover {
 :root.dark-mode .hdr-btn:hover,
 :root.dark-mode .hdr-btn:active {
     color: var(--text-secondary);
-}
-
-/* Narrow phones: tighten the buttons so the whole bar fits on one line */
-@media (max-width: 400px) {
-    .controls {
-        gap: 8px;
-        padding: 0 12px;
-    }
-
-    .switch-btn,
-    .hdr-btn {
-        min-width: 42px;
-        padding: 0 13px;
-    }
-
-    .switch-divider {
-        margin: 9px 2px;
-    }
 }
 
 @media (hover: none) and (pointer: coarse) {
