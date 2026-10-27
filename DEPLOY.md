@@ -45,3 +45,7 @@ git push -u origin main
 ## Step 5: Verify
 
 GitHub will take a minute or two to build your site. Refresh the Pages settings page to see your live URL.
+
+## Cloudflare Workers
+
+The repo also deploys as a static-assets-only Cloudflare Worker. `wrangler.jsonc` serves the repo root, and `.assetsignore` keeps repo-only files (`scripts/`, `.claude/`, the docs and config) out of the upload. In the Cloudflare dashboard, connect the repo with no build command and the default deploy command (`npx wrangler deploy`). To check what would be uploaded locally, run `npx wrangler deploy --dry-run`.
