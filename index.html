@@ -198,7 +198,7 @@
             <section class="more" :class="{ open: moreOpen }">
                 <button type="button" class="more-toggle" aria-controls="more-grid" :aria-expanded="moreOpen"
                     @click="moreOpen = !moreOpen">
-                    <span>More</span>
+                    <span>{{ moreOpen ? 'Less' : 'More' }}</span>
                     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg>
                 </button>
                 <transition name="more" :duration="{ enter: 500, leave: 350 }">
