@@ -28,6 +28,7 @@ const App = {
         const theme = ref(localStorage.getItem('theme') || 'auto');
         const isHdrActive = ref(false);
         const isAnimating = ref(false);
+        const moreOpen = ref(false);
         const systemDark = ref(window.matchMedia('(prefers-color-scheme: dark)').matches);
 
         // Refs for DOM elements to calculate switch background position
@@ -205,6 +206,7 @@ const App = {
             theme,
             isHdrActive,
             isAnimating,
+            moreOpen,
             switchBgStyle,
             btnAuto,
             btnLight,

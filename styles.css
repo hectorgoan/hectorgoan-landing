@@ -155,6 +155,19 @@ a {
     transition: transform 0.6s var(--ease-spring), box-shadow 0.6s var(--ease-spring), background-color 0.4s ease;
 }
 
+/* Photo fills the tile edge to edge, cropped around its center */
+.tile-image {
+    padding: 0;
+}
+
+.tile-image .responsive-img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
 @media (min-width: 768px) {
     .tile {
         border-radius: 32px;
@@ -809,11 +822,106 @@ a.tile-project:hover {
     }
 }
 
-/* The X pair closes the grid, one half each */
-@media (min-width: 768px) {
-    .span-2-lg {
-        grid-column: span 2;
+/* Narrow desktop: the full-size shot would run under the text, so shrink it
+   and give the text whatever room is left beside it */
+@media (min-width: 768px) and (max-width: 1079px) {
+    .project-shot {
+        width: 128px;
+        right: 60px;
+        border-radius: 13px;
     }
+
+    .project-text {
+        max-width: min(230px, calc(100% - 176px));
+    }
+}
+
+@media (min-width: 768px) and (max-width: 879px) {
+    .tile-project .sub {
+        display: none;
+    }
+}
+
+/* More:secondary accounts behind a disclosure, closed by default */
+.more {
+    margin-top: 20px;
+}
+
+.more-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    width: fit-content;
+    margin: 0 auto;
+    padding: 9px 16px 9px 18px;
+    border-radius: 999px;
+    background: var(--tile-bg);
+    box-shadow: var(--tile-shadow);
+    color: var(--text-secondary);
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    border: 0;
+    font-family: inherit;
+    cursor: pointer;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    transition: color 0.3s ease, box-shadow 0.4s var(--ease-spring);
+}
+
+.more-toggle:hover {
+    color: var(--text-primary);
+    box-shadow: var(--tile-hover-shadow);
+}
+
+.more-toggle:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+}
+
+.more-toggle svg {
+    width: 14px;
+    height: 14px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2.4;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    transition: transform 0.4s var(--ease-spring);
+}
+
+.more.open .more-toggle svg {
+    transform: rotate(180deg);
+}
+
+/* A centered flex row of tiles sized like one column of the main grid */
+.more .bento-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.more .tile {
+    flex: 0 0 calc((100% - 14px) / 2);
+    min-height: 168px;
+}
+
+@media (min-width: 768px) {
+    .more .tile {
+        flex-basis: calc((100% - 3 * 20px) / 4);
+        height: 184px;
+    }
+}
+
+/* Closing plays the opening in reverse; durations match the transition's :duration */
+.more-enter-active .tile {
+    animation: fadeIn 0.5s var(--ease-spring) backwards;
+}
+
+.more-leave-active .tile {
+    animation: fadeIn 0.35s ease-in reverse forwards;
 }
 
 /* Liquid Glass material */
