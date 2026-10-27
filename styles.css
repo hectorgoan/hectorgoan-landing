@@ -809,10 +809,10 @@ a.tile-project:hover {
     }
 }
 
-/* The email sheet closes the grid on a row of its own */
+/* The X pair closes the grid, one half each */
 @media (min-width: 768px) {
-    .span-row-lg {
-        grid-column: 1 / -1;
+    .span-2-lg {
+        grid-column: span 2;
     }
 }
 
