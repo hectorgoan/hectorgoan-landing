@@ -58,6 +58,56 @@
                     </div>
                 </section>
 
+                <!-- Email: a compose sheet, To and Subject already filled in -->
+                <a href="mailto:hello@hectorgoan.com?subject=Hello%2C%20H%C3%A9ctor" class="tile tile-compose span-2"
+                    aria-label="Write an email to hello@hectorgoan.com">
+                    <div class="tile-row">
+                        <div class="title">New message</div>
+                        <span class="send" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 19V5M6 11l6-6 6 6" /></svg></span>
+                    </div>
+                    <div class="fields">
+                        <div class="field"><span class="field-label">To:</span><span class="field-value">hello@<wbr>hectorgoan.com</span></div>
+                        <div class="field"><span class="field-label">Subject:</span><span class="field-value">Hello, Héctor</span></div>
+                    </div>
+                </a>
+
+                <!-- LinkedIn -->
+                <a href="https://linkedin.com/in/hectorgoan" target="_blank" rel="noopener" class="tile tile-link span-2">
+                    <svg class="glyph glyph-linkedin" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z" /></svg>
+                    <span class="go" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 17 17 7M8 7h9v9" /></svg></span>
+                    <div>
+                        <div class="title">LinkedIn</div>
+                        <div class="sub">Héctor Gonzalo Andrés</div>
+                    </div>
+                </a>
+
+                <!-- Location map -->
+                <section class="tile tile-map span-2 rows-2" :class="{ satellite: mapType === 'satellite' }">
+                    <!-- Drawn fallback, covered by the live map once it loads -->
+                    <svg class="map map-fallback" viewBox="0 0 520 388" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+                        <path class="map-park" d="M-20 300C60 286 120 318 200 312S330 280 420 296S520 320 560 316V420H-20Z" />
+                        <path class="map-water" d="M360 -10C372 40 352 70 380 110S430 150 420 210 450 300 470 400" />
+                        <path class="map-road" d="M-10 40H530M-10 92H530M-10 144H530M-10 196H530M-10 248H530M60 -10V300M124 -10V300M188 -10V300M252 -10V300M316 -10V300M380 -10V300M444 -10V300" />
+                        <path class="map-street" d="M-10 66H530M-10 118H530M-10 170H530M-10 222H530M92 -10V300M156 -10V300M220 -10V300M284 -10V300M348 -10V300M412 -10V300" />
+                        <path class="map-major" d="M-10 18C120 30 300 6 530 22" />
+                        <rect class="map-park" x="190" y="146" width="60" height="48" rx="4" />
+                    </svg>
+                    <div class="map map-live" ref="mapEl" aria-hidden="true"></div>
+                    <a href="https://www.google.com/maps/@14.5566,-90.7337,15z" target="_blank" rel="noopener"
+                        class="tile-map-link" aria-label="Now in Antigua Guatemala, open in Maps"></a>
+                    <span class="map-pin" aria-hidden="true"></span>
+                    <div class="glass map-label" aria-hidden="true">
+                        <div class="eyebrow">Now in</div>
+                        <div class="map-place">Antigua Guatemala</div>
+                    </div>
+                    <div v-if="mapReady" class="glass map-switch" role="group" aria-label="Map type">
+                        <button type="button" :class="{ active: mapType === 'satellite' }" :aria-pressed="mapType === 'satellite'"
+                            @click="setMapType('satellite')">Satellite</button>
+                        <button type="button" :class="{ active: mapType === 'street' }" :aria-pressed="mapType === 'street'"
+                            @click="setMapType('street')">Street</button>
+                    </div>
+                </section>
+
                 <!-- GitHub -->
                 <a href="https://github.com/hectorgoan" target="_blank" rel="noopener" class="tile tile-github span-2">
                     <div class="tile-header">
@@ -98,56 +148,6 @@
                             </span>
                         </div>
                         <div class="sub">Your desktop’s Swiss Army knife.</div>
-                    </div>
-                </a>
-
-                <!-- Location map -->
-                <section class="tile tile-map span-2 rows-2" :class="{ satellite: mapType === 'satellite' }">
-                    <!-- Drawn fallback, covered by the live map once it loads -->
-                    <svg class="map map-fallback" viewBox="0 0 520 388" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-                        <path class="map-park" d="M-20 300C60 286 120 318 200 312S330 280 420 296S520 320 560 316V420H-20Z" />
-                        <path class="map-water" d="M360 -10C372 40 352 70 380 110S430 150 420 210 450 300 470 400" />
-                        <path class="map-road" d="M-10 40H530M-10 92H530M-10 144H530M-10 196H530M-10 248H530M60 -10V300M124 -10V300M188 -10V300M252 -10V300M316 -10V300M380 -10V300M444 -10V300" />
-                        <path class="map-street" d="M-10 66H530M-10 118H530M-10 170H530M-10 222H530M92 -10V300M156 -10V300M220 -10V300M284 -10V300M348 -10V300M412 -10V300" />
-                        <path class="map-major" d="M-10 18C120 30 300 6 530 22" />
-                        <rect class="map-park" x="190" y="146" width="60" height="48" rx="4" />
-                    </svg>
-                    <div class="map map-live" ref="mapEl" aria-hidden="true"></div>
-                    <a href="https://www.google.com/maps/@14.5566,-90.7337,15z" target="_blank" rel="noopener"
-                        class="tile-map-link" aria-label="Now in Antigua Guatemala, open in Maps"></a>
-                    <span class="map-pin" aria-hidden="true"></span>
-                    <div class="glass map-label" aria-hidden="true">
-                        <div class="eyebrow">Now in</div>
-                        <div class="map-place">Antigua Guatemala</div>
-                    </div>
-                    <div v-if="mapReady" class="glass map-switch" role="group" aria-label="Map type">
-                        <button type="button" :class="{ active: mapType === 'satellite' }" :aria-pressed="mapType === 'satellite'"
-                            @click="setMapType('satellite')">Satellite</button>
-                        <button type="button" :class="{ active: mapType === 'street' }" :aria-pressed="mapType === 'street'"
-                            @click="setMapType('street')">Street</button>
-                    </div>
-                </section>
-
-                <!-- LinkedIn -->
-                <a href="https://linkedin.com/in/hectorgoan" target="_blank" rel="noopener" class="tile tile-link span-2">
-                    <svg class="glyph glyph-linkedin" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z" /></svg>
-                    <span class="go" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 17 17 7M8 7h9v9" /></svg></span>
-                    <div>
-                        <div class="title">LinkedIn</div>
-                        <div class="sub">Héctor Gonzalo Andrés</div>
-                    </div>
-                </a>
-
-                <!-- Email: a compose sheet, To and Subject already filled in -->
-                <a href="mailto:hello@hectorgoan.com?subject=Hello%2C%20H%C3%A9ctor" class="tile tile-compose span-2"
-                    aria-label="Write an email to hello@hectorgoan.com">
-                    <div class="tile-row">
-                        <div class="title">New message</div>
-                        <span class="send" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 19V5M6 11l6-6 6 6" /></svg></span>
-                    </div>
-                    <div class="fields">
-                        <div class="field"><span class="field-label">To:</span><span class="field-value">hello@<wbr>hectorgoan.com</span></div>
-                        <div class="field"><span class="field-label">Subject:</span><span class="field-value">Hello, Héctor</span></div>
                     </div>
                 </a>
 
