@@ -21,7 +21,7 @@
     <!-- Leaflet for the live location map -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
 
-    <link rel="stylesheet" href="styles.css?v=3.1">
+    <link rel="stylesheet" href="styles.css?v=3.2">
     <script>
         // Prevent FOUC by applying theme before body renders
         const t = localStorage.getItem('theme') || 'auto';
@@ -30,6 +30,7 @@
         } else {
             document.documentElement.classList.add('light-mode');
         }
+        document.documentElement.classList.add(localStorage.getItem('glass') === 'frosted' ? 'glass-frosted' : 'glass-liquid');
     </script>
 </head>
 
@@ -83,21 +84,25 @@
 
                 <!-- Yosemite Image -->
                 <div class="tile tile-image span-1">
+                    <img src="resources/yosemite.jpeg" alt="" class="tile-halo" aria-hidden="true" decoding="async">
                     <img src="resources/yosemite.jpeg" alt="Héctor in Yosemite" class="responsive-img">
                 </div>
 
                 <!-- Location map -->
                 <section class="tile tile-map span-2 rows-2" :class="{ satellite: mapType === 'satellite' }">
-                    <!-- Drawn fallback, covered by the live map once it loads -->
-                    <svg class="map map-fallback" viewBox="0 0 520 388" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-                        <path class="map-park" d="M-20 300C60 286 120 318 200 312S330 280 420 296S520 320 560 316V420H-20Z" />
-                        <path class="map-water" d="M360 -10C372 40 352 70 380 110S430 150 420 210 450 300 470 400" />
-                        <path class="map-road" d="M-10 40H530M-10 92H530M-10 144H530M-10 196H530M-10 248H530M60 -10V300M124 -10V300M188 -10V300M252 -10V300M316 -10V300M380 -10V300M444 -10V300" />
-                        <path class="map-street" d="M-10 66H530M-10 118H530M-10 170H530M-10 222H530M92 -10V300M156 -10V300M220 -10V300M284 -10V300M348 -10V300M412 -10V300" />
-                        <path class="map-major" d="M-10 18C120 30 300 6 530 22" />
-                        <rect class="map-park" x="190" y="146" width="60" height="48" rx="4" />
-                    </svg>
-                    <div class="map map-live" ref="mapEl" aria-hidden="true"></div>
+                    <!-- The map is clipped inside the card, so its glow can spill outside -->
+                    <div class="map-clip">
+                        <!-- Drawn fallback, covered by the live map once it loads -->
+                        <svg class="map map-fallback" viewBox="0 0 520 388" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+                            <path class="map-park" d="M-20 300C60 286 120 318 200 312S330 280 420 296S520 320 560 316V420H-20Z" />
+                            <path class="map-water" d="M360 -10C372 40 352 70 380 110S430 150 420 210 450 300 470 400" />
+                            <path class="map-road" d="M-10 40H530M-10 92H530M-10 144H530M-10 196H530M-10 248H530M60 -10V300M124 -10V300M188 -10V300M252 -10V300M316 -10V300M380 -10V300M444 -10V300" />
+                            <path class="map-street" d="M-10 66H530M-10 118H530M-10 170H530M-10 222H530M92 -10V300M156 -10V300M220 -10V300M284 -10V300M348 -10V300M412 -10V300" />
+                            <path class="map-major" d="M-10 18C120 30 300 6 530 22" />
+                            <rect class="map-park" x="190" y="146" width="60" height="48" rx="4" />
+                        </svg>
+                        <div class="map map-live" ref="mapEl" aria-hidden="true"></div>
+                    </div>
                     <a href="https://www.google.com/maps/@14.5566,-90.7337,15z" target="_blank" rel="noopener"
                         class="tile-map-link" aria-label="Now in Antigua Guatemala, open in Maps"></a>
                     <span class="map-pin" aria-hidden="true"></span>
@@ -168,6 +173,7 @@
 
                 <!-- Niagara Falls Image -->
                 <div class="tile tile-image span-1">
+                    <img src="resources/niagarafall.jpeg" alt="" class="tile-halo" aria-hidden="true" loading="lazy" decoding="async">
                     <img src="resources/niagarafall.jpeg" alt="Niagara Falls" class="responsive-img" loading="lazy" decoding="async">
                 </div>
 
@@ -183,6 +189,7 @@
 
                 <!-- Fuego Volcano Image -->
                 <div class="tile tile-image span-1">
+                    <img src="resources/fuegovolcano.jpeg" alt="" class="tile-halo" aria-hidden="true" loading="lazy" decoding="async">
                     <img src="resources/fuegovolcano.jpeg" alt="Fuego Volcano, Guatemala" class="responsive-img" loading="lazy" decoding="async">
                 </div>
 
@@ -235,7 +242,17 @@
             <!-- Floating Liquid Glass controls -->
             <nav class="controls" aria-label="Appearance">
                 <div class="glass theme-switch">
+                    <div class="switch-bg" :style="glassBgStyle"></div>
                     <div class="switch-bg" :style="switchBgStyle"></div>
+                    <button id="glass-liquid" class="switch-btn" :class="{ 'active': glass === 'liquid' }"
+                        aria-label="Liquid glass cards" title="Liquid glass" :aria-pressed="glass === 'liquid'" @click="setGlass('liquid')" ref="btnLiquid">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.2c3.3 3.9 6.3 7.3 6.3 10.7a6.3 6.3 0 0 1-12.6 0c0-3.4 3-6.8 6.3-10.7z" /><path d="M9 14.6a3 3 0 0 0 2.4 2.6" /></svg>
+                    </button>
+                    <button id="glass-frosted" class="switch-btn" :class="{ 'active': glass === 'frosted' }"
+                        aria-label="Frosted glass cards" title="Frosted glass" :aria-pressed="glass === 'frosted'" @click="setGlass('frosted')" ref="btnFrosted">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="5" /><path d="M8 12.5 12.5 8M8.5 16.5l8-8M12.5 16.5l4-4" /></svg>
+                    </button>
+                    <span class="switch-divider" aria-hidden="true"></span>
                     <button id="theme-auto" class="switch-btn" :class="{ 'active': theme === 'auto' }"
                         aria-label="Auto Theme" :aria-pressed="theme === 'auto'" @click="setTheme('auto')" ref="btnAuto">
                         <span>Auto</span>
@@ -262,7 +279,7 @@
     <!-- Add Vue via CDN -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-    <script src="script.js?v=2.2"></script>
+    <script src="script.js?v=2.3"></script>
 </body>
 
 </html>
