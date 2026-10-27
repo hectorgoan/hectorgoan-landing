@@ -1,0 +1,9 @@
+// Cloudflare Workers config: serves the repo root as a static-assets-only Worker.
+// Files that shouldn't be published are listed in .assetsignore.
+{
+  "name": "hectorgoan-landing",
+  "compatibility_date": "2026-10-27",
+  "assets": {
+    "directory": "./"
+  }
+}

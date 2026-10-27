@@ -1,0 +1,12 @@
+# Keep repo-only files out of the Cloudflare Workers deploy (see wrangler.jsonc).
+.git
+.github
+.claude
+.wrangler
+node_modules
+scripts
+README.md
+DEPLOY.md
+wrangler.jsonc
+.assetsignore
+.gitignore
