@@ -10,6 +10,7 @@ A minimal, highly interactive, and responsive personal landing page. This projec
   - Supports manual Light and Dark mode toggles.
   - Features an 'Auto' mode that seamlessly syncs with the user's operating system preferences via `prefers-color-scheme`.
   - Persists user preferences using `localStorage`.
+- **Glass Cards with Photo Glow**: The photos and the map spill a soft blur of their own colours onto the page, and every other card is glass that picks it up. Visitors choose Liquid or Frosted glass from the left of the theme switch; the choice is remembered.
 - **HDR Enhancement Mode**: An experimental visual "easter egg" that applies a striking high-dynamic-range style glow to UI elements (like the avatar and cards) when active. For optimal UX, this feature is intelligently disabled when Dark Mode is active.
 - **Dynamic Integrations**:
   - **GitHub Contributions**: Live contribution history for the last 26 weeks, fetched from the public [github-contributions-api](https://github.com/grubersjoe/github-contributions-api) and drawn natively (falls back to a ghchart image if the request fails).
