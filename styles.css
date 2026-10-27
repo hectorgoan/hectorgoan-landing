@@ -179,6 +179,9 @@ a {
     overflow: hidden;
     -webkit-tap-highlight-color: transparent;
     transition: transform 0.6s var(--ease-spring), box-shadow 0.6s var(--ease-spring), background-color 0.4s ease;
+    /* Every card is always its own layer, as it is while the enter animation runs,
+       so the photo and map glows sit the same way before and after it ends */
+    z-index: 0;
 }
 
 /* Photo fills the tile edge to edge, cropped around its center */
