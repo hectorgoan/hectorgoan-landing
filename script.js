@@ -26,7 +26,6 @@ const App = {
     setup() {
         // --- State ---
         const theme = ref(localStorage.getItem('theme') || 'auto');
-        const glass = ref(localStorage.getItem('glass') === 'frosted' ? 'frosted' : 'liquid');
         const isHdrActive = ref(false);
         const isAnimating = ref(false);
         const moreOpen = ref(false);
@@ -36,8 +35,6 @@ const App = {
         const btnAuto = ref(null);
         const btnLight = ref(null);
         const btnDark = ref(null);
-        const btnLiquid = ref(null);
-        const btnFrosted = ref(null);
 
         const contributions = ref([]);
         const contributionsFailed = ref(false);
@@ -49,10 +46,6 @@ const App = {
         let mapLayer = null;
 
         const switchBgStyle = ref({
-            width: '0px',
-            transform: 'translateX(0px)'
-        });
-        const glassBgStyle = ref({
             width: '0px',
             transform: 'translateX(0px)'
         });
@@ -73,32 +66,28 @@ const App = {
             document.documentElement.classList.add(isDarkMode.value ? 'dark-mode' : 'light-mode');
         };
 
-        // Slide a thumb under the active button; -4px accounts for padding in theme-switch
-        const thumbStyle = (button) => {
-            const containerRect = button.parentElement.getBoundingClientRect();
-            const buttonRect = button.getBoundingClientRect();
-            return {
-                width: `${buttonRect.width}px`,
-                transform: `translateX(${buttonRect.left - containerRect.left - 4}px)`
-            };
-        };
-
         const updateSelectorPosition = () => {
             nextTick(() => {
-                const themeButton = { auto: btnAuto, light: btnLight, dark: btnDark }[theme.value].value;
-                const glassButton = (glass.value === 'frosted' ? btnFrosted : btnLiquid).value;
-                if (themeButton) switchBgStyle.value = thumbStyle(themeButton);
-                if (glassButton) glassBgStyle.value = thumbStyle(glassButton);
-            });
-        };
+                let activeButton = null;
+                if (theme.value === 'auto') activeButton = btnAuto.value;
+                if (theme.value === 'light') activeButton = btnLight.value;
+                if (theme.value === 'dark') activeButton = btnDark.value;
 
-        // Liquid or frosted material for the cards, kept per visitor
-        const setGlass = (newGlass) => {
-            glass.value = newGlass;
-            localStorage.setItem('glass', newGlass);
-            document.documentElement.classList.remove('glass-liquid', 'glass-frosted');
-            document.documentElement.classList.add(`glass-${newGlass}`);
-            updateSelectorPosition();
+                if (!activeButton) return;
+
+                // We need to calculate position relative to the container
+                // btnAuto.value is relatively close to the container
+                const containerRect = btnAuto.value.parentElement.getBoundingClientRect();
+                const buttonRect = activeButton.getBoundingClientRect();
+
+                const offsetLeft = buttonRect.left - containerRect.left;
+                const width = buttonRect.width;
+
+                switchBgStyle.value = {
+                    width: `${width}px`,
+                    transform: `translateX(${offsetLeft - 4}px)` // -4px accounts for padding in theme-switch
+                };
+            });
         };
 
         const loadContributions = async () => {
@@ -219,11 +208,6 @@ const App = {
             isAnimating,
             moreOpen,
             switchBgStyle,
-            glassBgStyle,
-            glass,
-            setGlass,
-            btnLiquid,
-            btnFrosted,
             btnAuto,
             btnLight,
             btnDark,
