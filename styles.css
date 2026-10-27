@@ -200,6 +200,14 @@ a {
     object-position: center;
 }
 
+/* Keep the photo and map cards on their own compositing layer, as they are during the
+   enter animation. Safari leaves the blur of the glow out when it checks which cards
+   overlap, so once the animation ended it drew the glow under the neighbouring cards */
+.tile-image,
+.tile-map {
+    will-change: transform;
+}
+
 /* Glow: a blurred copy of the photo (or the map's colours) spills softly onto the page */
 .tile-halo,
 .tile-map::before {
