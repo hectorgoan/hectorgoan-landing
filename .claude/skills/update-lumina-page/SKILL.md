@@ -49,7 +49,7 @@ hectorgoan/lumina, is private, so the page never links to it.
    description (the headline "Your desktop’s Swiss Army knife." is Héctor's marketing line,
    shared with the homepage tile, so keep it even if the README tagline differs), "Requires macOS …", and the install steps. Update them if the
    README changed (for example a new minimum macOS or notarization removing step 3), and the
-   licence tiles and price line ("To be announced soon" until Héctor sets a price) against its
+   licence tiles and price line (€14.99) against its
    "Free trial and licence" section. "Why Lumina isn’t on the Mac App Store" is Héctor's text:
    keep it word for word, and keep `SANDBOXED` in step with the tools its reasons name.
 6. Look at the page at desktop and phone widths, in light and dark (serve the repo with

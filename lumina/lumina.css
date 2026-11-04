@@ -587,6 +587,13 @@ a:focus-visible,
     color: var(--text-primary);
 }
 
+.lp-amount {
+    font-size: 17px;
+    font-weight: 600;
+    letter-spacing: -0.015em;
+    color: var(--indigo);
+}
+
 .lp-tba {
     display: inline-flex;
     align-items: center;
@@ -1034,4 +1041,40 @@ a:focus-visible,
         gap: 12px;
         padding: 24px 0;
     }
+}
+
+/* Terms, refunds and privacy pages */
+.lp-legal {
+    max-width: 760px;
+    padding-top: 64px;
+    padding-bottom: 48px;
+}
+
+.lp-legal-date {
+    margin-top: 8px;
+    font-size: 14px;
+    color: var(--text-secondary);
+}
+
+.lp-legal h2 {
+    margin-top: 40px;
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+}
+
+.lp-legal p,
+.lp-legal li {
+    margin-top: 10px;
+    font-size: 17px;
+    line-height: 1.55;
+    color: var(--text-secondary);
+}
+
+.lp-legal ul {
+    padding-left: 1.2em;
+}
+
+.lp-legal a {
+    color: var(--lp-cta);
 }

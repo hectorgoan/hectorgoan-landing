@@ -15,7 +15,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="../styles.css?v=2.2">
-    <link rel="stylesheet" href="lumina.css?v=1.8">
+    <link rel="stylesheet" href="lumina.css?v=1.9">
     <script>
         // Same theme choice as the homepage, applied before the body renders
         const t = localStorage.getItem('theme') || 'auto';
@@ -55,7 +55,7 @@
                 </div>
                 <ul class="lp-perks">
                     <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg>Free for 14 days</li>
-                    <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg>Pay once, price to be announced</li>
+                    <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg>Pay once, €14.99</li>
                     <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg>No account</li>
                 </ul>
                 <!-- The version is set by scripts/sync_lumina.py from Lumina's README -->
@@ -224,8 +224,8 @@
                 </ul>
                 <p class="lp-price">
                     <strong>Price</strong>
-                    <span class="lp-tba"><span class="lp-tba-dot" aria-hidden="true"></span>To be announced soon</span>
-                    <span class="lp-price-d">One payment for a licence that never expires. Try it free in the meantime.</span>
+                    <span class="lp-amount">€14.99</span>
+                    <span class="lp-price-d">One payment, VAT included, for a licence that never expires. Try it free for 14 days first.</span>
                 </p>
             </div>
         </section>
@@ -335,7 +335,7 @@
                 <div class="lp-sec-head">
                     <div>
                         <h2 class="lp-h2" id="install">Install in a minute.</h2>
-                        <p class="lp-sec-lede">Lumina comes from this site, not the App Store, so macOS asks you once to allow it.</p>
+                        <p class="lp-sec-lede">Lumina comes from this site, not the App Store. It’s notarized by Apple, so it opens like any other app.</p>
                     </div>
                 </div>
                 <ol class="lp-steps">
@@ -351,12 +351,11 @@
                     </li>
                     <li class="lp-step">
                         <span class="lp-step-n" aria-hidden="true">3</span>
-                        <span class="lp-step-t">Click Open Anyway</span>
-                        <span class="lp-step-d">The first time, macOS says it can’t check Lumina for malicious software. Scroll down and click Open Anyway next to the message about Lumina.</span>
-                        <span class="lp-path">System Settings › Privacy &amp; Security</span>
+                        <span class="lp-step-t">Find it in the menu bar</span>
+                        <span class="lp-step-d">Lumina lives in your menu bar, next to Control Center. Click its icon to open the panel.</span>
                     </li>
                 </ol>
-                <p class="lp-note">You only do this once. Some utilities ask for a permission the first time you use them, like Accessibility for Keyboard Lock. Lumina checks for updates when it opens and every six hours, installs them in place, and shows you what’s new.</p>
+                <p class="lp-note">Some utilities ask for a permission the first time you use them, like Accessibility for Keyboard Lock. Lumina checks for updates when it opens and every six hours, installs them in place, and shows you what’s new.</p>
             </div>
         </section>
 
@@ -375,7 +374,7 @@
 
     <footer class="lp-wrap lp-foot">
         <span>Lumina is a side project by <a href="../">Héctor Go. An.</a></span>
-        <span>Releases on <a href="https://github.com/hectorgoan/lumina-releases/releases" target="_blank" rel="noopener">GitHub</a> · <a href="mailto:hectorgoan@gmail.com?subject=Lumina">Email the developer</a></span>
+        <span><a href="terms.html">Terms</a> · <a href="refunds.html">Refunds</a> · <a href="privacy.html">Privacy</a> · <a href="https://github.com/hectorgoan/lumina-releases/releases" target="_blank" rel="noopener">Releases</a> · <a href="mailto:hectorgoan@gmail.com?subject=Lumina">Email the developer</a></span>
     </footer>
 
     <script src="lumina.js?v=1.2"></script>

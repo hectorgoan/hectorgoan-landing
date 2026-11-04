@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="description" content="Lumina Privacy Policy.">
+    <meta name="theme-color" content="#f5f5f7" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
+    <title>Privacy Policy | Lumina</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles.css?v=2.2">
+    <link rel="stylesheet" href="lumina.css?v=1.9">
+    <script>
+        const t = localStorage.getItem('theme') || 'auto';
+        if (t === 'dark' || (t === 'auto' && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark-mode');
+        } else {
+            document.documentElement.classList.add('light-mode');
+        }
+    </script>
+</head>
+
+<body>
+    <nav class="lp-nav" aria-label="Lumina">
+        <div class="lp-wrap lp-nav-in">
+            <a class="lp-back" href="./">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6" /></svg>
+                <span class="lp-back-label">Lumina</span>
+            </a>
+            <span class="lp-nav-name">Privacy Policy</span>
+            <a class="lp-btn lp-btn-primary lp-btn-sm" href="https://github.com/hectorgoan/lumina-releases/releases/latest/download/Lumina.zip">Download</a>
+        </div>
+    </nav>
+
+    <main class="lp-wrap lp-legal">
+        <h1 class="lp-h2">Privacy Policy</h1>
+        <p class="lp-sec-lede">Lumina keeps your data on your Mac.</p>
+        <p class="lp-legal-date">Last updated November 4, 2026</p>
+<h2>The short version</h2>
+<p>Lumina has no account and doesn’t upload your files, your activity or anything you see in its panel. Everything its utilities read, like storage, processes, batteries and media, stays on your Mac.</p>
+<h2>Anonymous usage count</h2>
+<p>Once a day, Lumina sends a small anonymous report so I know how many people use it and which versions are in use:</p>
+<ul>
+<li>a random ID made on your Mac, not linked to you;</li>
+<li>whether Lumina is on its trial or licensed, and a one-way fingerprint of your licence key (not the key itself);</li>
+<li>Lumina’s version and your macOS version.</li>
+</ul>
+<p>It’s stored on Cloudflare and used only to count installs. You can turn it off in Lumina’s Settings › Share Anonymous Usage.</p>
+<h2>Updates</h2>
+<p>To check for updates, Lumina downloads a list of versions from GitHub. Like any website, GitHub sees your IP address when this happens (see <a href="https://docs.github.com/site-policy/privacy-policies/github-general-privacy-statement" target="_blank" rel="noopener">GitHub’s privacy statement</a>).</p>
+<h2>Buying a licence</h2>
+<p>Payments are handled by Paddle, the Merchant of Record for Lumina. Paddle collects your payment details under <a href="https://www.paddle.com/legal/privacy" target="_blank" rel="noopener">its privacy policy</a>; I never see your card. I receive your name, email address and country so I can send your licence key and help you with your order. I don’t sell or share them, and I don’t send marketing email.</p>
+<h2>Your licence key</h2>
+<p>Lumina checks your key on your Mac, offline. It isn’t sent anywhere, except as the one-way fingerprint above.</p>
+<h2>This website</h2>
+<p>This site has no ads, analytics or tracking cookies. It remembers your light or dark choice in your browser, and loads its font from Google Fonts.</p>
+<h2>Your rights</h2>
+<p>You can ask me what data I hold about you, and to correct or delete it, at <a href="mailto:hectorgoan@gmail.com?subject=Lumina">hectorgoan@gmail.com</a>.</p>
+    </main>
+
+    <footer class="lp-wrap lp-foot">
+        <span>Lumina is a side project by <a href="../">Héctor Go. An.</a></span>
+        <span><a href="terms.html">Terms</a> · <a href="refunds.html">Refunds</a> · <a href="privacy.html">Privacy</a> · <a href="mailto:hectorgoan@gmail.com?subject=Lumina">Email the developer</a></span>
+    </footer>
+</body>
+
+</html>
