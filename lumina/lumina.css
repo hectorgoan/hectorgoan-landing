@@ -1078,3 +1078,89 @@ a:focus-visible,
 .lp-legal a {
     color: var(--lp-cta);
 }
+
+/* Buy page */
+.lp-buy {
+    max-width: 640px;
+    padding-top: 64px;
+    padding-bottom: 48px;
+    text-align: center;
+}
+
+.lp-buy .lp-cta-icon {
+    margin: 0 auto 20px;
+}
+
+.lp-buy .lp-ctas {
+    justify-content: center;
+    margin-top: 28px;
+}
+
+.lp-buy-price {
+    margin-top: 12px;
+    font-size: 32px;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    color: var(--indigo);
+}
+
+.lp-buy-fine {
+    margin-top: 20px;
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--text-secondary);
+}
+
+.lp-buy-fine a,
+.lp-buy a {
+    color: var(--lp-cta);
+}
+
+.lp-key {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    margin-top: 24px;
+    padding: 20px;
+    border-radius: 20px;
+    background: var(--tile-bg);
+    box-shadow: var(--tile-shadow);
+}
+
+.lp-key code {
+    width: 100%;
+    font: 500 13px/1.5 ui-monospace, SFMono-Regular, Menlo, monospace;
+    word-break: break-all;
+    user-select: all;
+    color: var(--text-primary);
+}
+
+.lp-buy-steps {
+    margin: 28px auto 0;
+    max-width: 30em;
+    padding-left: 1.2em;
+    text-align: left;
+    font-size: 17px;
+    line-height: 1.55;
+    color: var(--text-secondary);
+}
+
+.lp-buy-steps li + li {
+    margin-top: 8px;
+}
+
+.lp-buy-steps strong {
+    color: var(--text-primary);
+}
+
+button.lp-btn {
+    border: 0;
+    font: inherit;
+    cursor: pointer;
+}
+
+button.lp-btn:disabled {
+    opacity: 0.5;
+    cursor: default;
+}
