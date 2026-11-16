@@ -1,13 +1,24 @@
 // Buy page: Paddle's overlay checkout, then the licence key from Lumina's
 // store Worker (hectorgoan/lumina › store/).
 //
-// Going live: switch these four to the live account's values.
-const STORE = {
-    environment: 'sandbox', // 'production' when live
-    token: 'test_6a22d7fe2984f7ed59a0e9738b5', // client-side token (public by design)
-    priceID: 'pri_01m6pdvtw0x1ewc85vkbtcsp48',
-    worker: 'https://lumina-store-sandbox.hectorgoan.workers.dev', // https://lumina-store.hectorgoan.workers.dev
+// LIVE switches the page to the live Paddle account once its domain is
+// approved and the live store is deployed (store/setup.sh production).
+// After that, ?sandbox still opens the sandbox checkout for testing.
+const LIVE = false;
+const STORES = {
+    sandbox: {
+        environment: 'sandbox',
+        token: 'test_6a22d7fe2984f7ed59a0e9738b5', // client-side tokens are public by design
+        priceID: 'pri_01m6pdvtw0x1ewc85vkbtcsp48',
+        worker: 'https://lumina-store-sandbox.hectorgoan.workers.dev',
+    },
+    production: {
+                token: 'live_e2248662111a2382cbdb030e286',
+        priceID: 'pri_01m7jqwc537qvrwmr18hg939ks',
+        worker: 'https://lumina-store.hectorgoan.workers.dev',
+    },
 };
+const STORE = LIVE && !new URLSearchParams(location.search).has('sandbox') ? STORES.production : STORES.sandbox;
 
 const $ = (id) => document.getElementById(id);
 
@@ -48,14 +59,14 @@ $('buy-copy').addEventListener('click', async () => {
     setTimeout(() => { $('buy-copy').textContent = 'Copy Key'; }, 2000);
 });
 
-Paddle.Environment.set(STORE.environment);
+if (STORE.environment) Paddle.Environment.set('sandbox');
 Paddle.Initialize({
     token: STORE.token,
     eventCallback(event) {
         if (event.name === 'checkout.completed' && event.data?.transaction_id) {
             const txn = event.data.transaction_id;
             // A reload shows the key again.
-            history.replaceState(null, '', `?txn=${txn}`);
+            history.replaceState(null, '', `?${STORE === STORES.sandbox && LIVE ? 'sandbox&' : ''}txn=${txn}`);
             Paddle.Checkout.close();
             showKey(txn);
         }
