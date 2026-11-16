@@ -1308,13 +1308,28 @@ a.tile-project:hover {
     padding: 0;
 }
 
-/* The card is a little desktop: wallpaper, menu bar, Lumina's panel */
-:root .tile.tile-app {
-    background: radial-gradient(120% 140% at 100% 0%, #d9d7fb 0%, #ece9fb 40%, #fbfbfd 75%);
+/* The real desktop sits on the right and fades into the card behind the words */
+.app-desktop {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    overflow: hidden;
+    -webkit-mask-image: linear-gradient(90deg, transparent 360px, #000 540px), linear-gradient(180deg, #000 72%, transparent);
+    -webkit-mask-composite: source-in;
+    mask-image: linear-gradient(90deg, transparent 360px, #000 540px), linear-gradient(180deg, #000 72%, transparent);
+    mask-composite: intersect;
 }
 
-/* The menu bar and the panel cover the card's inset ring, so draw the ring
-   on top of them, all the way round */
+.app-desktop img {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 100%;
+    width: auto;
+    max-width: none;
+}
+
+/* Draw the card's ring above the desktop, all the way round */
 :root .tile.tile-app {
     box-shadow: var(--project-glow);
 }
@@ -1329,110 +1344,6 @@ a.tile-project:hover {
     z-index: 2;
 }
 
-:root.dark-mode .tile.tile-app {
-    background: radial-gradient(120% 140% at 100% 0%, #3b3a8f 0%, #1f1e45 40%, #141418 75%);
-}
-
-.app-menubar {
-    position: absolute;
-    inset: 0 0 auto;
-    height: 30px;
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    padding: 0 18px;
-    background: rgba(255, 255, 255, 0.55);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    box-shadow: inset 0 -0.5px 0 rgba(0, 0, 0, 0.06);
-    color: var(--text-primary);
-    font-size: 12px;
-    font-weight: 600;
-    z-index: 1;
-}
-
-:root.dark-mode .app-menubar {
-    background: rgba(20, 20, 40, 0.45);
-    box-shadow: inset 0 -0.5px 0 rgba(255, 255, 255, 0.08);
-}
-
-.app-menubar svg {
-    flex-shrink: 0;
-    fill: none;
-    stroke: currentColor;
-    stroke-width: 2;
-    stroke-linecap: round;
-}
-
-.app-menubar .mb-apple {
-    width: 13px;
-    height: 15px;
-    fill: currentColor;
-    stroke: none;
-}
-
-.mb-spacer {
-    flex-grow: 1;
-}
-
-.mb-glyph {
-    width: 16px;
-    height: 16px;
-}
-
-.mb-glyph circle,
-.mb-charge {
-    fill: currentColor;
-    stroke: none;
-}
-
-.app-menubar .mb-battery {
-    width: 22px;
-    height: 12px;
-    stroke-width: 1.5;
-}
-
-/* Lumina's icon, selected, with its panel open under it */
-.mb-lumina {
-    position: relative;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 30px;
-    height: 22px;
-    border-radius: 6px;
-    background: rgba(0, 0, 0, 0.1);
-}
-
-:root.dark-mode .mb-lumina {
-    background: rgba(255, 255, 255, 0.18);
-}
-
-.mb-lumina svg {
-    width: 16px;
-    height: 16px;
-}
-
-.app-shot {
-    position: absolute;
-    top: 34px;
-    left: 50%;
-    width: 212px;
-    transform: translateX(-50%);
-}
-
-.app-shot img {
-    display: block;
-    width: 100%;
-    height: auto;
-    border-radius: 16px;
-    box-shadow: 0 0 0 0.5px rgba(0, 0, 0, 0.1), 0 20px 40px -12px rgba(40, 40, 90, 0.4);
-}
-
-:root.dark-mode .app-shot img {
-    box-shadow: 0 0 0 0.5px rgba(255, 255, 255, 0.16), 0 24px 48px -12px rgba(0, 0, 0, 0.7);
-}
-
 .app-text {
     position: relative;
     display: flex;
@@ -1441,9 +1352,9 @@ a.tile-project:hover {
     justify-content: center;
     gap: 6px;
     max-width: 360px;
-    min-height: 270px;
-    margin-top: 30px;
-    padding: 20px 32px 24px;
+    min-height: 300px;
+    box-sizing: border-box;
+    padding: 24px 32px;
 }
 
 .app-icon {
@@ -1516,9 +1427,9 @@ a.tile-project:hover {
     color: var(--text-secondary);
 }
 
-/* Too narrow for the panel beside the text: the menu bar stays, the panel goes */
+/* Too narrow for the desktop beside the text */
 @media (max-width: 1023px) {
-    .app-shot {
+    .app-desktop {
         display: none;
     }
 
