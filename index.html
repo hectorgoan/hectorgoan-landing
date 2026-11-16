@@ -21,7 +21,7 @@
     <!-- Leaflet for the live location map -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
 
-    <link rel="stylesheet" href="styles.css?v=3.9">
+    <link rel="stylesheet" href="styles.css?v=3.10">
     <script>
         // Prevent FOUC by applying theme before body renders
         const t = localStorage.getItem('theme') || 'auto';
@@ -59,11 +59,12 @@
                         <img src="resources/lumina-icon.png" alt="" class="app-icon" width="160" height="160">
                         <h3 class="title">Lumina</h3>
                         <p class="sub">Your desktop’s Swiss Army knife, one click away in the menu bar.</p>
-                        <!-- One action: the Lumina page covers both the free trial and buying -->
+                        <!-- One action: the Lumina page covers both the free trial and buying.
+                             The price sits beside the button, or under it on phones -->
                         <div class="app-actions">
                             <a href="lumina/" class="app-btn app-btn-primary">Get Lumina</a>
+                            <p class="app-note"><span class="app-note-lead">Free for 14 days</span> <span>then €14.99 once · macOS 26+</span></p>
                         </div>
-                        <p class="app-note">Free for 14 days, then €14.99 once · macOS 26+</p>
                     </div>
                 </div>
                 <div class="apps-soon">More apps soon</div>

@@ -1380,9 +1380,9 @@ a.tile-project:hover {
 
 .app-actions {
     display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-top: 14px;
+    align-items: center;
+    gap: 16px;
+    margin-top: 18px;
 }
 
 .app-btn {
@@ -1412,20 +1412,110 @@ a.tile-project:hover {
 }
 
 .app-note {
-    margin: 8px 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    margin: 0;
     font-size: 13px;
-    line-height: 18px;
+    line-height: 17px;
     color: var(--text-secondary);
 }
 
-/* Too narrow for the desktop beside the text */
+.app-note-lead {
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+/* Each line stays whole; it only runs past the text column into the faded part of the desktop */
+.app-note span {
+    white-space: nowrap;
+}
+
+/* Tablets: Lumina gets the full row, so the real desktop still fits beside the text */
 @media (max-width: 1023px) {
+    .apps {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 14px;
+    }
+
+    .apps-soon {
+        min-height: 72px;
+    }
+}
+
+/* Phones: no desktop. The icon sits beside the name, and the button runs the
+   full width with the price centred under it */
+@media (max-width: 767px) {
     .app-desktop {
         display: none;
     }
 
+    .tile-app {
+        min-height: 0;
+    }
+
     .app-text {
+        display: grid;
+        grid-template-columns: auto minmax(0, 1fr);
+        column-gap: 14px;
+        row-gap: 2px;
+        align-items: center;
         max-width: none;
+        min-height: 0;
+        padding: 24px;
+    }
+
+    .app-icon {
+        grid-row: 1 / span 2;
+        width: 56px;
+        height: 56px;
+        margin: -4px;
+    }
+
+    .tile-app .title {
+        align-self: end;
+        font-size: 24px;
+        line-height: 28px;
+    }
+
+    .tile-app .sub,
+    .tile-app .sub:is(*) {
+        align-self: start;
+        font-size: 14px;
+        line-height: 19px;
+    }
+
+    .app-actions {
+        grid-column: 1 / -1;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+    }
+
+    .app-btn {
+        justify-content: center;
+        min-height: 48px;
+        font-size: 16px;
+    }
+
+    .app-note {
+        display: block;
+        text-align: center;
+        line-height: 18px;
+        text-wrap: balance;
+    }
+
+    .app-note span {
+        white-space: normal;
+    }
+
+    .app-note-lead {
+        font-weight: inherit;
+        color: inherit;
+    }
+
+    .app-note-lead::after {
+        content: ",";
     }
 }
 
@@ -1449,14 +1539,4 @@ a.tile-project:hover {
     .topbar-nav {
         gap: 16px;
     }
-
-    .apps {
-        grid-template-columns: minmax(0, 1fr);
-        gap: 14px;
-    }
-
-    .apps-soon {
-        min-height: 72px;
-    }
-
 }
