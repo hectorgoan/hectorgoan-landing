@@ -174,12 +174,15 @@ a {
     -webkit-tap-highlight-color: transparent;
     transition: transform 0.6s var(--ease-spring), box-shadow 0.6s var(--ease-spring), background-color 0.4s ease;
     /* Every card is always its own layer, as it is while the enter animation runs,
-       so the photo glows sit the same way before and after it ends */
-    z-index: 0;
+       so the photo glows sit the same way before and after it ends. Cards sit one
+       layer above the photos, so a photo's glow always passes under the frosted
+       glass, whichever side of the card the photo is on */
+    z-index: 1;
 }
 
 /* Photo fills the tile edge to edge, cropped around its center */
 .tile-image {
+    z-index: 0;
     padding: 0;
     overflow: visible;
     background: transparent;
