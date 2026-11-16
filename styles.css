@@ -231,6 +231,20 @@ a {
     background: var(--halo-map);
 }
 
+/* Once the live map loads, the glow comes from the selected map itself,
+   tinted the same way as its tiles */
+.tile-map.live::before {
+    background: var(--halo-map-tile) center / cover no-repeat, var(--halo-map);
+}
+
+.tile-map.live:not(.satellite)::before {
+    filter: blur(40px) saturate(1.2) brightness(1.02);
+}
+
+:root.dark-mode .tile-map.live:not(.satellite)::before {
+    filter: invert(1) hue-rotate(180deg) blur(40px) brightness(0.9) contrast(0.9) saturate(0.8);
+}
+
 @media (min-width: 768px) {
     .tile {
         border-radius: 32px;

@@ -120,7 +120,8 @@
                 </div>
 
                 <!-- Location map -->
-                <section class="tile tile-map span-2 rows-2" :class="{ satellite: mapType === 'satellite' }">
+                <section class="tile tile-map span-2 rows-2" :class="{ satellite: mapType === 'satellite', live: mapReady }"
+                    :style="mapHaloStyle">
                     <!-- The map is clipped inside the card, so its glow can spill outside -->
                     <div class="map-clip">
                         <!-- Drawn fallback, covered by the live map once it loads -->

@@ -21,6 +21,21 @@ const MAP_LAYERS = {
     }
 };
 
+// The map card's glow is a blurred tile of the selected map around MAP_CENTER
+const HALO_ZOOM = 14;
+const haloTileUrl = (type) => {
+    const [lat, lng] = MAP_CENTER;
+    const n = 2 ** HALO_ZOOM;
+    const rad = lat * Math.PI / 180;
+    const x = Math.floor((lng + 180) / 360 * n);
+    const y = Math.floor((1 - Math.log(Math.tan(rad) + 1 / Math.cos(rad)) / Math.PI) / 2 * n);
+    return MAP_LAYERS[type].url
+        .replace('{s}', 'a')
+        .replace('{z}', HALO_ZOOM)
+        .replace('{x}', x)
+        .replace('{y}', y);
+};
+
 
 const App = {
     setup() {
@@ -54,6 +69,11 @@ const App = {
         const isDarkMode = computed(() => {
             return theme.value === 'dark' || (theme.value === 'auto' && systemDark.value);
         });
+
+        // Until the live map loads, the glow keeps the drawn map's colours
+        const mapHaloStyle = computed(() => mapReady.value
+            ? { '--halo-map-tile': `url("${haloTileUrl(mapType.value === 'street' ? 'street' : 'satellite')}")` }
+            : {});
 
         const contributionsLabel = computed(() => {
             const total = contributions.value.reduce((sum, day) => sum + day.count, 0);
@@ -219,6 +239,7 @@ const App = {
             contributionsLabel,
             mapType,
             mapReady,
+            mapHaloStyle,
             mapEl,
             setMapType
         };
