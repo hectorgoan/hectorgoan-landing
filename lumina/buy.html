@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="description" content="Buy Lumina: one payment for a licence that never expires.">
+    <meta name="robots" content="noindex">
+    <meta name="theme-color" content="#f5f5f7" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
+    <title>Buy Lumina | Héctor Go. An.</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles.css?v=2.2">
+    <link rel="stylesheet" href="lumina.css?v=2.0">
+    <script>
+        const t = localStorage.getItem('theme') || 'auto';
+        if (t === 'dark' || (t === 'auto' && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark-mode');
+        } else {
+            document.documentElement.classList.add('light-mode');
+        }
+    </script>
+</head>
+
+<body>
+    <nav class="lp-nav" aria-label="Lumina">
+        <div class="lp-wrap lp-nav-in">
+            <a class="lp-back" href="./">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6" /></svg>
+                <span class="lp-back-label">Lumina</span>
+            </a>
+            <span class="lp-nav-name">Buy Lumina</span>
+            <span></span>
+        </div>
+    </nav>
+
+    <main class="lp-wrap lp-buy">
+        <img class="lp-cta-icon" src="../resources/lumina-icon.png" alt="" width="160" height="160">
+
+        <!-- Before paying -->
+        <section id="buy-offer">
+            <h1 class="lp-h2">Buy Lumina.</h1>
+            <p class="lp-buy-price" id="buy-price" aria-live="polite">$14.99</p>
+            <p class="lp-sec-lede">One payment for a licence that never expires, with every update. Taxes included.</p>
+            <div class="lp-ctas">
+                <button class="lp-btn lp-btn-primary" id="buy-button" type="button" disabled>Buy Now</button>
+            </div>
+            <p class="lp-buy-fine">Payments are handled by Paddle, our reseller. 30-day refunds, no questions asked. <a href="terms.html">Terms</a> · <a href="refunds.html">Refunds</a> · <a href="privacy.html">Privacy</a></p>
+        </section>
+
+        <!-- After paying: the key -->
+        <section id="buy-done" hidden>
+            <h1 class="lp-h2">Thank you!</h1>
+            <p class="lp-sec-lede" id="buy-status" aria-live="polite">Getting your licence key…</p>
+            <div class="lp-key" id="buy-key-box" hidden>
+                <code id="buy-key"></code>
+                <button class="lp-btn lp-btn-primary lp-btn-sm" id="buy-copy" type="button">Copy Key</button>
+            </div>
+            <ol class="lp-buy-steps" id="buy-steps" hidden>
+                <li>Copy your key.</li>
+                <li>In Lumina, click <strong>…</strong> › <strong>Licence…</strong>. A key you’ve just copied fills itself in.</li>
+                <li>Keep it somewhere safe: it works on your Macs for good. <span id="buy-email-note"></span></li>
+            </ol>
+        </section>
+    </main>
+
+    <footer class="lp-wrap lp-foot">
+        <span>Lumina is a side project by <a href="../">Héctor Go. An.</a></span>
+        <span><a href="terms.html">Terms</a> · <a href="refunds.html">Refunds</a> · <a href="privacy.html">Privacy</a> · <a href="mailto:hectorgoan@gmail.com?subject=Lumina">Email the developer</a></span>
+    </footer>
+
+    <script src="https://cdn.paddle.com/paddle/v2/paddle.js"></script>
+    <script src="buy.js?v=1.0"></script>
+</body>
+
+</html>
