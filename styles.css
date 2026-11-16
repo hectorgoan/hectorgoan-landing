@@ -150,6 +150,18 @@ a {
     grid-row: span 2;
 }
 
+/* On phones the last row splits in two: the X card on its own, then the volcano
+   and New York photos side by side */
+@media (max-width: 767px) {
+    .tile-codes {
+        order: 1;
+    }
+
+    .tile-closing-photo {
+        order: 2;
+    }
+}
+
 @media (min-width: 768px) {
     .bento-grid {
         grid-template-columns: repeat(4, minmax(0, 1fr));
