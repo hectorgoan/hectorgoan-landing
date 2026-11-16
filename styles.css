@@ -1313,6 +1313,22 @@ a.tile-project:hover {
     background: radial-gradient(120% 140% at 100% 0%, #d9d7fb 0%, #ece9fb 40%, #fbfbfd 75%);
 }
 
+/* The menu bar and the panel cover the card's inset ring, so draw the ring
+   on top of them, all the way round */
+:root .tile.tile-app {
+    box-shadow: var(--project-glow);
+}
+
+.tile-app::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    box-shadow: var(--project-ring);
+    pointer-events: none;
+    z-index: 2;
+}
+
 :root.dark-mode .tile.tile-app {
     background: radial-gradient(120% 140% at 100% 0%, #3b3a8f 0%, #1f1e45 40%, #141418 75%);
 }
