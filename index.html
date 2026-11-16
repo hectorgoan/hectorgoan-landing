@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <meta name="description" content="Héctor Go. An. - Software Architect + Vue.js Tech Lead. Personal landing page.">
+    <meta name="description" content="Héctor Go. An. - Software Architect + Vue.js Tech Lead, and maker of Lumina for Mac.">
     <!-- Prevent caching to ensure the latest version is downloaded -->
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
     <meta http-equiv="Pragma" content="no-cache" />
@@ -21,7 +21,7 @@
     <!-- Leaflet for the live location map -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
 
-    <link rel="stylesheet" href="styles.css?v=3.5">
+    <link rel="stylesheet" href="styles.css?v=3.6">
     <script>
         // Prevent FOUC by applying theme before body renders
         const t = localStorage.getItem('theme') || 'auto';
@@ -37,6 +37,43 @@
     <div id="app">
         <div class="page" v-cloak>
 
+            <!-- Top bar -->
+            <header class="topbar">
+                <a href="#" class="topbar-name">Héctor Go. An.</a>
+                <nav class="topbar-nav" aria-label="Sections">
+                    <a href="#apps">Apps</a>
+                    <a href="#about">About</a>
+                    <a href="mailto:hello@hectorgoan.com?subject=Hello%2C%20H%C3%A9ctor">Contact</a>
+                </nav>
+            </header>
+            <!-- Apps I make and sell -->
+            <h2 id="apps" class="section-title">Apps</h2>
+            <section class="apps">
+                <div class="tile tile-project tile-app">
+                    <div class="app-text">
+                        <img src="resources/lumina-icon.png" alt="" class="app-icon" width="160" height="160">
+                        <div class="project-name">
+                            <h3 class="title">Lumina</h3>
+                            <span class="pill">
+                                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 16V6.5A1.5 1.5 0 0 1 6 5h12a1.5 1.5 0 0 1 1.5 1.5V16M2.5 19h19" /></svg>
+                                macOS
+                            </span>
+                        </div>
+                        <p class="sub">Your desktop’s Swiss Army knife, in the menu bar.</p>
+                        <div class="app-actions">
+                            <a href="lumina/" class="app-btn app-btn-primary">Buy · €14.99</a>
+                            <a href="https://github.com/hectorgoan/lumina-releases/releases/latest/download/Lumina.zip" class="app-btn app-btn-secondary">Download free trial</a>
+                        </div>
+                        <p class="app-note">One-time purchase · 14-day free trial · macOS 26+ · <a href="lumina/">Learn more</a></p>
+                    </div>
+                    <a href="lumina/" class="app-shot" aria-label="Learn more about Lumina">
+                        <img src="resources/lumina-panel-light.jpg" alt="" class="project-shot-light" width="424" height="672" decoding="async">
+                        <img src="resources/lumina-panel-dark.jpg" alt="" class="project-shot-dark" width="424" height="672" decoding="async">
+                    </a>
+                </div>
+                <div class="apps-soon">More apps soon</div>
+            </section>
+            <h2 id="about" class="section-title">About</h2>
             <!-- Bento Grid -->
             <main class="bento-grid" :class="{ 'hdr-active': isHdrActive, 'animate-in': isAnimating }">
 
@@ -117,25 +154,6 @@
                     </div>
                 </section>
 
-                <!-- Latest side project -->
-                <a href="lumina/" class="tile tile-project span-2">
-                    <img src="resources/lumina-icon.png" alt="" class="project-icon" width="160" height="160">
-                    <img src="resources/lumina-panel-light.jpg" alt="" class="project-shot project-shot-light" width="424" height="672" decoding="async">
-                    <img src="resources/lumina-panel-dark.jpg" alt="" class="project-shot project-shot-dark" width="424" height="672" decoding="async">
-                    <span class="go" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 17 17 7M8 7h9v9" /></svg></span>
-                    <div class="project-text">
-                        <div class="eyebrow"><span class="project-new">New</span> · Side project</div>
-                        <div class="project-name">
-                            <div class="title">Lumina</div>
-                            <span class="pill">
-                                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 16V6.5A1.5 1.5 0 0 1 6 5h12a1.5 1.5 0 0 1 1.5 1.5V16M2.5 19h19" /></svg>
-                                macOS
-                            </span>
-                        </div>
-                        <div class="sub">Your desktop’s Swiss Army knife.</div>
-                    </div>
-                </a>
-
                 <!-- GitHub -->
                 <a href="https://github.com/hectorgoan" target="_blank" rel="noopener" class="tile tile-github span-2">
                     <div class="tile-header">
@@ -177,7 +195,7 @@
                 </div>
 
                 <!-- X / Twitter (codes) -->
-                <a href="https://twitter.com/hectorgoanCodes" target="_blank" rel="noopener" class="tile tile-link">
+                <a href="https://twitter.com/hectorgoanCodes" target="_blank" rel="noopener" class="tile tile-link span-2">
                     <svg class="glyph glyph-x" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.8 3h3.1l-6.8 7.7L22 21h-6.2l-4.9-6.4L5.3 21H2.2l7.2-8.3L1.8 3h6.4l4.4 5.8L17.8 3zm-1.1 16.2h1.7L7.4 4.7H5.6l11.1 14.5z" /></svg>
                     <span class="go" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 17 17 7M8 7h9v9" /></svg></span>
                     <div>
@@ -187,7 +205,7 @@
                 </a>
 
                 <!-- Fuego Volcano Image -->
-                <div class="tile tile-image span-1">
+                <div class="tile tile-image span-2">
                     <img src="resources/fuegovolcano.jpeg" alt="" class="tile-halo" aria-hidden="true" loading="lazy" decoding="async">
                     <img src="resources/fuegovolcano.jpeg" alt="Fuego Volcano, Guatemala" class="responsive-img" loading="lazy" decoding="async">
                 </div>
