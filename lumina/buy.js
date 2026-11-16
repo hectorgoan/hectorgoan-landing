@@ -50,7 +50,7 @@ async function showKey(txn) {
         } catch { /* network hiccup: try again */ }
         await new Promise((resolve) => setTimeout(resolve, 2000));
     }
-    $('buy-status').innerHTML = `Your payment went through, but your key is taking a while. Reload this page in a minute, or <a href="mailto:hectorgoancodes@gmail.com?subject=Lumina%20licence%20key%20(${encodeURIComponent(txn)})">email me</a> with order <strong>${txn}</strong> and I’ll send it.`;
+    $('buy-status').innerHTML = `Your payment went through, but your key is taking a while. Reload this page in a minute, or <a href="mailto:hello@hectorgoan.com?subject=Lumina%20licence%20key%20(${encodeURIComponent(txn)})">email me</a> with order <strong>${txn}</strong> and I’ll send it.`;
 }
 
 $('buy-copy').addEventListener('click', async () => {
