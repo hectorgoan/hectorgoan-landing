@@ -1411,17 +1411,6 @@ a.tile-project:hover {
     filter: brightness(1.08);
 }
 
-.app-btn-secondary {
-    background: rgba(255, 255, 255, 0.75);
-    box-shadow: inset 0 0 0 0.5px rgba(0, 0, 0, 0.08);
-    color: var(--text-primary);
-}
-
-:root.dark-mode .app-btn-secondary {
-    background: rgba(255, 255, 255, 0.12);
-    box-shadow: inset 0 0 0 0.5px rgba(255, 255, 255, 0.14);
-}
-
 .app-note {
     margin: 8px 0 0;
     font-size: 13px;
