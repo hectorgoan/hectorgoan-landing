@@ -20,11 +20,8 @@
     --glass-sheen: rgba(255, 255, 255, 0.45);
     --glass-thumb: rgba(0, 0, 0, 0.07);
 
-    /* Glow behind the photo and map cards */
+    /* Glow behind the photo cards */
     --halo-opacity: 0.78;
-    --halo-map: radial-gradient(55% 45% at 22% 88%, #9fd39a, rgba(159, 211, 154, 0) 70%),
-        radial-gradient(45% 60% at 78% 22%, #8cc4f0, rgba(140, 196, 240, 0) 72%),
-        radial-gradient(40% 40% at 50% 50%, #0a84ff, rgba(10, 132, 255, 0) 75%), #efe6d6;
 
     /* Frosted glass cards */
     --card-fill: rgba(0, 0, 0, 0.045);
@@ -77,9 +74,6 @@
     --glass-thumb: rgba(255, 255, 255, 0.16);
 
     --halo-opacity: 0.62;
-    --halo-map: radial-gradient(55% 45% at 22% 88%, #2e6b46, rgba(46, 107, 70, 0) 70%),
-        radial-gradient(45% 60% at 78% 22%, #1f5a8f, rgba(31, 90, 143, 0) 72%),
-        radial-gradient(42% 42% at 50% 50%, #0a84ff, rgba(10, 132, 255, 0) 75%), #2a2a2e;
 
     --card-fill: rgba(255, 255, 255, 0.08);
     --card-bg: rgba(32, 32, 35, 0.58);
@@ -156,6 +150,18 @@ a {
     grid-row: span 2;
 }
 
+/* On phones the last row splits in two: the X card on its own, then the volcano
+   and New York photos side by side */
+@media (max-width: 767px) {
+    .tile-codes {
+        order: 1;
+    }
+
+    .tile-closing-photo {
+        order: 2;
+    }
+}
+
 @media (min-width: 768px) {
     .bento-grid {
         grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -180,12 +186,15 @@ a {
     -webkit-tap-highlight-color: transparent;
     transition: transform 0.6s var(--ease-spring), box-shadow 0.6s var(--ease-spring), background-color 0.4s ease;
     /* Every card is always its own layer, as it is while the enter animation runs,
-       so the photo and map glows sit the same way before and after it ends */
-    z-index: 0;
+       so the photo glows sit the same way before and after it ends. Cards sit one
+       layer above the photos, so a photo's glow always passes under the frosted
+       glass, whichever side of the card the photo is on */
+    z-index: 1;
 }
 
 /* Photo fills the tile edge to edge, cropped around its center */
 .tile-image {
+    z-index: 0;
     padding: 0;
     overflow: visible;
     background: transparent;
@@ -200,17 +209,15 @@ a {
     object-position: center;
 }
 
-/* Keep the photo and map cards on their own compositing layer, as they are during the
+/* Keep the photo cards on their own compositing layer, as they are during the
    enter animation. Safari leaves the blur of the glow out when it checks which cards
    overlap, so once the animation ended it drew the glow under the neighbouring cards */
-.tile-image,
-.tile-map {
+.tile-image {
     will-change: transform;
 }
 
-/* Glow: a blurred copy of the photo (or the map's colours) spills softly onto the page */
-.tile-halo,
-.tile-map::before {
+/* Glow: a blurred copy of the photo spills softly onto the page */
+.tile-halo {
     position: absolute;
     inset: -12px;
     z-index: -1;
@@ -224,11 +231,6 @@ a {
 
 .tile-halo {
     object-fit: cover;
-}
-
-.tile-map::before {
-    content: '';
-    background: var(--halo-map);
 }
 
 @media (min-width: 768px) {
@@ -1378,9 +1380,9 @@ a.tile-project:hover {
 
 .app-actions {
     display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-top: 14px;
+    align-items: center;
+    gap: 16px;
+    margin-top: 18px;
 }
 
 .app-btn {
@@ -1409,32 +1411,111 @@ a.tile-project:hover {
     filter: brightness(1.08);
 }
 
-.app-btn-secondary {
-    background: rgba(255, 255, 255, 0.75);
-    box-shadow: inset 0 0 0 0.5px rgba(0, 0, 0, 0.08);
-    color: var(--text-primary);
-}
-
-:root.dark-mode .app-btn-secondary {
-    background: rgba(255, 255, 255, 0.12);
-    box-shadow: inset 0 0 0 0.5px rgba(255, 255, 255, 0.14);
-}
-
 .app-note {
-    margin: 8px 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    margin: 0;
     font-size: 13px;
-    line-height: 18px;
+    line-height: 17px;
     color: var(--text-secondary);
 }
 
-/* Too narrow for the desktop beside the text */
+.app-note-lead {
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+/* Each line stays whole; it only runs past the text column into the faded part of the desktop */
+.app-note span {
+    white-space: nowrap;
+}
+
+/* Tablets: Lumina gets the full row, so the real desktop still fits beside the text */
 @media (max-width: 1023px) {
+    .apps {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 14px;
+    }
+
+    .apps-soon {
+        min-height: 72px;
+    }
+}
+
+/* Phones: no desktop. The icon sits beside the name, and the button runs the
+   full width with the price centred under it */
+@media (max-width: 767px) {
     .app-desktop {
         display: none;
     }
 
+    .tile-app {
+        min-height: 0;
+    }
+
     .app-text {
+        display: grid;
+        grid-template-columns: auto minmax(0, 1fr);
+        column-gap: 14px;
+        row-gap: 2px;
+        align-items: center;
         max-width: none;
+        min-height: 0;
+        padding: 24px;
+    }
+
+    .app-icon {
+        grid-row: 1 / span 2;
+        width: 56px;
+        height: 56px;
+        margin: -4px;
+    }
+
+    .tile-app .title {
+        align-self: end;
+        font-size: 24px;
+        line-height: 28px;
+    }
+
+    .tile-app .sub,
+    .tile-app .sub:is(*) {
+        align-self: start;
+        font-size: 14px;
+        line-height: 19px;
+    }
+
+    .app-actions {
+        grid-column: 1 / -1;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+    }
+
+    .app-btn {
+        justify-content: center;
+        min-height: 48px;
+        font-size: 16px;
+    }
+
+    .app-note {
+        display: block;
+        text-align: center;
+        line-height: 18px;
+        text-wrap: balance;
+    }
+
+    .app-note span {
+        white-space: normal;
+    }
+
+    .app-note-lead {
+        font-weight: inherit;
+        color: inherit;
+    }
+
+    .app-note-lead::after {
+        content: ",";
     }
 }
 
@@ -1458,14 +1539,4 @@ a.tile-project:hover {
     .topbar-nav {
         gap: 16px;
     }
-
-    .apps {
-        grid-template-columns: minmax(0, 1fr);
-        gap: 14px;
-    }
-
-    .apps-soon {
-        min-height: 72px;
-    }
-
 }
