@@ -19,6 +19,10 @@ const STORES = {
     },
 };
 const STORE = LIVE && !new URLSearchParams(location.search).has('sandbox') ? STORES.production : STORES.sandbox;
+// Until the live checkout opens, buyers email for a key (as before Paddle),
+// so the app can ship without sending them to the sandbox. ?sandbox still tests it.
+const BY_EMAIL = !LIVE && !new URLSearchParams(location.search).has('sandbox');
+const EMAIL = 'mailto:hello@hectorgoan.com?subject=Buying%20Lumina';
 
 const $ = (id) => document.getElementById(id);
 
@@ -59,6 +63,13 @@ $('buy-copy').addEventListener('click', async () => {
     setTimeout(() => { $('buy-copy').textContent = 'Copy Key'; }, 2000);
 });
 
+if (BY_EMAIL) {
+    $('buy-price').textContent = '€14.99';
+    $('buy-button').textContent = 'Email to Buy';
+    $('buy-button').disabled = false;
+    $('buy-button').addEventListener('click', () => { location.href = EMAIL; });
+    $('buy-fine').innerHTML = 'Online checkout opens soon. Until then, email me and I’ll send you a payment link and your licence key. <a href="terms.html">Terms</a> · <a href="refunds.html">Refunds</a> · <a href="privacy.html">Privacy</a>';
+} else {
 if (STORE.environment) Paddle.Environment.set('sandbox');
 Paddle.Initialize({
     token: STORE.token,
@@ -88,4 +99,5 @@ if (txn) {
     $('buy-button').addEventListener('click', openCheckout);
     // Lumina's Buy button lands here: open the checkout straight away.
     openCheckout();
+}
 }
